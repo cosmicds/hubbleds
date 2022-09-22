@@ -16,7 +16,7 @@
       <p
         v-if="!state.lambda_on"      
       >
-        Your galaxy spectrum has {{ state.element == 'Mg-I' ? 'a' : 'an' }} {{ state.element }} {{ state.element == 'Mg-I' ? 'absorption' : 'emission' }} line marked.
+        Your galaxy spectrum has {{ state.galaxy.element == 'Mg-I' ? 'a' : 'an' }} {{ state.galaxy.element }} {{ state.galaxy.element == 'Mg-I' ? 'absorption' : 'emission' }} line marked.
       </p>
       <p
         v-if="!state.lambda_used"
