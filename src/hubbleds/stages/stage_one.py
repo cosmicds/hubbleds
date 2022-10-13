@@ -414,8 +414,7 @@ class StageOne(HubbleStage):
         specview.toolbar.active_tool = None
         filename = name
         spec_name = filename.split(".")[0]
-        data_name = spec_name + '[COADD]'
-        data = self.get_data(data_name)
+        data = self.get_data(spec_name)
         self.story_state.update_data(SPECTRUM_DATA_LABEL, data)
         if len(specview.layers) == 0:
             spec_data = self.get_data(SPECTRUM_DATA_LABEL)

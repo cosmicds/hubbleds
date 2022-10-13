@@ -1,16 +1,19 @@
 from collections import defaultdict
 from datetime import datetime
+from io import BytesIO
 from pathlib import Path
+import requests
 
 import ipyvuetify as v
 import numpy as np
-import requests
+from astropy.io import fits
 from cosmicds.phases import Story
 from cosmicds.registries import story_registry
 from cosmicds.utils import API_URL, RepeatedTimer
 from echo import DictCallbackProperty, CallbackProperty
 from glue.core import Data
 from glue.core.component import CategoricalComponent, Component
+from glue.core.data_factories.fits import fits_reader
 
 from .data_management import CLASS_DATA_LABEL, CLASS_SUMMARY_LABEL, SDSS_DATA_LABEL, STATE_TO_MEAS, STATE_TO_SUMM, \
     STUDENT_DATA_LABEL, STUDENT_MEASUREMENTS_LABEL
@@ -161,32 +164,31 @@ class HubblesLaw(Story):
         v.theme.themes.light.anchor = ''
 
     def load_spectrum_data(self, name, gal_type):
-        type_folders = {
-            "Sp" : "spirals_spectra",
-            "E" : "ellipticals_spectra",
-            "Ir" : "irregulars_spectra"
-        }
-
         if not name.endswith(self.name_ext):
             filename = name + self.name_ext
         else:
             filename = name
             name = name[:-len(self.name_ext)]
-        spectra_path = Path(__file__).parent / "data" / "spectra"
-        folder = spectra_path / type_folders[gal_type]
-        path = str(folder / filename)
-        data_name = name + '[COADD]'
 
         # Don't load data that we've already loaded
         dc = self.data_collection
-        if data_name not in dc:
-            self.app.load_data(path, label=name)
-            data = dc[data_name]
+        if name not in dc:
+            data_name = name + '[COADD]'
+            type_folders = { "Sp" : "spiral", "E" : "elliptical", "Ir" : "irregular" }
+            folder = type_folders[gal_type]
+            url = f"{API_URL}/{HUBBLE_ROUTE_PATH}/spectra/{folder}/{filename}"
+            response = requests.get(url)
+            f = BytesIO(response.content)
+            f.name = name
+            hdulist = fits.open(f)
+            data = next((d for d in fits_reader(hdulist) if d.label == data_name), None)
+            if data is None:
+                return
+            data.label = name
+            dc.append(data)
             data['lambda'] = 10 ** data['loglam']
-            dc.remove(dc[name + '[SPECOBJ]'])
-            dc.remove(dc[name + '[SPZLINE]'])
             HubblesLaw.make_data_writeable(data)
-        return dc[data_name]
+        return dc[name]
 
     def update_data(self, label, new_data):
         dc = self.data_collection
