@@ -46,6 +46,7 @@ class HubbleStage(Stage):
             galaxy_name += ".fits"
         self.remove_data_values("student_measurements", "name", condition,
                                 single=True)
+        self.story_state.update_student_data()
         user = self.app_state.student
         if user.get("id", None) is not None:
             requests.delete(
