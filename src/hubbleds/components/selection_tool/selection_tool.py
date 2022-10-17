@@ -87,10 +87,7 @@ class SelectionTool(v.VueTemplate):
     def on_galaxy_selected(self, cb):
         self._on_galaxy_selected = cb
 
-    def select_galaxy(self, galaxy):
-        self.selected_data = self.selected_data.append(galaxy,
-                                                       ignore_index=True)
-        self.selected_count = self.selected_data.shape[0]
+    def _update_layer(self):
         table = Table.from_pandas(self.selected_data)
         layer = self.widget.layers.add_table_layer(table)
         layer.size_scale = 100
@@ -98,9 +95,29 @@ class SelectionTool(v.VueTemplate):
         if self.selected_layer is not None:
             self.widget.layers.remove_layer(self.selected_layer)
         self.selected_layer = layer
+
+    def select_galaxy(self, galaxy):
+        self.selected_data = self.selected_data.append(galaxy,
+                                                       ignore_index=True)
+        self.selected_count = self.selected_data.shape[0]
+        self._update_layer()
         if self._on_galaxy_selected is not None:
             self._on_galaxy_selected(galaxy)
         self.state.gal_selected = False
+
+    def remove_galaxy(self, galaxy):
+        name = galaxy["name"]
+        if name.endswith(".fits"):
+            name = name[:-len(".fits")]
+        to_remove = self.selected_data[self.selected_data["name"] == name]
+        self.selected_data.drop(to_remove)
+        self.selected_count = self.selected_data.shape[0]
+        self._update_layer()
+
+    def set_selected_galaxies(self, galaxies_data):
+        self.selected_data = galaxies_data
+        self.selected_count = self.selected_data.shape[0]
+        self._update_layer()
 
     def vue_select_current_galaxy(self, _args=None):
         self.select_galaxy(self.current_galaxy)
