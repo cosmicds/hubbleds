@@ -12,8 +12,10 @@ from cosmicds.registries import register_stage
 from cosmicds.utils import load_template, update_figure_css
 from echo import add_callback, ignore_callback, CallbackProperty
 from glue.core import Data
+from glue.core.message import NumericalDataChangedMessage
 from glue_jupyter.bqplot.scatter import BqplotScatterView
 from numpy import isin
+from soupsieve import select
 from traitlets import default, Bool
 
 from ..components import DopplerCalc, SpectrumSlideshow, SelectionTool
@@ -163,6 +165,11 @@ class StageOne(HubbleStage):
         self.stage_state.obswaves_total = measwaves[measwaves != None].size
         velocities = student_measurements["velocity"]
         self.stage_state.velocities_total = velocities[velocities != None].size
+
+        self.hub.subscribe(self, NumericalDataChangedMessage,
+            filter=self._measurements_changed_filter,
+            handler=self._on_measurements_changed
+        )
 
         # Set up viewers
         spectrum_viewer = self.add_viewer(
@@ -382,6 +389,19 @@ class StageOne(HubbleStage):
         for index in indices:
             galaxy = {c: data[c][index] for c in components}
             self.selection_tool.select_galaxy(galaxy)
+            
+    def _measurements_changed_filter(self, message):
+        # We're interested in detecting when the measurements have changed
+        # from another stage
+        return self.story_state.stage_index != self.index and \
+               message.data.label == STUDENT_MEASUREMENTS_LABEL
+
+    def _on_measurements_changed(self, message):
+        # If a measurement has been removed, we need to update the selection tool
+        measurements = self.get_data(STUDENT_MEASUREMENTS_LABEL)
+        if measurements.size != self.selection_tool.selected_count:
+            selected = measurements.to_dataframe()
+            self.selection_tool.set_selected_galaxies(selected)
 
     def vue_fill_data(self, _args=None):
         self._select_from_data("dummy_student_data")
