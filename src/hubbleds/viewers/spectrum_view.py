@@ -67,6 +67,7 @@ class SpecView(BqplotScatterView):
         self.figure_size_x = 0
         self.figure_size_y = 230
         self.element = None
+        self._resolution_dirty = True
 
         self.user_line = Lines(
             x=[0, 0],
@@ -251,25 +252,25 @@ class SpecView(BqplotScatterView):
             return
 
         new_x = event['domain']['x']
-        pixel_x = event['pixel']['x']
-        y = event['domain']['y']
-        pixel_y = event['pixel']['y']
-        self.state.resolution_x = (new_x - self.state.x_min) / pixel_x
-        if self.state.resolution_x != 0:
-            self.figure_size_x = (
-                                             self.state.x_max - self.state.x_min) / self.state.resolution_x
-        self.state.resolution_y = (self.state.y_max - y) / (
-                    pixel_y - 10)  # The y-axis has 10px "extra" on the top and bottom
-        if self.state.resolution_y != 0:
-            self.figure_size_y = (
-                                             self.state.y_max - self.state.y_min) / self.state.resolution_y
+
+        if self._resolution_dirty:
+            pixel_x = event['pixel']['x']
+            y = event['domain']['y']
+            pixel_y = event['pixel']['y']
+            self.state.resolution_x = (new_x - self.state.x_min) / pixel_x
+            if self.state.resolution_x != 0:
+                self.figure_size_x = (self.state.x_max - self.state.x_min) / self.state.resolution_x
+            self.state.resolution_y = (self.state.y_max - y) / (
+                        pixel_y - 10)  # The y-axis has 10px "extra" on the top and bottom
+            if self.state.resolution_y != 0:
+                self.figure_size_y = (self.state.y_max - self.state.y_min) / self.state.resolution_y
+            self._resolution_dirty = False
+
         self.user_line_label.text = [self._label_text(new_x)]
         self.user_line.x = [new_x, new_x]
         self.user_line_label.x = [new_x, new_x]
-        self.label_background.x = self._x_background_coordinates(
-            self.user_line_label.x[0])
-        self.label_background.y = self._y_background_coordinates(
-            self.user_line_label.y[0])
+        self.label_background.x = self._x_background_coordinates(self.user_line_label.x[0])
+        self.label_background.y = self._y_background_coordinates(self.user_line_label.y[0])
 
     def _on_click(self, event):
         new_x = event['domain']['x']
@@ -311,6 +312,7 @@ class SpecView(BqplotScatterView):
         self.element_label.text = [element]
         self.element_tick.x = [self.shifted, self.shifted]
         self._update_locations()
+        self._resolution_dirty = True
 
     def add_data(self, data):
         super().add_data(data)
