@@ -400,8 +400,7 @@ class StageOne(HubbleStage):
         # If a measurement has been removed, we need to update the selection tool
         measurements = self.get_data(STUDENT_MEASUREMENTS_LABEL)
         if measurements.size != self.selection_tool.selected_count:
-            selected = measurements.to_dataframe()
-            self.selection_tool.set_selected_galaxies(selected)
+            self.selection_tool.set_selected_galaxies(measurements.to_dataframe())
 
     def vue_fill_data(self, _args=None):
         self._select_from_data("dummy_student_data")
@@ -625,3 +624,8 @@ class StageOne(HubbleStage):
             tool = self.galaxy_table.get_tool("update-velocities")
             tool["disabled"] = False
             self.galaxy_table.update_tool(tool)
+
+    def remove_measurement(self, galaxy_name):
+        super().remove_measurement(galaxy_name)
+        measurements = self.get_data(STUDENT_MEASUREMENTS_LABEL)
+        self.selection_tool.set_selected_galaxies(measurements.to_dataframe())
