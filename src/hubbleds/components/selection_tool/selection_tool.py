@@ -130,7 +130,7 @@ class SelectionTool(v.VueTemplate):
     def mark_galaxy_bad(self, change):
         if not change["new"]:
             return
-        if self.current_galaxy["id"]:
+        if self.current_galaxy.get("id", None):
             data = {"galaxy_id": int(self.current_galaxy["id"])}
         else:
             name = self.current_galaxy["name"]

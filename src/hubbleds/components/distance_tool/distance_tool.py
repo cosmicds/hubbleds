@@ -135,7 +135,7 @@ class DistanceTool(v.VueTemplate):
         if not change["new"]:
             return
         galaxy = self.state.galaxy
-        if galaxy["id"]:
+        if galaxy.get("id", None):
             data = {"galaxy_id": int(galaxy["id"])}
         else:
             name = galaxy["name"]
