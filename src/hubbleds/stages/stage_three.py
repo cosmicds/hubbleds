@@ -7,13 +7,14 @@ from cosmicds.components.table import Table
 from cosmicds.phases import CDSState
 from cosmicds.registries import register_stage
 from cosmicds.utils import extend_tool, load_template
-from echo import CallbackProperty
+from echo import CallbackProperty, add_callback, remove_callback
 from glue.core.message import NumericalDataChangedMessage
 from traitlets import default, Bool
 
 from ..data_management import \
     ALL_CLASS_SUMMARIES_LABEL, ALL_DATA_LABEL, ALL_STUDENT_SUMMARIES_LABEL, \
-    CLASS_DATA_LABEL, CLASS_SUMMARY_LABEL, STUDENT_DATA_LABEL
+    CLASS_DATA_LABEL, CLASS_SUMMARY_LABEL, STUDENT_DATA_LABEL, HUBBLE_1929_DATA_LABEL, \
+    HUBBLE_KEY_DATA_LABEL
 from ..histogram_listener import HistogramListener
 from ..stage import HubbleStage
 from ..viewers import HubbleFitView, \
@@ -205,13 +206,13 @@ class StageThree(HubbleStage):
         vel_attr = "velocity"
         for field in [dist_attr, vel_attr]:
             self.add_link(CLASS_DATA_LABEL, field, ALL_DATA_LABEL, field)
-        self.add_link(hubble_dc_name, 'Distance (Mpc)', hstkp_dc_name,
+        self.add_link(HUBBLE_1929_DATA_LABEL, 'Distance (Mpc)', HUBBLE_KEY_DATA_LABEL,
                       'Distance (Mpc)')
-        self.add_link(hubble_dc_name, 'Tweaked Velocity (km/s)', hstkp_dc_name,
+        self.add_link(HUBBLE_1929_DATA_LABEL, 'Tweaked Velocity (km/s)', HUBBLE_KEY_DATA_LABEL,
                       'Velocity (km/s)')
-        self.add_link(hstkp_dc_name, 'Distance (Mpc)', STUDENT_DATA_LABEL,
+        self.add_link(HUBBLE_KEY_DATA_LABEL, 'Distance (Mpc)', STUDENT_DATA_LABEL,
                       'distance')
-        self.add_link(hstkp_dc_name, 'Velocity (km/s)', STUDENT_DATA_LABEL,
+        self.add_link(HUBBLE_KEY_DATA_LABEL, 'Velocity (km/s)', STUDENT_DATA_LABEL,
                       'velocity')
 
         # Create viewers
@@ -304,78 +305,6 @@ class StageThree(HubbleStage):
 
         comparison_viewer.ignore(comparison_ignorer)
 
-        for viewer in [fit_viewer, comparison_viewer, prodata_viewer]:
-            viewer.add_data(student_data)
-            # viewer.layers[-1].state.visible = False
-            viewer.state.x_att = student_data.id[dist_attr]
-            viewer.state.y_att = student_data.id[vel_attr]
-
-        student_layer = comparison_viewer.layers[-1]
-        student_layer.state.color = 'green'
-        student_layer.state.zorder = 3
-        student_layer.state.size = 8
-        comparison_viewer.add_data(class_meas_data)
-        class_layer = comparison_viewer.layers[-1]
-        class_layer.state.zorder = 2
-        class_layer.state.color = 'red'
-        # comparison_viewer.add_data(all_data)
-        # all_layer = comparison_viewer.layers[-1]
-        # all_layer.state.zorder = 1
-        # all_layer.state.visible = False
-        comparison_viewer.state.x_att = class_meas_data.id[dist_attr]
-        comparison_viewer.state.y_att = class_meas_data.id[vel_attr]
-        comparison_viewer.state.reset_limits()
-
-        prodata_viewer.add_data(student_data)
-        prodata_viewer.state.x_att = student_data.id[dist_attr]
-        prodata_viewer.state.y_att = student_data.id[vel_attr]
-        prodata_viewer.add_data(hstkp)
-        prodata_viewer.add_data(hubble1929)
-
-        histogram_viewers = [class_distr_viewer, all_distr_viewer,
-                             sandbox_distr_viewer]
-        for viewer in histogram_viewers:
-            label = 'Count' if viewer == class_distr_viewer else 'Proportion'
-            viewer.figure.axes[1].label = label
-            if viewer != all_distr_viewer:
-                viewer.add_data(class_sample_data)
-                layer = viewer.layers[-1]
-                layer.state.color = 'red'
-                layer.state.alpha = 0.5
-            if viewer != class_distr_viewer:
-                viewer.add_data(students_summary_data)
-                layer = viewer.layers[-1]
-                layer.state.color = 'blue'
-                layer.state.alpha = 0.5
-                viewer.add_data(classes_summary_data)
-                layer = viewer.layers[-1]
-                layer.state.color = '#f0c470'
-                layer.state.alpha = 0.5
-                viewer.state.normalize = True
-                viewer.state.y_min = 0
-                viewer.state.y_max = 1
-                viewer.state.hist_n_bin = 30
-
-        class_distr_viewer.state.x_att = class_sample_data.id['age']
-        all_distr_viewer.state.x_att = students_summary_data.id['age']
-        sandbox_distr_viewer.state.x_att = students_summary_data.id['age']
-
-        # Do some stuff with the galaxy data
-        type_field = 'type'
-        elliptical_subset = all_data.new_subset(all_data.id[type_field] == 'E',
-                                                label='Elliptical',
-                                                color='orange')
-        spiral_subset = all_data.new_subset(all_data.id[type_field] == 'Sp',
-                                            label='Spiral', color='green')
-        irregular_subset = all_data.new_subset(all_data.id[type_field] == 'Ir',
-                                               label='Irregular', color='red')
-        morphology_subsets = [elliptical_subset, spiral_subset,
-                              irregular_subset]
-        for subset in morphology_subsets:
-            morphology_viewer.add_subset(subset)
-        morphology_viewer.state.x_att = all_data.id['distance']
-        morphology_viewer.state.y_att = all_data.id['velocity']
-
         # Just for accessibility while testing
         self.data_collection.histogram_listener = self.histogram_listener
 
@@ -408,6 +337,120 @@ class StageThree(HubbleStage):
         extend_tool(fit_viewer, 'bqplot:rectangle', fit_selection_activate,
                     fit_selection_deactivate)
 
+        # We defer some of the setup for later, to make loading faster
+        add_callback(self.story_state, 'stage_index', self._on_stage_index_changed)
+
+    def _setup_scatter_layers(self):
+        dist_attr = "distance"
+        vel_attr = "velocity"
+        hubble1929 = self.get_data(HUBBLE_1929_DATA_LABEL)
+        hstkp = self.get_data(HUBBLE_KEY_DATA_LABEL)
+        fit_viewer = self.get_viewer("fit_viewer")
+        comparison_viewer = self.get_viewer("comparison_viewer")
+        prodata_viewer = self.get_viewer("prodata_viewer")
+        student_data = self.get_data(STUDENT_DATA_LABEL)
+        class_meas_data = self.get_data(CLASS_DATA_LABEL)
+        for viewer in [fit_viewer, comparison_viewer, prodata_viewer]:
+            viewer.add_data(student_data)
+            # viewer.layers[-1].state.visible = False
+            viewer.state.x_att = student_data.id[dist_attr]
+            viewer.state.y_att = student_data.id[vel_attr]     
+
+        student_layer = comparison_viewer.layers[-1]
+        student_layer.state.color = 'orange'
+        student_layer.state.zorder = 3
+        student_layer.state.size = 8
+        comparison_viewer.add_data(class_meas_data)
+        class_layer = comparison_viewer.layers[-1]
+        class_layer.state.zorder = 2
+        class_layer.state.color = 'red'
+        # comparison_viewer.add_data(all_data)
+        # all_layer = comparison_viewer.layers[-1]
+        # all_layer.state.zorder = 1
+        # all_layer.state.visible = False
+        comparison_viewer.state.x_att = class_meas_data.id[dist_attr]
+        comparison_viewer.state.y_att = class_meas_data.id[vel_attr]
+        comparison_viewer.state.reset_limits()
+
+        prodata_viewer.add_data(student_data)
+        prodata_viewer.state.x_att = student_data.id[dist_attr]
+        prodata_viewer.state.y_att = student_data.id[vel_attr]
+        prodata_viewer.add_data(hstkp)
+        prodata_viewer.add_data(hubble1929)
+
+        # In the comparison viewer, we only want to see the line for the student slider subset
+        linefit_id = "hubble:linefit"
+        comparison_toolbar = comparison_viewer.toolbar
+        comparison_linefit = comparison_toolbar.tools[linefit_id]
+        comparison_linefit.activate()
+        comparison_toolbar.set_tool_enabled(linefit_id, False)
+
+    def _setup_histogram_layers(self):
+        class_distr_viewer = self.get_viewer("class_distr_viewer")
+        all_distr_viewer = self.get_viewer("all_distr_viewer")
+        sandbox_distr_viewer = self.get_viewer("sandbox_distr_viewer")
+        class_summ_data = self.get_data(CLASS_SUMMARY_LABEL)
+        students_summary_data = self.get_data(ALL_STUDENT_SUMMARIES_LABEL)
+        classes_summary_data = self.get_data(ALL_CLASS_SUMMARIES_LABEL)
+        histogram_viewers = [class_distr_viewer, all_distr_viewer, sandbox_distr_viewer]
+        for viewer in histogram_viewers:
+            label = 'Count' if viewer == class_distr_viewer else 'Proportion'
+            viewer.figure.axes[1].label = label
+            if viewer != all_distr_viewer:
+                viewer.add_data(class_summ_data)
+                layer = viewer.layers[-1]
+                layer.state.color = 'red'
+                layer.state.alpha = 0.5
+            if viewer != class_distr_viewer:
+                viewer.add_data(students_summary_data)
+                layer = viewer.layers[-1]
+                layer.state.color = 'blue'
+                layer.state.alpha = 0.5
+                viewer.add_data(classes_summary_data)
+                layer = viewer.layers[-1]
+                layer.state.color = '#f0c470'
+                layer.state.alpha = 0.5
+                viewer.state.normalize = True
+                viewer.state.y_min = 0
+                viewer.state.y_max = 1
+                viewer.state.hist_n_bin = 20
+
+        class_distr_viewer.state.x_att = class_summ_data.id['age']
+        all_distr_viewer.state.x_att = students_summary_data.id['age']
+        sandbox_distr_viewer.state.x_att = students_summary_data.id['age']
+
+    def _setup_morphology_subsets(self):
+        # Do some stuff with the galaxy data
+        type_field = 'type'
+        morphology_viewer = self.get_viewer("morphology_viewer")
+        all_data = self.get_data(ALL_DATA_LABEL)
+        elliptical_subset = all_data.new_subset(all_data.id[type_field] == 'E',
+                                                label='Elliptical',
+                                                color='orange')
+        spiral_subset = all_data.new_subset(all_data.id[type_field] == 'Sp',
+                                            label='Spiral', color='green')
+        irregular_subset = all_data.new_subset(all_data.id[type_field] == 'Ir',
+                                               label='Irregular', color='red')
+        morphology_subsets = [elliptical_subset, spiral_subset,
+                              irregular_subset]
+        for subset in morphology_subsets:
+            morphology_viewer.add_subset(subset)
+        morphology_viewer.state.x_att = all_data.id['distance']
+        morphology_viewer.state.y_att = all_data.id['velocity']
+
+    def _on_stage_index_changed(self, index):
+        print(f"Index: {index}")
+        if index > 0:
+            self._deferred_setup()
+
+            # Remove this callback once we're done
+            remove_callback(self.story_state, 'stage_index', self._on_stage_index_changed)
+
+    def _deferred_setup(self):
+        self._setup_scatter_layers()
+        self._setup_histogram_layers()
+        self._setup_morphology_subsets()
+
     @property
     def all_viewers(self):
         return [layout.viewer for layout in self.viewers.values()]
@@ -415,7 +458,10 @@ class StageThree(HubbleStage):
     def _on_data_change(self, msg):
         viewer_id = self.viewer_ids_for_data.get(msg.data.label, [])
         for vid in viewer_id:
-            self.get_viewer(vid).state.reset_limits()
+            try:
+                self.get_viewer(vid).state.reset_limits()
+            except:
+                pass
 
     def table_selected_color(self, dark):
         return "colors.lightBlue.darken4"

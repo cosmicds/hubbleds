@@ -7,6 +7,8 @@ ALL_STUDENT_SUMMARIES_LABEL = "all_student_summaries"
 ALL_CLASS_SUMMARIES_LABEL = "all_class_summaries"
 SDSS_DATA_LABEL = "SDSS_all_sample_filtered"
 SPECTRUM_DATA_LABEL = "spectrum_data"
+HUBBLE_1929_DATA_LABEL = "Hubble 1929-Table 1"
+HUBBLE_KEY_DATA_LABEL = "HSTkey2001"
 
 def reverse(d):
     return { v : k for k, v in d.items() }
