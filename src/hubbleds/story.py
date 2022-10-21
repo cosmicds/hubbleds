@@ -305,9 +305,16 @@ class HubblesLaw(Story):
             d = dists[id_num]
             v = vels[id_num]
             line = fit_line(d, v)
-            h0 = line.slope.value
+            if line is None:
+                h0 = 0
+                age = 0
+            else:
+                h0 = line.slope.value
+                age = age_in_gyr_simple(h0)
+            # h0 = line.slope.value
+            # age = age_in_gyr_simple(h0)
             hubbles.append(h0)
-            ages.append(age_in_gyr_simple(h0))
+            ages.append(age)
 
         components = dict(hubble=hubbles, age=ages)
         components[id_field] = list(ids)
@@ -316,6 +323,7 @@ class HubblesLaw(Story):
         data = self.data_collection[summ_label]
         data.update_values_from_data(new_data)
 
+
     def fetch_student_data(self):
         student_meas_url = f"{API_URL}/{HUBBLE_ROUTE_PATH}/measurements/{self.student_user['id']}"
         self.fetch_measurement_data_and_update(student_meas_url, STUDENT_MEASUREMENTS_LABEL, make_writeable=True)
@@ -323,7 +331,9 @@ class HubblesLaw(Story):
 
     def fetch_class_data(self):
         def check_update(measurements):
-            last_modified = max([datetime.fromisoformat(x["last_modified"][:-1]) for x in measurements])
+            last_modified = max([datetime.fromisoformat(x["last_modified"][:-1]) for x in measurements], default=None)
+            if last_modified is None:
+                return False
             need_update = self.class_last_modified is None or last_modified > self.class_last_modified
             if need_update:
                 self.class_last_modified = last_modified

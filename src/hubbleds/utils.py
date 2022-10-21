@@ -7,6 +7,7 @@ from glue_jupyter.bqplot.histogram.layer_artist import \
     BqplotHistogramLayerArtist
 from glue_jupyter.bqplot.scatter.layer_artist import BqplotScatterLayerArtist
 
+
 try:
     from astropy.cosmology import Planck18 as planck
 except ImportError:
@@ -84,7 +85,7 @@ def fit_line(x, y):
         line_init = models.Linear1D(intercept=0, fixed={'intercept': True})
         fitted_line = fit(line_init, x, y)
         return fitted_line
-    except ValueError:
+    except (ValueError, SystemError) as _:
         return None
 
 

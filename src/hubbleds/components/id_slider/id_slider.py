@@ -49,12 +49,16 @@ class IDSlider(VuetifyTemplate):
     def refresh(self):
         self.ids = sorted(self.glue_data[self.id_component], key=self._sort_key)
         self.values = sorted(self.glue_data[self.value_component])
-        self.state.low_age = int(min(self.values))
-        self.state.high_age = int(max(self.values))
+        self.state.low_age = int(min(self.values, default=0) or 0)
+        self.state.high_age = int(max(self.values, default=0) or 0)
         self.vmax = len(self.values) - 1
         self.halfvmax = self.vmax/2 if (self.vmax % 2 == 0) else (self.vmax-1)/2 #check if vmax is even or odd
-        self.selected_id = int(self.ids[self.selected])
-        self.thumb_value = self.values[self.selected]
+        try:
+            self.selected_id = int(self.ids[self.selected])
+            self.thumb_value = self.values[self.selected]
+        except:
+            self.selected_id = 0
+            self.thumb_value = 0
         self.highlighted = self.selected_id in self.highlight_ids
         self.tick_labels = ["Low"] + ["" for _ in range(int(self.halfvmax)-1)] + ["Age (Gyr)"]  + ["" for _ in range(int(self.halfvmax)-1)] + ["High"]
 
@@ -76,8 +80,12 @@ class IDSlider(VuetifyTemplate):
 
         old_index = change.get("old", None)
         index = change["new"]
-        self.selected_id = int(self.ids[index])
-        self.thumb_value = int(self.values[self.selected])
+        try:
+            self.selected_id = int(self.ids[self.selected])
+            self.thumb_value = self.values[self.selected]
+        except:
+            self.selected_id = 0
+            self.thumb_value = 0
         highlighted = self.selected_id in self.highlight_ids
         old_highlighted = old_index is not None and self.ids[old_index] in self.highlight_ids
         self.highlighted = highlighted

@@ -590,7 +590,7 @@ class StageThree(HubbleStage):
     #     morphology_viewer.state.y_att = all_data.id['velocity']
 
     def _on_stage_index_changed(self, index):
-        if index > 0:
+        if index > 3:
             self._deferred_setup()
 
             # Remove this callback once we're done
