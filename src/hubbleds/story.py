@@ -227,6 +227,9 @@ class HubblesLaw(Story):
         student_data.update_values_from_data(new_data)
         HubblesLaw.make_data_writeable(student_data)
 
+        if student_data.size >= 5:
+            self.fetch_class_data()
+
     @staticmethod
     def prune_none(data):
         keep = set()
