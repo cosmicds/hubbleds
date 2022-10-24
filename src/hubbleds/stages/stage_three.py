@@ -505,7 +505,6 @@ class StageThree(HubbleStage):
     def _setup_first_scatter_layers(self):
         dist_attr = "distance"
         vel_attr = "velocity"
-        fit_viewer = self.get_viewer("fit_viewer")
         comparison_viewer = self.get_viewer("comparison_viewer")
         prodata_viewer = self.get_viewer("prodata_viewer")
         layer_viewer = self.get_viewer("layer_viewer")
