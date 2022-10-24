@@ -455,11 +455,9 @@ class StageThree(HubbleStage):
         if(self.stage_state.class_layer_toggled == 1):
            self.stage_state.move_marker_forward(self.stage_state.marker)
 
-    def _setup_scatter_layers(self):
+    def _setup_first_scatter_layers(self):
         dist_attr = "distance"
         vel_attr = "velocity"
-        hubble1929 = self.get_data(HUBBLE_1929_DATA_LABEL)
-        hstkp = self.get_data(HUBBLE_KEY_DATA_LABEL)
         fit_viewer = self.get_viewer("fit_viewer")
         comparison_viewer = self.get_viewer("comparison_viewer")
         prodata_viewer = self.get_viewer("prodata_viewer")
@@ -472,6 +470,8 @@ class StageThree(HubbleStage):
             # viewer.layers[-1].state.visible = False
             viewer.state.x_att = student_data.id[dist_attr]
             viewer.state.y_att = student_data.id[vel_attr]
+
+        print("Finished block 1")
         
         # add class measurement data and hide by default
         layer_viewer.add_data(class_meas_data)
@@ -483,6 +483,8 @@ class StageThree(HubbleStage):
         toggle_tool = layer_viewer.toolbar.tools['hubble:togglelayer']
         toggle_tool.set_layer_to_toggle(class_layer)
         layer_viewer.toolbar.set_tool_enabled('hubble:togglelayer', not self.stage_state.marker_before("tre_dat2"))
+
+        print("Finished block 2")
 
         # cosmicds PR157 - turn off fit line label for layer_viewer
         layer_viewer.toolbar.tools["hubble:linefit"].show_labels = False
@@ -503,6 +505,8 @@ class StageThree(HubbleStage):
         comparison_viewer.state.y_att = class_meas_data.id[vel_attr]
         comparison_viewer.state.reset_limits()
 
+        print("Finished block 3")
+
         all_data = self.get_data(ALL_DATA_LABEL)
         student_layer = all_viewer.layers[-1]
         student_layer.state.color = 'orange'
@@ -520,11 +524,7 @@ class StageThree(HubbleStage):
         all_viewer.state.x_att = all_data.id[dist_attr]
         all_viewer.state.y_att = all_data.id[vel_attr]
 
-        prodata_viewer.add_data(student_data)
-        prodata_viewer.state.x_att = student_data.id[dist_attr]
-        prodata_viewer.state.y_att = student_data.id[vel_attr]
-        prodata_viewer.add_data(hstkp)
-        prodata_viewer.add_data(hubble1929)
+        print("Finished block 4")
 
         # In the comparison viewer, we only want to see the line for the student slider subset
         linefit_id = "hubble:linefit"
@@ -533,6 +533,18 @@ class StageThree(HubbleStage):
         comparison_linefit.add_ignore_condition(lambda layer: layer.layer.label != self.student_slider_subset.label)
         comparison_linefit.activate()
         comparison_toolbar.set_tool_enabled(linefit_id, False)
+
+    def _setup_second_scatter_layers(self):
+        hubble1929 = self.get_data(HUBBLE_1929_DATA_LABEL)
+        hstkp = self.get_data(HUBBLE_KEY_DATA_LABEL)
+        prodata_viewer.add_data(student_data)
+        print(student_data)
+        prodata_viewer.state.x_att = student_data.id[dist_attr]
+        prodata_viewer.state.y_att = student_data.id[vel_attr]
+        prodata_viewer.add_data(hstkp)
+        prodata_viewer.add_data(hubble1929)
+
+        print("Finished block 5")
 
     def _setup_histogram_layers(self):
         class_distr_viewer = self.get_viewer("class_distr_viewer")
@@ -590,15 +602,18 @@ class StageThree(HubbleStage):
     #     morphology_viewer.state.y_att = all_data.id['velocity']
 
     def _on_stage_index_changed(self, index):
-        if index > 3:
+        if index > 0:
             self._deferred_setup()
 
             # Remove this callback once we're done
             remove_callback(self.story_state, 'stage_index', self._on_stage_index_changed)
 
     def _deferred_setup(self):
-        self._setup_scatter_layers()
+        print("In deferred setup")
+        self._setup_first_scatter_layers()
+        print("Set up scatter layers")
         self._setup_histogram_layers()
+        print("Set up histogram layers")
         # self._setup_morphology_subsets()
 
     @property
