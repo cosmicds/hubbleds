@@ -358,7 +358,7 @@
     <!-- <v-row
       class="d-flex align-stretch"
     >
-          <!-- v-if="stage_state.indices[stage_state.marker] > stage_state.indices['con_int2']" -->
+          v-if="stage_state.indices[stage_state.marker] > stage_state.indices['con_int2']" -->
 
       <!-- <v-col
         cols="12"
@@ -386,7 +386,6 @@
         </v-card>
       </v-col>
     </v-row> -->
- -->
 
   </v-container>
 </template>
