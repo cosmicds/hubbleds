@@ -502,11 +502,9 @@ class StageThree(HubbleStage):
         if(self.stage_state.class_layer_toggled == 1):
            self.stage_state.move_marker_forward(self.stage_state.marker)
 
-    def _setup_scatter_layers(self):
+    def _setup_first_scatter_layers(self):
         dist_attr = "distance"
         vel_attr = "velocity"
-        hubble1929 = self.get_data(HUBBLE_1929_DATA_LABEL)
-        hstkp = self.get_data(HUBBLE_KEY_DATA_LABEL)
         comparison_viewer = self.get_viewer("comparison_viewer")
         prodata_viewer = self.get_viewer("prodata_viewer")
         layer_viewer = self.get_viewer("layer_viewer")
@@ -568,12 +566,6 @@ class StageThree(HubbleStage):
         all_viewer.state.x_att = all_data.id[dist_attr]
         all_viewer.state.y_att = all_data.id[vel_attr]
 
-        prodata_viewer.add_data(student_data)
-        prodata_viewer.state.x_att = student_data.id[dist_attr]
-        prodata_viewer.state.y_att = student_data.id[vel_attr]
-        prodata_viewer.add_data(hstkp)
-        prodata_viewer.add_data(hubble1929)
-
         # In the comparison viewer, we only want to see the line for the student slider subset
         linefit_id = "hubble:linefit"
         comparison_toolbar = comparison_viewer.toolbar
@@ -581,6 +573,18 @@ class StageThree(HubbleStage):
         comparison_linefit.add_ignore_condition(lambda layer: layer.layer.label != self.student_slider_subset.label)
         comparison_linefit.activate()
         comparison_toolbar.set_tool_enabled(linefit_id, False)
+
+    # def _setup_second_scatter_layers(self):
+    #     hubble1929 = self.get_data(HUBBLE_1929_DATA_LABEL)
+    #     hstkp = self.get_data(HUBBLE_KEY_DATA_LABEL)
+    #     prodata_viewer.add_data(student_data)
+    #     print(student_data)
+    #     prodata_viewer.state.x_att = student_data.id[dist_attr]
+    #     prodata_viewer.state.y_att = student_data.id[vel_attr]
+    #     prodata_viewer.add_data(hstkp)
+    #     prodata_viewer.add_data(hubble1929)
+
+    #     print("Finished block 5")
 
     def _setup_histogram_layers(self):
         class_distr_viewer = self.get_viewer("class_distr_viewer")
@@ -645,7 +649,7 @@ class StageThree(HubbleStage):
             remove_callback(self.story_state, 'stage_index', self._on_stage_index_changed)
 
     def _deferred_setup(self):
-        self._setup_scatter_layers()
+        self._setup_first_scatter_layers()
         self._setup_histogram_layers()
         # self._setup_morphology_subsets()
 
