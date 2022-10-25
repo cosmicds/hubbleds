@@ -574,21 +574,6 @@
   </v-btn>
 </template>
 
-<script>
-module.exports = {
-  props: ["buttonText", "titleText", "closeText"],
-
-  watch: {
-    step(newStep, oldStep) {
-      const isInteractStep = this.interact_steps.includes(newStep);
-      console.log("Interact Step", this.interact_steps);
-      const newCompleted = isInteractStep ? newStep - 1 : newStep;
-      this.max_step_completed = Math.max(this.max_step_completed, newCompleted);
-    },
-  },
-};
-</script>
-
 <style>
 .no-transition {
   transition: none;

@@ -58,9 +58,10 @@ class RestWavelengthTool(CheckableTool):
         rest = MG_REST_LAMBDA if self.viewer.element == 'Mg-I' else H_ALPHA_REST_LAMBDA
         self.line.x = [rest, rest]
         self.label.x = [rest, rest]
-        self.label.text = [self.viewer.element + self.rest_text]
+        element_string = self.viewer.element or ""
+        self.label.text = [element_string + self.rest_text]
         self.viewer.element_label.text = [
-            self.viewer.element + self.observed_text]
+            element_string + self.observed_text]
         self.active = True
         self._on_view_change()
         self.viewer.figure.marks = self.viewer.figure.marks + self.marks

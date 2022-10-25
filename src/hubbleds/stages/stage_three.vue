@@ -151,9 +151,15 @@
             <jupyter-widget :widget="viewers.layer_viewer"/>
           </v-lazy>
         </v-card>
-        <c-hubble-slideshow 
-          v-if="stage_state.indices[stage_state.marker] > stage_state.indices['rel_vel1']"
-        />  
+        <v-row>
+          <v-col
+            cols="10"
+            offset="1"
+          >
+            <c-hubble-slideshow 
+              v-if="stage_state.indices[stage_state.marker] > stage_state.indices['rel_vel1']" />  
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
     <!-- <v-row>

@@ -109,7 +109,7 @@
         lg="4"
       >
         <c-guideline-spectrum
-          v-if="stage_state.marker == 'mee_spe1'"
+          v-if="stage_state.marker == 'mee_spe1' || stage_state.marker == 'spe_tut1'"
           v-intersect.once="scrollIntoView" />
         <c-guideline-restwave
           v-if="stage_state.marker == 'res_wav1'"
@@ -167,7 +167,7 @@
           >
             <!-- REFLECTION Dialog -->
             <reflect-velocity-windows
-              v-if="stage_state.obswaves_total >= 5"
+              v-if="(stage_state.obswaves_total >= 5) && !(stage_state.marker == 'rep_rem1')"
               button-text="reflect"
               close-text="submit"
               @submit="
@@ -178,7 +178,7 @@
             </reflect-velocity-windows>
             <!-- Placeholder for Reflection button -->
             <v-btn
-              v-if="stage_state.obswaves_total < 5"
+              v-if="(stage_state.obswaves_total < 5) || (stage_state.marker == 'rep_rem1')"
               disabled
               block
               color="info"

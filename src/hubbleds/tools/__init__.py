@@ -3,3 +3,4 @@ from .spectrum_flag_tool import SpectrumFlagTool
 from .wavelength_zoom import WavelengthZoom
 from .hubble_line_fit_tool import HubbleLineFitTool
 from .toggle_layer_tool import LayerToggleTool
+from .hubble_line_draw_tool import HubbleLineDrawTool

@@ -10,12 +10,12 @@
     >
       <v-toolbar-title>Cosmic Sky Viewer</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tooltip top>
+      <v-tooltip top v-if=false>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon
             v-bind="attrs"
             v-on="on"
-            :disabled="Object.keys(state.galaxy).length == 0"
+            :disabled="Object.keys(state.galaxy).length == 0" 
             @click="flagged = true"
           >
             <v-icon>mdi-flag</v-icon>

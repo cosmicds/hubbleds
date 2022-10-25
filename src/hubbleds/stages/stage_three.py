@@ -37,6 +37,8 @@ class StageState(CDSState):
     relage_response = CallbackProperty(False)
     hubble_dialog_opened = CallbackProperty(False)
     class_layer_toggled = CallbackProperty(0)
+    trend_line_drawn = CallbackProperty(False)
+    best_fit_clicked = CallbackProperty(False)
 
     marker = CallbackProperty("")
     indices = CallbackProperty({})
@@ -130,6 +132,14 @@ class StageState(CDSState):
     sandbox_hist_highlights = CallbackProperty([
     ])
 
+    _NONSERIALIZED_PROPERTIES = [
+        'markers', 'indices', 'step_markers',
+        'table_highlights', 'image_location',
+        'my_galaxies_plot_highlights', 'all_galaxies_plot_highlights',
+        'my_class_hist_highlights', 'all_classes_hist_highlights',
+        'sandbox_hist_highlights'
+    ]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.marker_index = 0
@@ -141,10 +151,14 @@ class StageState(CDSState):
 
     def marker_after(self, marker):
         return self.indices[self.marker] > self.indices[marker]
+    
+    def marker_reached(self, marker):
+        return self.indices[self.marker] >= self.indices[marker]
 
     def move_marker_forward(self, marker_text, _value=None):
         index = min(self.markers.index(marker_text) + 1, len(self.markers) - 1)
         self.marker = self.markers[index]
+    
 
 
 @register_stage(story="hubbles_law", index=4, steps=[
@@ -243,6 +257,10 @@ class StageThree(HubbleStage):
         hubble_race_viewer = self.add_viewer(HubbleScatterView,
                                                 "hubble_race_viewer",
                                                  "Race")
+                                                 
+        for key in hubble_race_viewer.toolbar.tools:
+            hubble_race_viewer.toolbar.set_tool_enabled(key, False)
+        
         hubble_race_viewer.figure.axes[0].tick_format = ',.0f'
         hubble_race_viewer.figure.axes[1].tick_format = ',.0f'
         hubble_race_data = Data(label='hubble_race_data')
@@ -258,6 +276,9 @@ class StageThree(HubbleStage):
         
         
         self.add_component(hubble_slideshow, label='c-hubble-slideshow')
+
+        layer_viewer.toolbar.set_tool_enabled("hubble:linedraw", self.stage_state.marker_reached("tre_lin2"))
+        layer_viewer.toolbar.set_tool_enabled("hubble:linefit", self.stage_state.marker_reached("bes_fit1"))
 
         add_callback(self.stage_state, 'marker',
                      self._on_marker_update, echo_old=True)
@@ -497,8 +518,15 @@ class StageThree(HubbleStage):
             class_layer = layer_viewer.layers[-1]
             class_layer.state.visible = False
         if advancing and new == "you_age1":
+            layer_viewer = self.get_viewer("layer_viewer")                
+            layer_viewer.toolbar.tools["hubble:linefit"].show_labels = True
+        if advancing and new == "tre_lin2":
             layer_viewer = self.get_viewer("layer_viewer")
             layer_viewer.toolbar.tools["hubble:linefit"].show_labels = True
+            layer_viewer.toolbar.set_tool_enabled("hubble:linedraw", True )
+        if advancing and new == "bes_fit1":
+            layer_viewer = self.get_viewer("layer_viewer")
+            layer_viewer.toolbar.set_tool_enabled("hubble:linefit", True)            
         if advancing and new == "hyp_gal1":
             self.story_state.has_best_fit_galaxy = True        
         if advancing and new == "tre_lin2":
@@ -545,7 +573,15 @@ class StageThree(HubbleStage):
 
         # cosmicds PR157 - turn off fit line label for layer_viewer
         layer_viewer.toolbar.tools["hubble:linefit"].show_labels = False
-
+    
+        draw_tool = layer_viewer.toolbar.tools['hubble:linedraw'] 
+        add_callback(draw_tool, 'line_drawn', self._on_trend_line_drawn)
+        
+        line_fit_tool = layer_viewer.toolbar.tools['hubble:linefit']
+        add_callback(line_fit_tool, 'active', self._on_best_fit_line_shown)
+        
+        layer_toolbar = layer_viewer.toolbar
+        layer_toolbar.set_tool_enabled("hubble:togglelayer", self.stage_state.marker_reached("tre_dat2"))
         add_callback(toggle_tool, 'class_layer_toggled', self._on_class_layer_toggled) 
         add_callback(self.story_state, 'has_best_fit_galaxy', self._on_best_fit_galaxy_added)
 
@@ -613,6 +649,8 @@ class StageThree(HubbleStage):
         for viewer in histogram_viewers:
             label = 'Count' if viewer == class_distr_viewer else 'Proportion'
             viewer.figure.axes[1].label = label
+            viewer.figure.axes[1].tick_format = '0'
+            viewer.figure.axes[1].num_ticks = 5
             if viewer != all_distr_viewer:
                 viewer.add_data(class_summ_data)
                 layer = viewer.layers[-1]
@@ -738,6 +776,14 @@ class StageThree(HubbleStage):
         prepend = "voila/files/" if using_voila else ""
         self.stage_state.image_location = prepend + "data/images/stage_three"
 
+    def _on_trend_line_drawn(self, is_drawn):
+        print("Trend line drawn: ", is_drawn)
+        self.stage_state.trend_line_drawn = is_drawn
+        
+    def _on_best_fit_line_shown(self, is_active):
+        print("Best fit line shown: ", is_active)
+        if not self.stage_state.best_fit_clicked:
+            self.stage_state.best_fit_clicked = is_active
     def _on_best_fit_galaxy_added(self, value):
         layer_viewer = self.get_viewer("layer_viewer")
         linefit_tool = layer_viewer.toolbar.tools["hubble:linefit"]

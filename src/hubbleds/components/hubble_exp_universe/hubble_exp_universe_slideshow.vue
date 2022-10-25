@@ -192,8 +192,9 @@
         >
           <v-btn
             :disabled="step === 0"
+            class="black--text"
             color="accent"
-            text
+            depressed
             @click="step--"
           >
             Back
@@ -224,7 +225,8 @@
             :disabled="step > maxStepCompleted"
             v-if="step < length-1"
             color="accent"
-            text
+            class="black--text"
+            depressed
             @click="() => { step++; }"
           >
             {{ step < length-1 ? 'next' : '' }}

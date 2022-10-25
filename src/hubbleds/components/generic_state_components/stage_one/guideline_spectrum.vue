@@ -12,7 +12,7 @@
     </h3>
     <div
       class="mb-4"
-      v-if="!state.spec_tutorial_opened"
+      v-if="!(state.spec_tutorial_opened || state.marker == 'spe_tut1')"
     >
       <p>
         Here is a <i>spectrum</i> of light measured from your chosen galaxy.
@@ -23,7 +23,7 @@
     </div>
     <div
       class="mb-4"
-      v-if="state.spec_tutorial_opened"
+      v-if="state.spec_tutorial_opened || state.marker == 'spe_tut1'"
     >
       <p>
         Here is a spectrum of light measured from your chosen galaxy.

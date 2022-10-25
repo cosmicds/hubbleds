@@ -20,7 +20,7 @@ class HubbleScatterViewerState(ScatterViewerState):
 
 
 class HubbleFitViewerState(HubbleScatterViewerState):
-
+    
     def reset_limits(self):
         with delay_callback(self, 'x_min', 'x_max', 'y_min', 'y_max'):
             super().reset_limits()
@@ -46,11 +46,11 @@ HubbleFitLayerView = cds_viewer(
     BqplotScatterView,
     name="HubbleFitLayerView",
     viewer_tools=[
-        "bqplot:home",
-        "hubble:togglelayer",
-        'bqplot:rectangle',
-        "cds:linedraw",
+        # "bqplot:home",
+        # 'bqplot:rectangle',
         "hubble:linefit",
+        "hubble:linedraw",
+        "hubble:togglelayer",
     ],
     label='Layer View',
     state_cls=HubbleFitViewerState

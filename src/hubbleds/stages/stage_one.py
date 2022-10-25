@@ -61,6 +61,7 @@ class StageState(CDSState):
         'sel_gal3',
         'cho_row1',
         'mee_spe1',
+        'spe_tut1',
         'res_wav1',
         'obs_wav1',
         'obs_wav2',
@@ -109,7 +110,7 @@ class StageState(CDSState):
     ])
 
     _NONSERIALIZED_PROPERTIES = [
-        'markers', 'step_markers', 'csv_highlights',
+        'markers', 'indices', 'step_markers', 'csv_highlights',
         'table_highlights', 'spec_highlights',
         'gals_total', 'obswaves_total',
         'velocities_total', 'image_location'
@@ -166,7 +167,7 @@ class StageOne(HubbleStage):
         super().__init__(*args, **kwargs)
 
         self.show_team_interface = self.app_state.show_team_interface
-
+        
         # Set up any Data-based state values
         self._update_state_from_measurements()
         self.hub.subscribe(self, NumericalDataChangedMessage,
@@ -176,8 +177,9 @@ class StageOne(HubbleStage):
         # Set up viewers
         spectrum_viewer = self.add_viewer(
             SpectrumView, label="spectrum_viewer")
-        sf_tool = spectrum_viewer.toolbar.tools["hubble:specflag"]
-        add_callback(sf_tool, "flagged", self._on_spectrum_flagged)
+        if spectrum_viewer.toolbar.tools.get("hubble:specflag") is not None:
+            sf_tool = spectrum_viewer.toolbar.tools["hubble:specflag"]
+            add_callback(sf_tool, "flagged", self._on_spectrum_flagged)
 
 
         add_velocities_tool = \
@@ -306,6 +308,34 @@ class StageOne(HubbleStage):
         spec_toolbar.set_tool_enabled("hubble:wavezoom", self.stage_state.marker_reached("obs_wav2"))
         spec_toolbar.set_tool_enabled("bqplot:home", self.stage_state.marker_reached("obs_wav2"))
         add_callback(self.stage_state, 'galaxy', self._on_galaxy_update)
+        
+        
+        ## INIIALIZE STATE VARIABLES WHEN LOADING A STORED STATE
+        # reset the state varaibles when we load a story state
+        self.stage_state.spec_tutorial_opened = self.stage_state.marker_reached('spe_tut1')
+        self.stage_state.spec_viewer_reached = self.stage_state.marker_reached('cho_row1')
+        self.stage_state.doppler_calc_reached = self.stage_state.marker_reached('dop_cal3')
+        
+        # intialze viewers to provide story state
+        if self.stage_state.marker_reached('sel_gal1'):
+            selection_tool.show_galaxies()
+            selection_tool.widget.center_on_coordinates(
+                self.START_COORDINATES, fov = 60 * u.deg, instant=True)
+        
+        if self.stage_state.marker_reached("res_wav1"):
+            spectrum_viewer.toolbar.set_tool_enabled("hubble:restwave", True)
+        
+        if self.stage_state.marker_reached("obs_wav1"):
+            spectrum_viewer.add_event_callback(spectrum_viewer._on_mouse_moved, events=['mousemove'])
+            spectrum_viewer.add_event_callback(spectrum_viewer._on_click, events=['click'])
+            spectrum_viewer.add_event_callback(self.on_spectrum_click, events=['click'])
+        
+        if self.stage_state.marker_reached("obs_wav2"):
+            spectrum_viewer.toolbar.set_tool_enabled("hubble:wavezoom", True)
+            spectrum_viewer.toolbar.set_tool_enabled("bqplot:home", True)
+        
+        
+            
 
     def _on_measurements_changed(self, msg):
         self._update_state_from_measurements()
@@ -604,9 +634,10 @@ class StageOne(HubbleStage):
         self._empty_spectrum_viewer()
 
         spectrum_viewer = self.get_viewer("spectrum_viewer")
-        sf_tool = spectrum_viewer.toolbar.tools["hubble:specflag"]
-        with ignore_callback(sf_tool, "flagged"):
-            sf_tool.flagged = False
+        if spectrum_viewer.toolbar.tools.get("hubble:specflag") is not None:
+            sf_tool = spectrum_viewer.toolbar.tools["hubble:specflag"]
+            with ignore_callback(sf_tool, "flagged"):
+                sf_tool.flagged = False
 
     def update_velocities(self, table, tool):
         data = table.glue_data
