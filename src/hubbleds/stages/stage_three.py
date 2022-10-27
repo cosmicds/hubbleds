@@ -597,13 +597,6 @@ class StageThree(HubbleStage):
         if advancing and new == "pro_dat1":
             prodata_viewer = self.get_viewer("prodata_viewer")
             prodata_viewer.toolbar.set_tool_enabled("hubble:linefit", False)
-            # turn off all layers except student and class data
-            for layer in prodata_viewer.layers:
-                if layer.layer.label in [CLASS_DATA_LABEL]:
-                    layer.state.visible = True
-                else:
-                    layer.state.visible = False
-        if advancing and new == 'pro_dat1':
             # show hubble data layer
             prodata_viewer = self.get_viewer("prodata_viewer")
             hubble_layer = prodata_viewer.layer_artist_for_data(self.get_data(HUBBLE_1929_DATA_LABEL))
@@ -733,6 +726,13 @@ class StageThree(HubbleStage):
         pro_class_layer = prodata_viewer.layer_artist_for_data(class_meas_data)
         pro_class_layer.state.zorder = 2
         pro_class_layer.state.color = "#26C6DA"
+        # turn off all layers except student and class data
+        for layer in prodata_viewer.layers:
+            if layer.layer.label in [CLASS_DATA_LABEL]:
+                layer.state.visible = True
+            else:
+                layer.state.visible = False
+        
         
 
         # In the comparison viewer, we only want to see the line for the student slider subset
