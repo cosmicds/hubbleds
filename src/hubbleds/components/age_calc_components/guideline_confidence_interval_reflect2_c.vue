@@ -4,21 +4,26 @@
     @back="
       state.marker = 'age_dis1c';
     "
-    @next="
-      state.marker = 'pro_dat0';
+    @next="() => {
+            state.marker = 'pro_dat0';
+            console.log('test story_state.responses.best-guess-age:', best_guess)
+          } 
     "
   >
     <div
       class="mb-4"
     >
       <p>
-        Based on these results from your class, what do you think is the most likely value of the age of the universe and what is a likely range of possible values?
+        Earlier, your best guess for the age of the universe was: {{ best_guess }} Gyr, with a likely range from {{ low_guess }} to {{ high_guess }} Gyr.
+      </p>
+      <p>
+        After exploring data from all the other classes, you might consider updating your values.
       </p>
       <v-row>
         <v-col
           cols="12"
           lg="9">      
-          1. My best guess for the age of the universe based on my entire class’s data set: 
+          1. My new best guess for the age of the universe based on my entire class’s data set: 
         </v-col>
         <v-col>
           <v-btn
@@ -70,11 +75,12 @@
           cols="12"
           lg="3"
         >
-          <v-textarea
+          <free-response
             outlined
             rows="1"
-            label="Best Guess Age"
-          ></v-textarea>
+            label="New Best Guess Age"
+            tag="new-best-guess-age"
+          ></free-response>
         </v-col>
         <v-col>
           Gyr
@@ -146,11 +152,12 @@
         <v-col
           cols="12"
           lg="3">
-          <v-textarea
+          <free-response
             outlined
             rows="1"
-            label="Likely Low Age"
-          ></v-textarea>
+            label="New Likely Low Age"
+            tag="new-likely-low-age"
+          ></free-response>
         </v-col>
         <v-col
           lg="2">
@@ -159,11 +166,12 @@
               <v-col
           cols="12"
           lg="3">
-          <v-textarea
+          <free-response
             outlined
             rows="1"
-            label="Likely High Age"
-          ></v-textarea>
+            label="New Likely High Age"
+            tag="new-likely-high-age"
+          ></free-response>
         </v-col>
         <v-col
           lg="2">
@@ -172,79 +180,14 @@
       </v-row>
 
       <p class="mt-4">
-        3. Explain why you chose your values using information from the scatterplot and/or the histogram:
+        3. Explain why you chose these new values based on the all-classes data:
       </p>
-      <v-textarea
+      <free-response
         outlined
-        auto-grow
-        rows="2"
-        label="My Reasoning"
-      ></v-textarea>
-
-      <v-row>
-        <v-col
-          cols="12"
-          lg="9"
-        >
-        4. Describe how confident you feel in your reported age and high/low values:
-        </v-col>
-        <v-col>
-          <v-btn
-            color="secondary lighten-1"
-            @click="hint3_dialog=true"
-          >
-            hint
-            <v-dialog
-              v-model="hint3_dialog"
-              persistent
-              max-width="600px">
-              <v-card
-                class="mx-auto"
-              >
-                <v-toolbar
-                  color="secondary"
-                  dense
-                  dark
-                >
-                  <v-toolbar-title
-                    class="text-h6 text-uppercase font-weight-regular"
-                  >
-                    Hint #3
-                  </v-toolbar-title>
-                  <v-spacer></v-spacer>
-                  <span
-                    @click="
-                      () => {
-                        $emit('close');
-                        hint3_dialog = false;
-                      }
-                    "
-                  >
-                    <v-btn icon>
-                      <v-icon> mdi-close </v-icon>
-                    </v-btn>
-                  </span>
-                </v-toolbar>
-                <div class="pa-6">
-                  <p>
-                    The way scientists think about their reported range of a measurement is to imagine the likelihood that the “true” value lies within the specified range. For example, you might give a narrower range of possible values, where you believe the true value has a 2 in 3 chance of being within the specified range. Or you might give a wider range of possible values, where you believe the true value has a 19 in 20 chance of being within the specified range.
-                  </p>
-                  <p>
-                    You can do this by counting how many of your classmates’ measurements fall within the range you selected vs how many measurements were made all together within your class.
-                  </p>
-                </div>
-              </v-card>
-            </v-dialog>
-          </v-btn>
-        </v-col>
-      </v-row>
-
-      <v-textarea
-        outlined
-        auto-grow
-        rows="2"
-        label="My Level of Confidence"
-      ></v-textarea>
+        rows="1"
+        label="My Updated Reasoning"
+        tag="my-updated-reasoning"
+      ></free-response>
     </div>
   </scaffold-alert>
 </template>

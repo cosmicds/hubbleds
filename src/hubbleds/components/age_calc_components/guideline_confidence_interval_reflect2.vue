@@ -4,9 +4,11 @@
     @back="
       state.marker = 'age_dis1';
     "
-    @next="
+    @next="() => {
       state.marker = 'tre_lin2c';
-    "
+      state.trend_line_drawn = false;
+      state.best_fit_clicked = false;
+    }"
   >
     <div
       class="mb-4"

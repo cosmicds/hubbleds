@@ -27,6 +27,12 @@
         <c-guideline-explore-data
           v-if="stage_state.marker == 'exp_dat1'"
           v-intersect.once="scrollIntoView" />
+        <c-guideline-age-universe-estimate3
+          v-if="stage_state.marker == 'age_uni3'"
+          v-intersect.once="scrollIntoView" />
+        <c-guideline-age-universe-estimate4
+          v-if="stage_state.marker == 'age_uni4'"
+          v-intersect.once="scrollIntoView" />
       </v-col>
       <v-col
         cols="12"
@@ -103,12 +109,6 @@
           v-intersect.once="scrollIntoView" />
         <c-guideline-age-universe-equation2
           v-if="stage_state.marker == 'age_uni2'"
-          v-intersect.once="scrollIntoView" />
-        <c-guideline-age-universe-estimate3
-          v-if="stage_state.marker == 'age_uni3'"
-          v-intersect.once="scrollIntoView" />
-        <c-guideline-age-universe-estimate4
-          v-if="stage_state.marker == 'age_uni4'"
           v-intersect.once="scrollIntoView" />
         <c-guideline-your-age-estimate
           v-if="stage_state.marker == 'you_age1'"
@@ -292,6 +292,7 @@
     </v-row>
 
     <!--------------------- ALL DATA HISTOGRAM VIEWER ----------------------->
+    <!-- cla_age1c -->
     <v-row
       class="d-flex align-stretch"
           v-if="stage_state.indices[stage_state.marker] > stage_state.indices['cla_age1c']"
@@ -312,12 +313,19 @@
         lg="7"
       >
         <v-card
+          color="error"
+        >
+          <v-card-text>
+            Histogram needs y-axis labels
+          </v-card-text>
+        </v-card>
+        <v-card
           :color="stage_state.all_classes_hist_highlights.includes(stage_state.marker) ? 'info' : 'black'"
           :class="stage_state.all_classes_hist_highlights.includes(stage_state.marker) ? 'pa-1 my-n1' : 'pa-0'"
           outlined
         >
           <v-lazy>
-            <jupyter-widget :widget="viewers.all_distr_viewer"/>
+            <jupyter-widget :widget="viewers.all_distr_viewer_class"/>
           </v-lazy>
         </v-card>
       </v-col>

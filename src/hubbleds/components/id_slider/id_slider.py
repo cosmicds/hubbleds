@@ -9,7 +9,7 @@ from cosmicds.utils import load_template
 class IDSlider(VuetifyTemplate):
     template = load_template("id_slider.vue", __file__,
                              traitlet=True).tag(sync=True)
-    color = Unicode("#FF0000").tag(sync=True)
+    color = Unicode("#112E51").tag(sync=True)
     selected = Int(0).tag(sync=True)
     state = GlueState().tag(sync=True)
     step = Int(1).tag(sync=True)
@@ -26,10 +26,10 @@ class IDSlider(VuetifyTemplate):
         self.id_component = id_component
         self.value_component = value_component
 
-        self.default_color = kwargs.get("default_color", "#FF0000")
+        self.default_color = kwargs.get("default_color", "#006C7A")
         self.highlight_ids = kwargs.get("highlight_ids", [])
         self.highlight_label = kwargs.get("highlight_label", None)
-        self.highlight_color = kwargs.get("highlight_color", "orange")
+        self.highlight_color = kwargs.get("highlight_color", "#FF7043")
         self.color = self.default_color
 
         self._id_change_cbs = CallbackContainer()

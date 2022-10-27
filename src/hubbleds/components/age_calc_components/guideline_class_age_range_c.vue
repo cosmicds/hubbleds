@@ -8,7 +8,7 @@
     <h3
       class="mb-4"
     >
-      Class Age Range
+      All Classes Age Range
     </h3> 
 
     <div
@@ -16,10 +16,10 @@
       v-intersect="(entries, _observer, intersecting) => { if (intersecting) { MathJax.typesetPromise(entries.map(entry => entry.target)) }}"
     >
       <p>
-        Let's consider the range of age estimates for the universe obtained by you and your classmates.
+        Let's consider the range of age estimates for the universe obtained by all the classes who have completed this Data Story.
       </p>
       <p>
-        Enter the lowest and highest age estimates from your class here:
+        Enter the lowest and highest age estimates within the dataset here:
       </p>
       <div
         class="JaxEquation my-8"
@@ -39,7 +39,7 @@
       dense
       color="info darken-1"
     >
-      Not quite. Make sure you are entering the highest and lowest values for the entire class. Enter only whole integers.
+      Not quite. Make sure you are entering the highest and lowest values for the entire dataset. Enter only whole integers.
     </v-alert>
     <v-divider
       class="my-4"

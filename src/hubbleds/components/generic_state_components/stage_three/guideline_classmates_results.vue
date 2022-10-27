@@ -17,6 +17,9 @@
       <p>
         Use the slider to scan through the age estimates that each person in your class measured. 
       </p>
+      <p>
+        Your value appears as a different color than your classmates'.
+      </p>
     </div>
   </scaffold-alert>
 </template>
