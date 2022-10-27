@@ -14,7 +14,7 @@
     <div
       class="mb-4"
     >
-      Is your age estimate higher or lower than the HST team's estimate? (Don't put age labels up)
+      Is your age estimate higher or lower than the HST team's estimate? 
       <v-container
         class="px-0"
         fluid

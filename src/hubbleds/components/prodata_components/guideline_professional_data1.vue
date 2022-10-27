@@ -18,7 +18,7 @@
     </p>
 
     <p>
-      Does your class's age estimate agree with Hubble's age estimate?  (Don't put age labels up)
+      Does your class's age estimate agree with Hubble's age estimate? 
     </p>
 
     <v-container

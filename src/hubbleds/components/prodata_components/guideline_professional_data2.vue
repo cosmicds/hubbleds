@@ -13,7 +13,7 @@
     <div
       class="mb-4"
     >
-    <p>Is your age estimate higher than or lower than Hubble's age estimate?  (Don't put age labels up)</p>
+    <p>Is your age estimate higher than or lower than Hubble's age estimate? </p>
       <v-container
         class="px-0"
         fluid
