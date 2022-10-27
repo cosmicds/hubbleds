@@ -711,7 +711,8 @@ class StageThree(HubbleStage):
         all_viewer.state.x_att = all_data.id[dist_attr]
         all_viewer.state.y_att = all_data.id[vel_attr]
 
-
+        pro_student_layer = prodata_viewer.layer_artist_for_data(student_data)
+        pro_student_layer.state.color = '#FF7043'
         prodata_viewer.add_data(hstkp)
         # set hstkp data layer to red
         hstkp_layer = prodata_viewer.layer_artist_for_data(hstkp)
@@ -724,7 +725,7 @@ class StageThree(HubbleStage):
         prodata_viewer.add_data(class_meas_data)
         pro_class_layer = prodata_viewer.layer_artist_for_data(class_meas_data)
         pro_class_layer.state.zorder = 2
-        pro_class_layer.state.color = 'purple'
+        pro_class_layer.state.color = "#26C6DA"
         
 
         # In the comparison viewer, we only want to see the line for the student slider subset
