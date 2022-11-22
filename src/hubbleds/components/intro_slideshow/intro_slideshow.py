@@ -1,8 +1,8 @@
 import astropy.units as u
 import ipyvuetify as v
 from astropy.coordinates import SkyCoord
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Int, Bool, Unicode
 
 from ...components.exploration_tool import ExplorationTool
@@ -20,7 +20,7 @@ class IntroSlideshow(v.VuetifyTemplate):
     currentTitle = Unicode("").tag(sync=True)
     exploration_complete = Bool(False).tag(sync=True)
     intro_complete = Bool(False).tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
     show_team_interface = Bool(False).tag(sync=True)
     target = Unicode("").tag(sync=True)
 

@@ -1,6 +1,6 @@
 import ipyvuetify as v
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Int, Bool, Unicode, List, Float
 
 from ...utils import DISTANCE_CONSTANT
@@ -15,7 +15,7 @@ class TwoIntroSlideShow(v.VuetifyTemplate):
     length = Int(13).tag(sync=True)
     dialog = Bool(False).tag(sync=True)
     currentTitle = Unicode("").tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
     max_step_completed = Int(0).tag(sync=True)
     interact_steps = List([7, 9]).tag(sync=True)
     two_intro_complete = Bool(False).tag(sync=True)

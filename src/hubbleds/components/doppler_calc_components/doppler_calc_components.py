@@ -1,7 +1,7 @@
 import ipyvuetify as v
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
 from echo import delay_callback
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Float, Bool, Int, Unicode, List
 
 
@@ -10,8 +10,8 @@ class DopplerCalc(v.VuetifyTemplate):
     step = Int(0).tag(sync=True)
     length = Int(6).tag(sync=True)
     currentTitle = Unicode("").tag(sync=True)
-    state = GlueState().tag(sync=True)
-    story_state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
+    story_state = CDSGlueState().tag(sync=True)
     failedValidation4 = Bool(False).tag(sync=True)
     failedValidation5 = Bool(False).tag(sync=True)
     interactSteps5 = List([3, 4]).tag(sync=True)

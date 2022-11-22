@@ -1,8 +1,7 @@
 import ipyvuetify as v
-from pathlib import Path
 from traitlets import Int, Bool, Unicode, List, Instance
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 from ipywidgets import widget_serialization, DOMWidget
 
 
@@ -15,7 +14,7 @@ class HubbleExp(v.VuetifyTemplate):
     length = Int(4).tag(sync=True)
     dialog = Bool(False).tag(sync=True)
     currentTitle = Unicode("").tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
     maxStepCompleted = Int(0).tag(sync=True)
     interactSteps = List([1]).tag(sync=True)
     layer_viewer = Instance(DOMWidget).tag(sync=True, **widget_serialization)

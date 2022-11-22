@@ -1,12 +1,12 @@
 import ipyvuetify as v
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Bool, Unicode, observe
 
 
 class ProData(v.VuetifyTemplate):
     template = Unicode().tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
     some_state_variable = Bool(False).tag(sync=True)
     can_advance = Bool(False).tag(sync=True)
 

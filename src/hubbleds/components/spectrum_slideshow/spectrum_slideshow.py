@@ -1,6 +1,6 @@
 import ipyvuetify as v
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Int, Bool
 
 
@@ -13,7 +13,7 @@ class SpectrumSlideshow(v.VuetifyTemplate):
     length = Int(11).tag(sync=True)
     dialog = Bool(False).tag(sync=True)
     # currentTitle = Unicode("").tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
 
     # exploration_complete = Bool(False).tag(sync=True)
 

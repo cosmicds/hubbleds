@@ -1,10 +1,6 @@
-from bqplot.marks import Label, Lines
 from echo import CallbackProperty
-from glue_jupyter.state_traitlets_helpers import GlueState
 from glue.config import viewer_tool
-from glue.viewers.common.tool import CheckableTool, Tool
-
-from ..utils import H_ALPHA_REST_LAMBDA, MG_REST_LAMBDA
+from glue.viewers.common.tool import Tool
 
 
 @viewer_tool

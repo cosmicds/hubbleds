@@ -1,7 +1,7 @@
 import ipyvuetify as v
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
 from echo import add_callback
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Bool, Unicode, Float
 
 from ...utils import AGE_CONSTANT
@@ -9,8 +9,8 @@ from ...utils import AGE_CONSTANT
 
 class AgeCalc(v.VuetifyTemplate):
     template = Unicode().tag(sync=True)
-    state = GlueState().tag(sync=True)
-    story_state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
+    story_state = CDSGlueState().tag(sync=True)
     failedValidation3 = Bool(False).tag(sync=True)
     failedValidationAgeRange = Bool(False).tag(sync=True)
     age_const = Float().tag(sync=True)

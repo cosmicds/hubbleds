@@ -5,11 +5,11 @@ import ipyvue as v
 import requests
 from astropy.coordinates import Angle, SkyCoord
 from cosmicds.utils import RepeatedTimer, load_template, API_URL
-from glue_jupyter.state_traitlets_helpers import GlueState
 from ipywidgets import DOMWidget, widget_serialization
 from pywwt.jupyter import WWTJupyterWidget
 from traitlets import Instance, Bool, Float, Int, Unicode, observe
 
+from cosmicds.cds_glue_state import CDSGlueState
 from ...utils import GALAXY_FOV, HUBBLE_ROUTE_PATH, angle_to_json, \
     angle_from_json
 
@@ -31,7 +31,7 @@ class DistanceTool(v.VueTemplate):
     measuring_allowed = Bool(False).tag(sync=True)
     fov_text = Unicode().tag(sync=True)
     flagged = Bool(False).tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
     _ra = Angle(0 * u.deg)
     _dec = Angle(0 * u.deg)
 

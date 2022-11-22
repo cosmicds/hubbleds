@@ -5,12 +5,12 @@ from astropy.coordinates import SkyCoord
 from astropy.table import Table
 from cosmicds.utils import API_URL
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 from ipywidgets import DOMWidget, widget_serialization
 from pandas import DataFrame
 from pywwt.jupyter import WWTJupyterWidget
 from traitlets import Dict, Instance, Int, Bool, observe
 
+from cosmicds.cds_glue_state import CDSGlueState
 from ...utils import FULL_FOV, GALAXY_FOV
 from ...utils import HUBBLE_ROUTE_PATH
 
@@ -25,7 +25,7 @@ class SelectionTool(v.VueTemplate):
     selected_count = Int().tag(sync=True)
     dialog = Bool(False).tag(sync=True)
     flagged = Bool(False).tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
 
     UPDATE_TIME = 1  # seconds
     START_COORDINATES = SkyCoord(180 * u.deg, 25 * u.deg, frame='icrs')

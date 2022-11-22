@@ -1,8 +1,8 @@
 import ipyvuetify as v
 from pathlib import Path
-from traitlets import Int, Bool, Unicode, List
+from traitlets import Int, Bool, Unicode
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 
 
 # theme_colors()
@@ -14,7 +14,7 @@ class DosDonts_SlideShow(v.VuetifyTemplate):
     length = Int(7).tag(sync=True)
     dialog = Bool(False).tag(sync=True)
     currentTitle = Unicode("").tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
     max_step_completed = Int(0).tag(sync=True)
 
     _titles = [

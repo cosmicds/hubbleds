@@ -1,14 +1,14 @@
 import ipyvuetify as v
+from cosmicds.cds_glue_state import CDSGlueState
 from cosmicds.utils import load_template
 from echo import add_callback
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Unicode
 
 
 class DistanceSidebar(v.VuetifyTemplate):
     template = load_template("distance_sidebar.vue", __file__,
                              traitlet=True).tag(sync=True)
-    state = GlueState().tag(sync=True)
+    state = CDSGlueState().tag(sync=True)
     angular_height = Unicode().tag(sync=True)
     angular_size = Unicode().tag(sync=True)
     galaxy_type = Unicode().tag(sync=True)
