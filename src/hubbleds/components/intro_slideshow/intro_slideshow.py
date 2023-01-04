@@ -3,7 +3,7 @@ import ipyvuetify as v
 from astropy.coordinates import SkyCoord
 from cosmicds.utils import load_template
 from glue_jupyter.state_traitlets_helpers import GlueState
-from traitlets import Int, Bool, Unicode
+from traitlets import Int, Bool, Unicode, Dict
 
 from ...components.exploration_tool import ExplorationTool
 from ...utils import GALAXY_FOV
@@ -23,6 +23,9 @@ class IntroSlideshow(v.VuetifyTemplate):
     state = GlueState().tag(sync=True)
     show_team_interface = Bool(False).tag(sync=True)
     target = Unicode("").tag(sync=True)
+    timer_duration = Int(5000).tag(sync=True)  # in ms
+    timer_done = Dict({}).tag(sync=True)
+    timer_started = Dict({}).tag(sync=True)
 
     _titles = [
         "Welcome to Your Data Story",
@@ -54,6 +57,10 @@ class IntroSlideshow(v.VuetifyTemplate):
             "fov": 6000,
             "instant": True
         })
+
+        exploration_tool.observe(lambda _change: self.start_timer_if_needed(0), names=['pan_count', 'zoom_count'])
+        exploration_tool1.observe(lambda _change: self.start_timer_if_needed(1), names=['pan_count', 'zoom_count'])
+        exploration_tool2.observe(lambda _change: self.start_timer_if_needed(2), names=['pan_count', 'zoom_count'])
 
         self.currentTitle = self._default_title
 
@@ -89,3 +96,18 @@ class IntroSlideshow(v.VuetifyTemplate):
 
     def vue_go_to_location_tool2(self, args):
         self.go_to_location('c-exploration-tool2', args)
+
+    def start_timer_if_needed(self, number):
+        self.send({"method": "startTimerIfNeeded", "args": [number]})
+
+    def vue_set_timer_started(self, number):
+        self.timer_started = {
+            **self.timer_started,
+            number: True
+        }
+
+    def vue_set_timer_finished(self, number):
+        self.timer_done = {
+            **self.timer_done,
+            number: True
+        }

@@ -24,8 +24,8 @@ class ExplorationTool(v.VueTemplate):
     _panning = False
     _zooming = False
 
-    PANS_NEEDED = 0
-    ZOOMS_NEEDED = 0
+    PANS_NEEDED = 1
+    ZOOMS_NEEDED = 1
     UPDATE_TIME = 1  # seconds
 
     def __init__(self, *args, **kwargs):
@@ -47,6 +47,7 @@ class ExplorationTool(v.VueTemplate):
 
     def _update_zooming(self, zooming):
         if not zooming and self._zooming:
+            print("Updating zoom count")
             self.zoom_count += 1
         self._zooming = zooming
 
@@ -56,14 +57,14 @@ class ExplorationTool(v.VueTemplate):
         self._panning = panning
 
     def _check_if_complete(self):
-        if self.pan_count >= self.PANS_NEEDED and self.zoom_count >= self.ZOOMS_NEEDED:
+        if self.pan_count >= self.PANS_NEEDED or self.zoom_count >= self.ZOOMS_NEEDED:
             self.exploration_complete = True
             self.widget._set_message_type_callback('wwt_view_state', None)
             self._rt.stop()
 
-    def _handle_view_message(self, _wwt, _updated):
-        fov = Angle(self.widget.get_fov())
-        center = self.widget.get_center()
+    def _handle_view_message(self, wwt, _updated):
+        fov = Angle(wwt.get_fov())
+        center = wwt.get_center()
         ra = Angle(center.ra)
         dec = Angle(center.dec)
         zooming = not u.isclose(fov, self._fov)
