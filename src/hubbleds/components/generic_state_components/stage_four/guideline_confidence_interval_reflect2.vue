@@ -25,11 +25,11 @@
         <v-col>
           <v-btn
             color="secondary lighten-1"
-            @click="hint1_dialog=true"
+            @click="state.age_calc_state.hint1_dialog = true"
           >
             hint
             <v-dialog
-              v-model="hint1_dialog"
+              v-model="state.age_calc_state.hint1_dialog"
               persistent
               max-width="600px">
               <v-card
@@ -50,7 +50,7 @@
                     @click="
                       () => {
                         $emit('close');
-                        hint1_dialog = false;
+                        state.age_calc_state.hint1_dialog = false;
                       }
                     "
                   >
@@ -94,11 +94,11 @@
         <v-col>
           <v-btn
             color="secondary lighten-1"
-            @click="hint2_dialog=true"
+            @click="state.age_calc_state.hint2_dialog = true"
           >
             hint
             <v-dialog
-              v-model="hint2_dialog"
+              v-model="state.age_calc_state.hint2_dialog"
               persistent
               max-width="600px">
               <v-card
@@ -119,7 +119,7 @@
                     @click="
                       () => {
                         $emit('close');
-                        hint2_dialog = false;
+                        state.age_calc_state.hint2_dialog = false;
                       }
                     "
                   >
@@ -197,11 +197,11 @@
         <v-col>
           <v-btn
             color="secondary lighten-1"
-            @click="hint3_dialog=true"
+            @click="state.age_calc_state.hint3_dialog = true"
           >
             hint
             <v-dialog
-              v-model="hint3_dialog"
+              v-model="state.age_calc_state.hint3_dialog"
               persistent
               max-width="600px">
               <v-card
@@ -222,7 +222,7 @@
                     @click="
                       () => {
                         $emit('close');
-                        hint3_dialog = false;
+                        state.age_calc_state.hint3_dialog = false;
                       }
                     "
                   >

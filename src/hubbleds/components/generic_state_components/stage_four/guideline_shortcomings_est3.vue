@@ -19,19 +19,19 @@
         Shortcoming #1:
       </p>
       <p>
-        {{ short_one}}
+        {{ state.age_calc_state.short_one }}
       </p>
       <p>
         Shortcoming #2:
       </p>
       <p>
-        {{ short_two}}
+        {{ state.age_calc_state.short_two }}
       </p>
       <p>
         Other shortcomings:
       </p>
       <p>
-        {{ short_other}}
+        {{ state.age_calc_state.short_other }}
       </p>
     </div>
   </scaffold-alert>

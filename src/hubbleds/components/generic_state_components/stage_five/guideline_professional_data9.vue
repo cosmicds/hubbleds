@@ -1,16 +1,16 @@
 <!-- # multiple choice -->
 <template>
-  <v-alert
+  <guideline-professional-data
     color="info"
     class="mb-4 mx-auto"
     max-width="800"
     elevation="6"
+    prev-marker="pro_dat8"
+    next-marker="sto_fin1"
+    v-slot:default="{ allowAdvancing }"
+    :state="state"
+    :index="9"
   >
-    <h3
-      class="mb-4"
-    >
-      Professional Data
-    </h3>
     <div
       class="mb-4"
     >
@@ -34,63 +34,17 @@
           ]"
           :correct-answers="[2]"
           :neutral-answers='[0,1]'
-          :selected-callback="(status) => { if (status.correct) { can_advance = true; } }"
+          @select="(status) => { if (status.correct) { allowAdvancing(); } }"
           score-tag="pro-dat9"
         >
         </mc-radiogroup>
       </v-container>
     </div>
-    
-    <v-divider
-      class="my-4"
-    >
-    </v-divider>
-
-    <v-row
-      align="center"
-      no-gutters
-    >
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="
-              () => {
-                state.marker = 'pro_dat8';
-              }
-            "
-        >
-          back
-        </v-btn>
-      <v-spacer></v-spacer>
-      <v-col
-        cols="6"
-        class="shrink"
-        v-if="!can_advance"
-      >
-        <div
-          style="font-size: 16px;"
-        >
-          Choose a response.
-        </div>
-      </v-col>
-      <v-col
-        class="shrink"
-        v-if="can_advance"
-      >
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="
-              () => {
-                advance('sto_fin1');
-              }
-            "
-        >
-          next
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-alert>
+  </guideline-professional-data>
 </template>
+
+<script>
+module.exports = {
+ props: ['state']
+}
+</script>

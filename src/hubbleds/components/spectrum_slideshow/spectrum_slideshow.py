@@ -12,10 +12,6 @@ class SpectrumSlideshow(v.VuetifyTemplate):
     marker = Unicode().tag(sync=True)
     opened = Bool(False).tag(sync=True)
     image_location = Unicode().tag(sync=True)
-    # currentTitle = Unicode("").tag(sync=True)
-    # state = GlueState().tag(sync=True)
-
-    # exploration_complete = Bool(False).tag(sync=True)
 
     def __init__(self, image_location, *args, **kwargs):
         super().__init__(*args, **kwargs)

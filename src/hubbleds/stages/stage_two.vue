@@ -76,7 +76,7 @@
               :class="stage_state.csv_highlights.includes(stage_state.marker) ? 'pa-1 my-n1' : 'pa-0'"
               outlined
             >
-              <distance-tool />
+              <py-distance-tool />
             </v-card>
           </v-col>
         </v-row>
@@ -87,7 +87,7 @@
             cols="6"
             offset="3"
           >
-            <dosdonts-slideshow />
+            <py-dosdonts-slideshow />
           </v-col>
         </v-row>
       </v-col>
@@ -97,7 +97,7 @@
         offset-lg="4"
         v-if="stage_state.distance_sidebar"
       >
-        <distance-sidebar />
+        <py-distance-sidebar />
       </v-col>
     </v-row>
     <v-row>

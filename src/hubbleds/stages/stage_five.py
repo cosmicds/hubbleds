@@ -2,19 +2,15 @@ from os.path import join
 from pathlib import Path
 
 from echo import CallbackProperty, add_callback
-from glue_jupyter.link import dlink, link
 from glue.core.message import NumericalDataChangedMessage
 from traitlets import Bool, default
 
-from cosmicds.components.generic_state_component import GenericStateComponent
-from ..components import ProData
 from cosmicds.phases import CDSState
 from cosmicds.registries import register_stage
 from cosmicds.utils import (RepeatedTimer, extend_tool, load_template,
                             update_figure_css)
 from hubbleds.utils import IMAGE_BASE_URL
 
-from ..components import AgeCalc, ProData
 from ..data.styles import load_style
 from ..data_management import (ALL_DATA_LABEL, CLASS_DATA_LABEL,
                                HUBBLE_1929_DATA_LABEL, HUBBLE_KEY_DATA_LABEL,
@@ -30,7 +26,7 @@ class StageState(CDSState):
 
     hst_age = CallbackProperty(13)
     our_age = CallbackProperty(0)
-    
+
     max_prodata_index = CallbackProperty(0)
     
     markers = [
@@ -108,38 +104,6 @@ class StageFive(HubbleStage):
         # self.stage_state.marker = self.stage_state.markers[0]
         
         add_callback(self.stage_state, 'marker', self._on_marker_update, echo_old=True)
-
-        # Set up prodata components
-        prodata_components_dir = str(Path(
-            __file__).parent.parent / "components" / "prodata_components")
-        path = join(prodata_components_dir, "")
-        prodata_components = [
-            "guideline_professional_data0",
-            "guideline_professional_data1",
-            "guideline_professional_data2",
-            "guideline_professional_data3",
-            "guideline_professional_data4",
-            "guideline_professional_data5",
-            "guideline_professional_data6",
-            "guideline_professional_data7",
-            "guideline_professional_data8",
-            "guideline_professional_data9",
-            ]
-            
-        self.add_prodata_components_from_path(prodata_components, path, ProData)
-        
-        # Set up age_calc component
-        ext = ".vue"
-        age_calc_components_dir = str(Path(
-            __file__).parent.parent / "components" / "age_calc_components")
-        path = join(age_calc_components_dir, "")
-        age_calc_components = [
-            "guideline_story_finish"
-        ]
-        for comp in age_calc_components:
-            label = f"c-{comp}".replace("_", "-")
-            component = AgeCalc(comp + ext, path, self.stage_state, self.story_state)
-            self.add_component(component, label=label) 
         
         prodata_viewer = self.add_viewer(HubbleScatterView, "prodata_viewer",
                                          "Professional Data")
@@ -157,15 +121,6 @@ class StageFive(HubbleStage):
         self.hub.subscribe(self, NumericalDataChangedMessage,
                            filter=lambda msg: msg.data.label == CLASS_DATA_LABEL,
                            handler=self._on_class_data_update)
-
-    def add_prodata_components_from_path(self, state_components, path, component_class = ProData):
-        ext = ".vue"
-        for index, comp in enumerate(state_components):
-            label = f"c-{comp}".replace("_", "-")
-
-            component = component_class(comp + ext, path,
-                                              self.stage_state, index)
-            self.add_component(component, label=label)
 
     def setup_prodata_viewer(self):
         # load the prodata_viewer

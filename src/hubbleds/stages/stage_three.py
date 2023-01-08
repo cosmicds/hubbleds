@@ -204,7 +204,7 @@ class StageThree(HubbleStage):
             CLASS_DATA_LABEL: "Class Data"
             })
         # layer_toggle.add_ignore_condition(lambda layer: layer.layer.label == CLASS_DATA_LABEL)        
-        self.add_component(layer_toggle, label="c-layer-toggle")     
+        self.add_component(layer_toggle, label="py-layer-toggle")     
                                                  
         for key in hubble_race_viewer.toolbar.tools:
             hubble_race_viewer.toolbar.set_tool_enabled(key, False)
@@ -220,9 +220,10 @@ class StageThree(HubbleStage):
         hubble_race_viewer.state.y_att = hubble_race_data.id['velocity (km/hr)']
         hubble_race_viewer.axis_y.tick_values  = asarray([4,6,8,10])
         hubble_race_viewer._update_appearance_from_settings()
-        hubble_slideshow = HubbleExp(self.stage_state, [self.viewers["hubble_race_viewer"], self.viewers["layer_viewer"]])
-        
-        self.add_component(hubble_slideshow, label='c-hubble-slideshow')
+
+        hubble_slideshow = HubbleExp([self.viewers["hubble_race_viewer"], self.viewers["layer_viewer"]])
+        self.add_component(hubble_slideshow, label='py-hubble-slideshow')
+        hubble_slideshow.observe(self._on_slideshow_opened, names=['opened'])
 
         layer_viewer.toolbar.set_tool_enabled("hubble:linedraw", self.stage_state.marker_reached("tre_lin2"))
         layer_viewer.toolbar.set_tool_enabled("hubble:linefit", self.stage_state.marker_reached("bes_fit1"))
@@ -230,8 +231,6 @@ class StageThree(HubbleStage):
         add_callback(self.stage_state, 'marker',
                      self._on_marker_update, echo_old=True)
         self.trigger_marker_update_cb = True
-
-        
 
 
         not_ignore = {
@@ -328,6 +327,9 @@ class StageThree(HubbleStage):
             layer_viewer.toolbar.tools["hubble:linedraw"].erase_line() 
         if advancing and new =="age_rac1":
             self._update_hypgal_info()
+
+    def _on_slideshow_opened(self, msg):
+        self.stage_state.hubble_dialog_opened = msg["new"]
     
     def _on_class_layer_toggled(self, used):
         self.stage_state.class_layer_toggled = used
@@ -384,7 +386,7 @@ class StageThree(HubbleStage):
         layer_linefit = layer_toolbar.tools[linefit_id]
         layer_linefit.add_ignore_condition(lambda layer: layer.layer.label == BEST_FIT_SUBSET_LABEL)
 
-        layer_toggle = self.get_component("c-layer-toggle")
+        layer_toggle = self.get_component("py-layer-toggle")
         student_layer = layer_viewer.layer_artist_for_data(student_data)
         class_layer = layer_viewer.layer_artist_for_data(class_meas_data)
         layer_toggle.set_layer_order([student_layer, class_layer])        

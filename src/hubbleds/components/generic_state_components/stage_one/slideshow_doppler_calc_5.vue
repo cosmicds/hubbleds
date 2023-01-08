@@ -427,7 +427,7 @@
                       'My galaxy\’s velocity is a fraction of the speed of light. ',
                       'My galaxy\’s velocity is greater than the speed of light.'
                     ]"
-                      :selected-callback="(_state) => { if (_state.correct) { state.doppler_calc_state.maxStepCompleted5 = Math.max(state.doppler_calc_state.maxStepCompleted5, 3); } }"
+                      @select="(_state) => { if (_state.correct) { state.doppler_calc_state.maxStepCompleted5 = Math.max(state.doppler_calc_state.maxStepCompleted5, 3); } }"
                       score-tag="interpret-velocity"
                   >
                   </mc-radiogroup>

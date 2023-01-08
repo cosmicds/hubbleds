@@ -1,16 +1,16 @@
 <!-- # multiple choice -->
 <template>
-  <v-alert
+  <guideline-professional-data
     color="info"
     class="mb-4 mx-auto"
     max-width="800"
     elevation="6"
+    prev-marker="pro_dat5"
+    next-marker="pro_dat7"
+    v-slot:default="{ allowAdvancing }"
+    :state="state"
+    :index="6"
   >
-    <h3
-      class="mb-4"
-    >
-      Professional Data
-    </h3>
     <div
       class="mb-4"
     >
@@ -29,7 +29,7 @@
   ['Try again! Compare the slope of best fit for our data to the slope for the HST data','Correct! The slope of best fit for our data is steeper than it is for the HST data', ]"
           :correct-answers="(parseFloat(state.hst_age) < parseFloat(Math.round(state.our_age).toFixed(0))) ? [0] : [1]"
           :neutral-answers="(parseFloat(state.hst_age) < parseFloat(Math.round(state.our_age).toFixed(0))) ? [1] : [0]"
-          :selected-callback="(status) => { if (status.correct) { can_advance = true; } }"
+          @select="(status) => { if (status.correct) { allowAdvancing(); } }"
           score-tag="pro-dat6"
         >
         </mc-radiogroup>
@@ -40,57 +40,11 @@
       </v-card>
       </v-container>
     </div>
-    
-    <v-divider
-      class="my-4"
-    >
-    </v-divider>
-
-    <v-row
-      align="center"
-      no-gutters
-    >
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="
-              () => {
-                state.marker = 'pro_dat5';
-              }
-            "
-        >
-          back
-        </v-btn>
-      <v-spacer></v-spacer>
-      <v-col
-        cols="6"
-        class="shrink"
-        v-if="!can_advance"
-      >
-        <div
-          style="font-size: 16px;"
-        >
-          Choose a response.
-        </div>
-      </v-col>
-      <v-col
-        class="shrink"
-        v-if="can_advance"
-      >
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="
-              () => {
-                advance('pro_dat7');
-              }
-            "
-        >
-          next
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-alert>
+  </guideline-professional-data>
 </template>
+
+<script>
+module.exports = {
+ props: ['state']
+}
+</script>

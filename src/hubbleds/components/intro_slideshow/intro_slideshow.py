@@ -2,7 +2,6 @@ import astropy.units as u
 import ipyvuetify as v
 from astropy.coordinates import SkyCoord
 from cosmicds.utils import load_template
-from glue_jupyter.state_traitlets_helpers import GlueState
 from traitlets import Int, Bool, Unicode
 
 from ...components.exploration_tool import ExplorationTool
@@ -20,7 +19,6 @@ class IntroSlideshow(v.VuetifyTemplate):
     currentTitle = Unicode("").tag(sync=True)
     exploration_complete = Bool(False).tag(sync=True)
     intro_complete = Bool(False).tag(sync=True)
-    state = GlueState().tag(sync=True)
     show_team_interface = Bool(False).tag(sync=True)
     target = Unicode("").tag(sync=True)
 
@@ -35,9 +33,8 @@ class IntroSlideshow(v.VuetifyTemplate):
     ]
     _default_title = "Welcome to Your Data Story"
 
-    def __init__(self, stage_state, app_state, *args, **kwargs):
-        self.state = stage_state
-        self.show_team_interface = app_state.show_team_interface
+    def __init__(self, show_team_interface, *args, **kwargs):
+        self.show_team_interface = show_team_interface
         exploration_tool = ExplorationTool()
         exploration_tool1 = ExplorationTool()
         exploration_tool2 = ExplorationTool()

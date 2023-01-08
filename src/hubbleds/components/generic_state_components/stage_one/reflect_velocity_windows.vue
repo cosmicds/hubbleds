@@ -120,7 +120,7 @@
                         'Try again. For each galaxy (a row in the table), compare the values for rest wavelength (column 3) and observed wavelength (column 4).'
                       ]"
                       :correct-answers="[1]"
-                      :selected-callback="(state) => { if(state.correct) { max_step_completed = Math.max(max_step_completed, 2); } }"
+                      @select="(state) => { if(state.correct) { max_step_completed = Math.max(max_step_completed, 2); } }"
                       score-tag="wavelength-comparison"
                     >
                     </mc-radiogroup>
@@ -158,7 +158,7 @@
                         'Try again. Recall that when the observed wavelength is LONGER than the rest wavelength, this indicates motion AWAY from the observer.'
                       ]"
                       :correct-answers="[1]"
-                      :selected-callback="(state) => { if(state.correct) { max_step_completed = Math.max(max_step_completed, 3); } }"
+                      @select="(state) => { if(state.correct) { max_step_completed = Math.max(max_step_completed, 3); } }"
                       score-tag="galaxy-motion"
                     >
                     </mc-radiogroup>
@@ -195,7 +195,7 @@
                       ]"
                       :correct-answers="[1]"
                       :neutral-answers="[2]"
-                      :selected-callback="(state) => { if(state.correct || state.neutral) { max_step_completed = Math.max(max_step_completed, 4); } }"  
+                      @select="(state) => { if(state.correct || state.neutral) { max_step_completed = Math.max(max_step_completed, 4); } }"  
                       score-tag="steady-state-consistent"
                     >
                     </mc-radiogroup>
@@ -231,7 +231,7 @@
                         'That\'s fair. With only 5 galaxies, it is difficult to draw strong conclusions about the motion of galaxies. However, note that your galaxies all seem to be moving in the same direction (away from us). If galaxies move randomly, you would expect some to be moving toward us and some to be moving away.'
                       ]"
                       :neutral-answers='[0,1,2]'
-                      :selected-callback="(state) => { if(state.neutral) { max_step_completed = Math.max(max_step_completed, 5); } }" 
+                      @select="(state) => { if(state.neutral) { max_step_completed = Math.max(max_step_completed, 5); } }" 
                       score-tag="moving-randomly-consistent"
                     >
                     </mc-radiogroup>
@@ -266,7 +266,7 @@
                         'Hmm. That is an unexpected result. It might be helpful to check in with your instructor.',
                         'No problem. Checking the Cosmic Data Stories database, everyone else who has completed this story also found that their galaxies are all moving away from us. Does that give you more confidence in your conclusions?']"
                       :neutral-answers="[0,2]"
-                      :selected-callback="(state) => { if(state.correct || state.neutral) { max_step_completed = Math.max(max_step_completed, 6); } }" 
+                      @select="(state) => { if(state.correct || state.neutral) { max_step_completed = Math.max(max_step_completed, 6); } }" 
                       score-tag="peers-data-agree"
                     >
                     </mc-radiogroup>

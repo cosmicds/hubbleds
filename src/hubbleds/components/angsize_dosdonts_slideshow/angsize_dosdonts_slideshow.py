@@ -14,7 +14,7 @@ class DosDonts_SlideShow(v.VuetifyTemplate):
     length = Int(7).tag(sync=True)
     dialog = Bool(False).tag(sync=True)
     currentTitle = Unicode("").tag(sync=True)
-    state = GlueState().tag(sync=True)
+    opened = Bool(False).tag(sync=True)
     max_step_completed = Int(0).tag(sync=True)
 
     _titles = [
@@ -28,8 +28,7 @@ class DosDonts_SlideShow(v.VuetifyTemplate):
     ]
     _default_title = "Measurement Dos and Don'ts"
 
-    def __init__(self, story_state, *args, **kwargs):
-        self.state = story_state
+    def __init__(self, *args, **kwargs):
         self.currentTitle = self._default_title
 
         def update_title(change):

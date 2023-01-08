@@ -15,7 +15,7 @@
           <v-btn icon
             v-bind="attrs"
             v-on="on"
-            :disabled="Object.keys(state.galaxy).length == 0" 
+            :disabled="!galaxy_selected" 
             @click="flagged = true"
           >
             <v-icon>mdi-flag</v-icon>
@@ -61,7 +61,7 @@
             :ripple="false"
             v-bind="attrs"
             v-on="on"
-            v-show="measuring_allowed && !view_changing && state.show_ruler"
+            v-show="measuring_allowed && !view_changing && show_ruler"
             @click="toggle_measuring()">
             <v-icon>{{ measuring ? 'mdi-stop' : 'mdi-ruler' }}</v-icon>
           </v-btn>

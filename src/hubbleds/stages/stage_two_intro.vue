@@ -6,7 +6,7 @@
       justify="center"
     >
       <v-col cols="12">
-        <c-two-intro-slideshow />
+        <py-two-intro-slideshow />
       </v-col>
     </v-row>
   </v-container>

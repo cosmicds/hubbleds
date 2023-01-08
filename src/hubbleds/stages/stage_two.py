@@ -1,10 +1,8 @@
 import logging
-from os.path import join
-from pathlib import Path
+import requests
 
 import astropy.units as u
 from astropy.coordinates import SkyCoord
-from cosmicds.components.generic_state_component import GenericStateComponent
 from cosmicds.components.table import Table
 from cosmicds.phases import CDSState
 from cosmicds.registries import register_stage
@@ -12,7 +10,7 @@ from cosmicds.utils import load_template
 from echo import CallbackProperty, add_callback, ignore_callback
 from traitlets import default, Bool
 
-from ..components import DistanceSidebar, DistanceTool, DistanceCalc
+from ..components import DistanceSidebar, DistanceTool
 from ..components.angsize_dosdonts_slideshow import DosDonts_SlideShow
 from ..data_management import STUDENT_MEASUREMENTS_LABEL
 from ..stage import HubbleStage
@@ -26,7 +24,6 @@ class StageState(CDSState):
     galaxy = CallbackProperty({})
     galaxy_selected = CallbackProperty(False)
     galaxy_dist = CallbackProperty(None)
-    ruler_clicked_total = CallbackProperty(0)
     dos_donts_opened = CallbackProperty(False)
     make_measurement = CallbackProperty(False)
     angsizes_total = CallbackProperty(0)
@@ -154,11 +151,9 @@ class StageTwo(HubbleStage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        
-        
-
-        dosdonts_slideshow = DosDonts_SlideShow(self.stage_state)
-        self.add_component(dosdonts_slideshow, label='dosdonts-slideshow')
+        dosdonts_slideshow = DosDonts_SlideShow()
+        self.add_component(dosdonts_slideshow, label='py-dosdonts-slideshow')
+        dosdonts_slideshow.observe(self._dosdonts_opened, names=['opened'])
 
         # two_complete = StageTwoComplete(self.stage_state)
         # self.add_component(two_complete, label='guideline-stage-two-complete')
@@ -169,8 +164,7 @@ class StageTwo(HubbleStage):
         
         self.show_team_interface = self.app_state.show_team_interface
 
-        self.add_component(DistanceTool(self.stage_state),
-                           label="distance-tool")
+        self.add_component(DistanceTool(), label="py-distance-tool")
 
         
 
@@ -201,34 +195,23 @@ class StageTwo(HubbleStage):
             self.distance_table_selected_change, names=["selected"])
 
         self.add_component(DistanceSidebar(self.stage_state),
-                           label="distance-sidebar")
+                           label="py-distance-sidebar")
         self.distance_tool.observe(self._angular_size_update,
                                    names=["angular_size"])
         self.distance_tool.observe(self._angular_height_update,
                                    names=["angular_height"])
+        self.distance_tool.observe(self._ruler_click_count_update,
+                                   names=['ruler_click_count'])
+        self.distance_tool.observe(self._measurement_count_update,
+                                   names=['measurement_count'])
         self.distance_sidebar.angular_height = format_fov(
             self.distance_tool.angular_height)
 
         self.distance_tool.observe(self._distance_tool_flagged,
                                    names=["flagged"])
 
-        
-        ext = ".vue"
-        
-
-        # Set up distance calc components
-        distance_calc_components_dir = str(Path(
-            __file__).parent.parent / "components" / "distance_calc_components")
-        path = join(distance_calc_components_dir, "")
-        distance_components = [
-            "guideline_estimate_distance2",
-            "guideline_estimate_distance3",
-            "guideline_estimate_distance4"
-        ]
-        for comp in distance_components:
-            label = f"{comp}".replace("_", "-")
-            component = DistanceCalc(comp + ext, path, self.stage_state)
-            self.add_component(component, label=label)
+        add_callback(self.stage_state, 'galaxy', self._on_galaxy_changed)
+        add_callback(self.stage_state, 'show_ruler', self._show_ruler_changed)
 
         # Callbacks
         add_callback(self.stage_state, 'marker',
@@ -285,6 +268,9 @@ class StageTwo(HubbleStage):
         self.stage_state.marker = self.stage_state.step_markers[index]
         self.trigger_marker_update_cb = True
 
+    def _dosdonts_opened(self, msg):
+        self.stage_state.dos_donts_opened = msg["new"]
+
     def distance_table_selected_change(self, change):
         selected = change["new"]
         if not selected or selected == change["old"]:
@@ -315,6 +301,20 @@ class StageTwo(HubbleStage):
 
     def _angular_height_update(self, change):
         self.distance_sidebar.angular_height = format_fov(change["new"])
+
+    def _ruler_click_count_update(self, change):
+        if change["new"] == 1:
+            self.stage_state.marker = 'ang_siz4'  # auto-advance guideline if it's the first ruler click
+
+    def _measurement_count_update(self, change):
+        if change["new"] == 1:
+            self.stage_state.marker = 'ang_siz5'  # auto-advance guideline if it's the first measurement made
+
+    def _show_ruler_changed(self, show):
+        self.distance_tool.show_ruler = show
+
+    def _on_galaxy_changed(self, galaxy):
+        self.distance_tool.galaxy_selected = bool(galaxy)
 
     def _make_measurement(self):
         galaxy = self.stage_state.galaxy
@@ -347,6 +347,19 @@ class StageTwo(HubbleStage):
     def _distance_tool_flagged(self, change):
         if not change["new"]:
             return
+        
+
+        galaxy = self.state.galaxy
+        if galaxy["id"]:
+            data = {"galaxy_id": int(galaxy["id"])}
+        else:
+            name = galaxy["name"]
+            if not name.endswith(".fits"):
+                name += ".fits"
+            data = {"galaxy_name": name}
+        requests.post(f"{API_URL}/{HUBBLE_ROUTE_PATH}/mark-tileload-bad",
+                      json=data)
+
         index = self.distance_table.index
         if index is None:
             return
@@ -397,11 +410,11 @@ class StageTwo(HubbleStage):
 
     @property
     def distance_sidebar(self):
-        return self.get_component("distance-sidebar")
+        return self.get_component("py-distance-sidebar")
 
     @property
     def distance_tool(self):
-        return self.get_component("distance-tool")
+        return self.get_component("py-distance-tool")
 
     @property
     def distance_table(self):

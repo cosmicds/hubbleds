@@ -35,19 +35,19 @@
         lg="5"
       >
 
-        <c-guideline-random-variability
+        <guideline-random-variability
           v-if="stage_state.marker == 'ran_var1'"
           :state="stage_state"
           v-intersect.once="scrollIntoView" />
-        <c-guideline-trend-lines-draw2-c
+        <guideline-trend-lines-draw2-c
           v-if="stage_state.marker == 'tre_lin2c'"
           :state="stage_state"
           v-intersect.once="scrollIntoView" />
-        <c-guideline-best-fit-line-c
+        <guideline-best-fit-line-c
           v-if="stage_state.marker == 'bes_fit1c'"
           :state="stage_state"
           v-intersect.once="scrollIntoView" />
-        <c-guideline-your-age-estimate-c
+        <guideline-your-age-estimate-c
           v-if="stage_state.marker == 'you_age1c'"
           :state="stage_state"
           v-intersect.once="scrollIntoView" />
@@ -70,7 +70,7 @@
             cols="10"
             offset="1"
           >
-            <c-hubble-slideshow/>  
+            <py-hubble-slideshow/>  
           </v-col>
         </v-row>
       </v-col>
@@ -86,32 +86,32 @@
         cols="12"
         lg="5"
       >
-        <c-guideline-classmates-results
+        <guideline-classmates-results
           v-if="stage_state.marker == 'cla_res1'"
           :state="stage_state"
           v-intersect.once="scrollIntoView" />
-        <c-guideline-relationship-age-slope-mc
+        <guideline-relationship-age-slope-mc
           v-if="stage_state.marker == 'rel_age1'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"
           @ready="stage_state.relage_response = true"  />
-        <c-guideline-class-age-range
+        <guideline-class-age-range
           v-if="stage_state.marker == 'cla_age1'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"/>
-        <c-guideline-class-age-range2
+        <guideline-class-age-range2
           v-if="stage_state.marker == 'cla_age2'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"/>
-        <c-guideline-class-age-range3
+        <guideline-class-age-range3
           v-if="stage_state.marker == 'cla_age3'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"/>
-        <c-guideline-class-age-range4
+        <guideline-class-age-range4
           v-if="stage_state.marker == 'cla_age4'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"/>
-        <c-guideline-confidence-interval
+        <guideline-confidence-interval
           v-if="stage_state.marker == 'con_int1'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"/>
@@ -131,11 +131,11 @@
               class="comparison_viewer"
               />
           </v-lazy>
-          <c-student-slider 
+          <py-student-slider 
             class="slider_card"
             />
         </v-card>
-        <c-hubble-slideshow         />  
+        <py-hubble-slideshow/>  
       </v-col>
     </v-row>
 
@@ -148,11 +148,11 @@
         cols="12"
         lg="5"
       >
-        <c-guideline-classmates-results-c
+        <guideline-classmates-results-c
           v-if="stage_state.marker == 'cla_res1c'"
           :state="stage_state"
           v-intersect.once="scrollIntoView" />
-        <c-guideline-class-age-range-c
+        <guideline-class-age-range-c
           v-if="stage_state.marker == 'cla_age1c'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"/>
@@ -167,7 +167,7 @@
           <v-lazy>
             <jupyter-widget :widget="viewers.all_viewer"/>
           </v-lazy>
-          <c-class-slider 
+          <py-class-slider 
             class="slider_card"
             />
         </v-card>
@@ -183,7 +183,7 @@
         cols="12"
         lg="5"
       >
-        <c-guideline-class-age-distribution
+        <guideline-class-age-distribution
           v-if="stage_state.marker == 'age_dis1'"
           v-intersect.once="scrollIntoView"/>
       </v-col>
@@ -213,79 +213,79 @@
         cols="12"
         lg="5"
       >
-        <c-guideline-class-age-distribution-c
+        <guideline-class-age-distribution-c
           v-if="stage_state.marker == 'age_dis1c'"
           :state="stage_state"
           v-intersect.once="scrollIntoView"/>
-        <c-guideline-two-histograms1
+        <guideline-two-histograms1
             v-if="stage_state.marker == 'two_his1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-true-age1
+        <guideline-true-age1
             v-if="stage_state.marker == 'tru_age1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-true-age2
+        <guideline-true-age2
             v-if="stage_state.marker == 'tru_age2'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-shortcomings-est3
+        <guideline-shortcomings-est3
             v-if="stage_state.marker == 'sho_est3'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-shortcomings-est-reflect4
+        <guideline-shortcomings-est-reflect4
             v-if="stage_state.marker == 'sho_est4'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-true-age-issues1
+        <guideline-true-age-issues1
             v-if="stage_state.marker == 'tru_iss1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-imperfect-methods1
+        <guideline-imperfect-methods1
             v-if="stage_state.marker == 'imp_met1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-imperfect-assumptions1
+        <guideline-imperfect-assumptions1
             v-if="stage_state.marker == 'imp_ass1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-imperfect-measurements1
+        <guideline-imperfect-measurements1
             v-if="stage_state.marker == 'imp_mea1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-uncertainties-random1
+        <guideline-uncertainties-random1
             v-if="stage_state.marker == 'unc_ran1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-uncertainties-systematic1
+        <guideline-uncertainties-systematic1
             v-if="stage_state.marker == 'unc_sys1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-uncertainties-systematic2
+        <guideline-uncertainties-systematic2
             v-if="stage_state.marker == 'unc_sys2'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-two-histograms-mc2
+        <guideline-two-histograms-mc2
             v-if="stage_state.marker == 'two_his2'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-lack-bias-mc1
+        <guideline-lack-bias-mc1
             v-if="stage_state.marker == 'lac_bia1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-lack-bias-reflect2
+        <guideline-lack-bias-reflect2
             v-if="stage_state.marker == 'lac_bia2'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-lack-bias-reflect3
+        <guideline-lack-bias-reflect3
             v-if="stage_state.marker == 'lac_bia3'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-more-data-distribution
+        <guideline-more-data-distribution
             v-if="stage_state.marker == 'mor_dat1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
-        <c-guideline-account-uncertainty
+        <guideline-account-uncertainty
             v-if="stage_state.marker == 'acc_unc1'"
             :state="stage_state"
             v-intersect.once="scrollIntoView"/>
@@ -313,11 +313,11 @@
       </v-col>
     </v-row>
 
-    <c-guideline-confidence-interval-reflect2
+    <guideline-confidence-interval-reflect2
       v-if="stage_state.marker == 'con_int2'"
       :state="stage_state"
       v-intersect.once="scrollIntoView"/>
-    <c-guideline-confidence-interval-reflect2-c
+    <guideline-confidence-interval-reflect2-c
       v-if="stage_state.marker == 'con_int2c'"
       :state="stage_state"
       v-intersect.once="scrollIntoView"/>

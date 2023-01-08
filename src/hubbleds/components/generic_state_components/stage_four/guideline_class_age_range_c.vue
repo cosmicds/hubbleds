@@ -1,25 +1,26 @@
 <template>
-  <v-alert
+  <scaffold-alert
     color="info"
     class="mb-4 mx-auto angsize_alert"
     max-width="800"
     elevation="6"
+    header-text="All Classes Age Range"
+    next-text="check"
+    @back="state.marker = 'cla_res1c'"
+    @next="() => {
+      const expectedAnswers = [state.cla_low_age, state.cla_high_age];
+      state.marker = validateAnswersJS(['low_age', 'high_age'], expectedAnswers) ? 'age_dis1c' : 'cla_age1c';
+    }"
   >
-    <h3
-      class="mb-4"
-    >
-      Class Age Range
-    </h3> 
-
     <div
       class="mb-4"
       v-intersect="(entries, _observer, intersecting) => { if (intersecting) { MathJax.typesetPromise(entries.map(entry => entry.target)) }}"
     >
       <p>
-        Let's consider the range of age estimates for the universe obtained by you and your classmates.
+        Let's consider the range of age estimates for the universe obtained by all the classes who have completed this Data Story.
       </p>
       <p>
-        Enter the lowest and highest age estimates from your class here:
+        Enter the lowest and highest age estimates within the dataset here:
       </p>
       <div
         class="JaxEquation my-8"
@@ -39,46 +40,9 @@
       dense
       color="info darken-1"
     >
-      Not quite. Make sure you are entering the highest and lowest values for the entire class. Enter only whole integers.
+      Not quite. Make sure you are entering the highest and lowest values for the entire dataset. Enter only whole integers.
     </v-alert>
-    <v-divider
-      class="my-4"
-    >
-    </v-divider>
-    <v-row
-      align="center"
-      no-gutters
-    >
-      <v-col>
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="
-            state.marker = 'rel_age1';
-          "
-        >
-          back
-        </v-btn>
-      </v-col>
-      <v-spacer></v-spacer>
-      <v-col
-        class="shrink"
-      >
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="() => {
-            const expectedAnswers = [state.stu_low_age, state.stu_high_age];
-            state.marker = validateAnswersJS(['low_age', 'high_age'], expectedAnswers) ? 'cla_age2' : 'cla_age1';
-          }"
-        >
-          check
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-alert> 
+  </scaffold-alert> 
 </template>
 
 <style>
@@ -117,7 +81,7 @@ mjx-mstyle {
 </style>
 
 <script>
-export default = {
+export default {
 
   methods: {
     getValue(inputID) {

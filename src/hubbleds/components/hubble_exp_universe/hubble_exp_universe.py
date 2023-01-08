@@ -14,8 +14,8 @@ class HubbleExp(v.VuetifyTemplate):
     step = Int(0).tag(sync=True)
     length = Int(4).tag(sync=True)
     dialog = Bool(False).tag(sync=True)
+    opened = Bool(False).tag(sync=True)
     currentTitle = Unicode("").tag(sync=True)
-    state = GlueState().tag(sync=True)
     maxStepCompleted = Int(0).tag(sync=True)
     interactSteps = List([1]).tag(sync=True)
     layer_viewer = Instance(DOMWidget).tag(sync=True, **widget_serialization)
@@ -29,8 +29,7 @@ class HubbleExp(v.VuetifyTemplate):
     ]
     _default_title = "Hubble's Discovery"
 
-    def __init__(self, stage_state, viewers, *args, **kwargs):
-        self.state = stage_state
+    def __init__(self, viewers, *args, **kwargs):
         self.currentTitle = self._default_title
         self.hubble_race_viewer = viewers[0]
         self.layer_viewer = viewers[1]

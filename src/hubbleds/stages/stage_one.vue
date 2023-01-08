@@ -65,7 +65,7 @@
           :class="stage_state.csv_highlights.includes(stage_state.marker) ? 'pa-1 my-n1' : 'pa-0'"
           outlined
         >
-          <c-selection-tool/>
+          <py-selection-tool/>
           <!-- <v-card-actions>
             <v-btn @click="story_state.step_index += 1; story_state.step_complete = true">Next Step</v-btn>
           </v-card-actions> -->
@@ -198,7 +198,7 @@
             offset="2"
           >
             <!-- LEARN MORE Dialog -->
-            <c-spectrum-slideshow />
+            <py-spectrum-slideshow />
           </v-col>
           <v-col
             cols="4"

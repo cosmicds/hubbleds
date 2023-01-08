@@ -701,17 +701,6 @@
   </v-dialog>
 </template>
 
-<script>
-module.exports = {
-  mounted() {
-    console.log(this);
-    console.log(this.$refs.content);
-  }
-}
-</script>
-
-
-
 <style>
 .no-transition {
   transition: none !important;

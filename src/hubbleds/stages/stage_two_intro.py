@@ -39,9 +39,9 @@ class StageTwoIntro(Stage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        two_intro_slideshow = TwoIntroSlideShow(self.stage_state,
-                                                self.app_state)
-        self.add_component(two_intro_slideshow, label='c-two-intro-slideshow')
+        two_intro_slideshow = TwoIntroSlideShow(self.app_state.show_team_interface,
+                                                self.stage_state.image_location)
+        self.add_component(two_intro_slideshow, label='py-two-intro-slideshow')
         two_intro_slideshow.observe(self._on_slideshow_complete,
                                     names=['two_intro_complete'])
 
@@ -50,7 +50,7 @@ class StageTwoIntro(Stage):
 
     @property
     def slideshow(self):
-        return self.get_component('c-two-intro-slideshow')
+        return self.get_component('py-two-intro-slideshow')
 
     def _on_slideshow_complete(self, change):
         if change["new"]:

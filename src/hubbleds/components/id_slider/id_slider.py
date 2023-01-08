@@ -1,6 +1,5 @@
 from ipyvuetify import VuetifyTemplate
 from echo.callback_container import CallbackContainer
-from glue_jupyter.state_traitlets_helpers import GlueState
 from numpy import where
 from traitlets import observe, Float, Int, List, Unicode
 
@@ -11,7 +10,6 @@ class IDSlider(VuetifyTemplate):
                              traitlet=True).tag(sync=True)
     color = Unicode("#112E51").tag(sync=True)
     selected = Int(0).tag(sync=True)
-    state = GlueState().tag(sync=True)
     step = Int(1).tag(sync=True)
     thumb_value = Float().tag(sync=True)
     tick_labels = List().tag(sync=True)

@@ -12,6 +12,11 @@
       >
         {{ currentTitle }}
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <speech-synthesizer
+        :root="$el"
+        :selectors="['div.v-toolbar__title', 'div.v-card__text.black--text', 'h3', 'p']"
+      />
     </v-toolbar>
 
     <v-window
@@ -98,7 +103,7 @@
                 <v-img
                   class="mb-4 mx-a"
                   contain
-                  :src="`${state.image_location}/PeopleLargeSmallAngularSize.png`"
+                  :src="`${image_location}/PeopleLargeSmallAngularSize.png`"
                 ></v-img>
               </v-col>
             </v-row>
@@ -138,7 +143,7 @@
                 <v-img
                   class="mb-4 mx-a"
                   contain
-                  :src="`${state.image_location}/PeopleLargeSmallAngularSize.png`"
+                  :src="`${image_location}/PeopleLargeSmallAngularSize.png`"
                 ></v-img>
               </v-col>
               <v-col
@@ -152,7 +157,7 @@
                 <v-img
                   class="mb-4 mx-a"
                   contain
-                  :src="`${state.image_location}/esahubble_potw2031a_1600_cleaned.png`"
+                  :src="`${image_location}/esahubble_potw2031a_1600_cleaned.png`"
                 ></v-img>
               </v-col>
             </v-row>
@@ -195,7 +200,7 @@
                 <v-img
                   class="mb-4 mx-a"
                   contain
-                  :src="`${state.image_location}/PeopleLargeSmallAngularSize labeled.png`"
+                  :src="`${image_location}/PeopleLargeSmallAngularSize labeled.png`"
                 ></v-img>
               </v-col>
               <v-col cols="6">
@@ -205,7 +210,7 @@
                 <v-img
                   class="mb-4 mx-a"
                   contain
-                  :src="`${state.image_location}/esahubble_potw2031a_1600_cleaned.png`"
+                  :src="`${image_location}/esahubble_potw2031a_1600_cleaned.png`"
                 ></v-img>
               </v-col> 
             </v-row> 
@@ -274,7 +279,7 @@
                 class="mx-a"
                 contain
                 max-height="300"
-                :src="`${state.image_location}/erinmoon.png`"
+                :src="`${image_location}/erinmoon.png`"
               ></v-img>
             </v-row>
           </v-container>
@@ -328,7 +333,7 @@
                   class="mx-a"
                   contain
                   max-height="300"
-                  :src="`${state.image_location}/cosmicgraphic.png`"
+                  :src="`${image_location}/cosmicgraphic.png`"
                 ></v-img>
               </v-col>
             </v-row>
@@ -396,7 +401,7 @@
                           'Try again. \n Think about the people on the beach. Did the closer person appear bigger or smaller than the farther person?'
                         ]"
                         :correct-answers="[2]"
-                        :selected-callback="(option) => { if(option.correct || option.neutral) { max_step_completed = Math.max(this.max_step_completed, 7); } }"
+                        @select="(option) => { if(option.correct || option.neutral) { max_step_completed = Math.max(this.max_step_completed, 7); } }"
                         score-tag="which-galaxy-closer"
                       >
                       </mc-radiogroup>
@@ -414,7 +419,7 @@
                   <v-img
                     class="mx-a"
                     contain
-                    :src="`${state.image_location}/galaxies_a_b_boxed.png`"
+                    :src="`${image_location}/galaxies_a_b_boxed.png`"
                   ></v-img>
                 </v-col>
             </v-row> 
@@ -523,7 +528,7 @@
                         'Try again. \ You could probably fit 10 Galaxy B’s across Galaxy A.'
                       ]"
                       :correct-answers="[1]"
-                      :selected-callback="(option) => { if(option.correct || option.neutral) { max_step_completed = Math.max(this.max_step_completed, 9); } }"
+                      @select="(option) => { if(option.correct || option.neutral) { max_step_completed = Math.max(this.max_step_completed, 9); } }"
                       score-tag="how-much-closer-galaxies"
                     >
                     </mc-radiogroup>
@@ -542,7 +547,7 @@
                   <v-img
                     class="mx-a"
                     contain
-                    :src="`${state.image_location}/galaxies_a_b_boxed.png`"
+                    :src="`${image_location}/galaxies_a_b_boxed.png`"
                   ></v-img>
                 </div>
               </v-col>

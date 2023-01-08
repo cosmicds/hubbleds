@@ -13,7 +13,7 @@
       class="mb-4"
     >
       <p>
-        Earlier, your best guess for the age of the universe was: {{ best_guess }} Gyr, with a likely range from {{ low_guess }} to {{ high_guess }} Gyr.
+        Earlier, your best guess for the age of the universe was: {{ state.age_calc_state.best_guess }} Gyr, with a likely range from {{ low_guess }} to {{ high_guess }} Gyr.
       </p>
       <p>
         After exploring data from all the other classes, you might consider updating your values.
@@ -27,11 +27,11 @@
         <v-col>
           <v-btn
             color="secondary lighten-1"
-            @click="hint1_dialog=true"
+            @click="state.age_calc_state.hint1_dialog = true"
           >
             hint
             <v-dialog
-              v-model="hint1_dialog"
+              v-model="state.age_calc_state.hint1_dialog"
               persistent
               max-width="600px">
               <v-card
@@ -52,7 +52,7 @@
                     @click="
                       () => {
                         $emit('close');
-                        hint1_dialog = false;
+                        state.age_calc_state.hint1_dialog = false;
                       }
                     "
                   >
@@ -96,11 +96,11 @@
         <v-col>
           <v-btn
             color="secondary lighten-1"
-            @click="hint2_dialog=true"
+            @click="state.age_calc_state.hint2_dialog = true"
           >
             hint
             <v-dialog
-              v-model="hint2_dialog"
+              v-model="state.age_calc_state.hint2_dialog"
               persistent
               max-width="600px">
               <v-card
@@ -121,7 +121,7 @@
                     @click="
                       () => {
                         $emit('close');
-                        hint2_dialog = false;
+                        state.age_calc_state.hint2_dialog = false;
                       }
                     "
                   >

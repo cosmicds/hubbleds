@@ -242,7 +242,7 @@ class StageOne(HubbleStage):
         selection_tool = SelectionTool(data=sdss_data,
                                        selected_data=selected,
                                        show_galaxies=self.stage_state.marker_reached("sel_gal1"))
-        self.add_component(selection_tool, label='c-selection-tool')
+        self.add_component(selection_tool, label='py-selection-tool')
         selection_tool.on_galaxy_selected = self._on_galaxy_selected
         selection_tool._on_reset_view = self._on_selection_viewer_reset
         selection_tool.observe(self._on_selection_tool_flagged,
@@ -251,7 +251,7 @@ class StageOne(HubbleStage):
                                names=['selected'])
 
         spectrum_slideshow = SpectrumSlideshow(self.stage_state.image_location)
-        self.add_component(spectrum_slideshow, label='c-spectrum-slideshow')
+        self.add_component(spectrum_slideshow, label='py-spectrum-slideshow')
         spectrum_slideshow.observe(self._spectrum_slideshow_marker_changed,
                                    names=['marker'])
         spectrum_slideshow.observe(self._spectrum_slideshow_tutorial_opened,
@@ -602,11 +602,11 @@ class StageOne(HubbleStage):
 
     @property
     def selection_tool(self):
-        return self.get_component("c-selection-tool")
+        return self.get_component("py-selection-tool")
 
     @property
     def slideshow(self):
-        return self.get_component('c-spectrum-slideshow')
+        return self.get_component('py-spectrum-slideshow')
 
     def _update_image_location(self, using_voila):
         prepend = "voila/files/" if using_voila else ""

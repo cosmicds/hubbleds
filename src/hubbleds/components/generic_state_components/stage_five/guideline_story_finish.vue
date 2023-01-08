@@ -1,16 +1,14 @@
 <!-- # multiple choice -->
 <template>
-  <v-alert
+  <scaffold-alert
     color="info"
     class="mb-4 mx-auto"
     max-width="800"
     elevation="6"
+    header-text="Congratulations!"
+    @back="state.marker = 'pro_dat9'"
+    :can-advance="(_state) => false"
   >
-    <h3
-      class="mb-4"
-    >
-      Congratulations!
-    </h3>
     <div
       class="mb-4"
     >
@@ -26,37 +24,11 @@
     <p>
       Science is always moving forward and there is always more humans can learn about our universe. Follow NASA to learn what new discoveries will be made by HST's successor, the James Webb Space Telescope!
     </p>
-    <v-divider
-      class="my-4"
-    >
-    </v-divider>
-
-    <v-row
-      align="center"
-      no-gutters
-    >
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="
-              () => {
-                state.marker = 'pro_dat9';
-              }
-            "
-        >
-          back
-        </v-btn>
-      <v-spacer></v-spacer>
-      <v-col
-        cols="6"
-        class="shrink"
-      >
-        <div
-          style="font-size: 16px;"
-        >
-        </div>
-      </v-col>
-    </v-row>
-  </v-alert>
+  </scaffold-alert>
 </template>
+
+<script>
+module.exports = {
+ props: ['state', 'story_state']
+}
+</script>

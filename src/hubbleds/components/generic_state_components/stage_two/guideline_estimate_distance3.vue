@@ -1,37 +1,34 @@
 <template>
-  <v-alert
+  <scaffold-alert
     color="info"
     class="mb-4 mx-auto angsize_alert"
     max-width="800"
     elevation="6"
+    header-text="Estimate Distance"
+    next-text="calculate"
+    @back="state.marker = 'cho_row2'"
+    @next="() => {
+      const expectedAnswers = [state.meas_theta];
+      state.marker = validateAnswersJS(['gal_ang_size'], expectedAnswers) ? 'est_dis4' : 'est_dis3';
+    }"
   >
-    <h3
-      class="mb-4"
-    >
-      Estimate Distance
-    </h3> 
-
     <div
       class="mb-4"
       v-intersect="(entries, _observer, intersecting) => { if (intersecting) { MathJax.typesetPromise(entries.map(entry => entry.target)) }}"
     >
-      <p class="mb-4">
-        You entered:
-      </p>
-      <v-card
-        class="JaxEquation pa-3"
-        color="info lighten-1"
-        elevation="0"
-      >
-        $$ D = \frac{ {{ Math.round(distance_const) }} }{\textcolor{black}{\colorbox{#FFAB91}{ {{ (state.meas_theta).toFixed(0) }} } }} $$
-      </v-card>    
-      <p class="mt-4">
-        Dividing through gives you the estimated distance to your galaxy:
+      <p>
+        Enter the <strong>angular size</strong> of your galaxy in <strong>arcseconds</strong> in the box.
       </p>
       <div
         class="JaxEquation my-8"
       >
-        $$ D = {{ (Math.round(distance_const)/state.meas_theta).toFixed(0) }} \text{ Mpc} $$
+        $$ D = \frac{ {{ Math.round(distance_const) }} }{\bbox[#FBE9E7]{\input[gal_ang_size][]{}}} $$
+      </div>
+      <v-divider role="presentation"></v-divider>
+      <div
+        class="font-weight-medium mt-3"
+      >
+        Click <strong>CALCULATE</strong> to divide and find the estimated distance to your galaxy.
       </div>
       <v-divider role="presentation" class="mt-3"></v-divider>
       <v-card
@@ -85,42 +82,17 @@
     </div>
     <v-divider
       class="my-4"
+      v-if="state.failedValidation3"
     >
     </v-divider>
-    <v-row
-      align="center"
-      no-gutters
+    <v-alert
+      v-if="state.failedValidation3"
+      dense
+      color="info darken-1"
     >
-      <v-col>
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click="
-            state.marker = 'est_dis3';
-          "
-        >
-          back
-        </v-btn>
-      </v-col>
-      <v-spacer></v-spacer>
-      <v-col
-        class="shrink"
-      >
-        <v-btn
-          class="black--text"
-          color="accent"
-          elevation="2"
-          @click=" () => {
-            state.marker = 'fil_rem1';
-            state.distance_calc_count += 1;
-          }"
-        >
-          next
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-alert> 
+      Not quite. Make sure you are entering the value for the highlighted galaxy. The angular size column is labeled &theta;, in arcseconds.
+    </v-alert>
+  </scaffold-alert> 
 </template>
 
 <style>
@@ -155,5 +127,33 @@ mjx-mstyle {
   padding: 3px;
 }
 
+
 </style>
+
+<script>
+export default = {
+
+  methods: {
+    getValue(inputID) {
+      const input = document.getElementById(inputID);
+      if (!input) { return null; }
+      return input.value;
+    },
+
+    parseAnswer(inputID) {
+      return parseFloat(this.getValue(inputID).replace(/,/g,''));
+    },
+
+    validateAnswersJS(inputIDs, expectedAnswers) {
+      return inputIDs.every((id, index) => {
+        const value = this.parseAnswer(id);
+        this.failedValidation3 = (value && value === expectedAnswers[index]) ? false : true;
+        console.log("expectedAnswer", expectedAnswers);
+        console.log("entered value", value);
+        return value && value === expectedAnswers[index];
+      });
+    }
+  }
+};
+</script>
 
