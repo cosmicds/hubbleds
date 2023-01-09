@@ -16,19 +16,19 @@
           v-if="state.gals_total < 5 && state.gals_total > 0"
           style="font-size: 16px;"
         >
-          Select {{ 5 - state.gals_total }} <span v-if="state.gals_total > 0">more</span> <span v-if="state.gals_total < 4">galaxies</span><span v-if="state.gals_total == 4">galaxy</span>.
+        <strong style="color: white;">Select</strong> {{ 5 - state.gals_total }} <span v-if="state.gals_total > 0">more</span> <span v-if="state.gals_total < 4">galaxies</span><span v-if="state.gals_total == 4">galaxy</span>.
         </div>
         <div
           v-if="state.gals_total == 0 && !state.gal_selected"
           style="font-size: 16px;"
         >
-          Click on any green dot.
+        <strong style="color: white;">Click</strong> on any green dot.
         </div>
         <div
           v-if="state.gals_total == 0 && state.gal_selected"
           style="font-size: 16px;"
         >
-          Click <v-icon>mdi-plus</v-icon> to add galaxy or <v-icon>mdi-cached</v-icon> to choose another
+          <strong style="color: white;">Click</strong> <v-btn icon dark x-small disabled class="mx-1 black--text" elevation="2" style="background-color: #00E676;"><v-icon style="color:black!important;">mdi-plus</v-icon></v-btn> to add galaxy or <v-btn icon dark x-small disabled class="mx-1 black--text" elevation="2" style="background-color: #00E676;"><v-icon style="color:black!important;">mdi-cached</v-icon></v-btn> to choose another
         </div>
       </div>
     </template>
@@ -51,10 +51,10 @@
         What do you think of this galaxy?
       </p>
       <p>
-        If it looks good to you, click the <v-icon>mdi-plus</v-icon> button to add it to your galaxy collection.
+        If it looks good to you, add it to your galaxy collection.
       </p>
       <p>
-        If you’d rather look for another galaxy, click the <v-icon>mdi-cached</v-icon> button to reset the view and choose a different green dot.
+        If you’d rather look for another galaxy, reset the view and choose a different green dot.
       </p>
     </div>
   </scaffold-alert>

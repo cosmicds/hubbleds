@@ -9,19 +9,22 @@
     :allow-back="false"
   >
     <template #back-content>
-      <span>Use left menu to return to Introduction.<br>(Press <v-icon>mdi-menu</v-icon> in upper left if menu is not open)</span>
+      <div>
+        Use left menu to return to Introduction.<br>
+        (Open/close menu with <v-icon class="white--text">mdi-menu</v-icon> button in upper left)
+      </div>
     </template>
     <div
       class="mb-4"
     >
       <p>
-        <b> These orange boxes will GUIDE you as you move through the story. </b>
+        <strong>These orange boxes will GUIDE you as you move through the story.</strong>
       </p>
       <p>
-        The information in the guideline boxes will suggest what you should focus on, or what you should do next.  
+        The information in the guideline boxes will suggest what you should focus on, or what you should do next.
       </p>
       <p>
-        The images, tables, or graph where the guideline suggests action will also be highlighted with an <b> orange outline.</b>
+        The images, tables, or graph where the guideline suggests action will also be highlighted with an <strong>orange outline</strong>.
       </p>
     </div>
     

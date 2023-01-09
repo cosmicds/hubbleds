@@ -12,7 +12,7 @@
   >
 
     <template #before-next>
-      Click the <v-icon>mdi-lambda</v-icon> button.
+      <strong>Click</strong> the <v-btn icon tile dark x-small disabled class="mx-1" elevation="2" style="background-color: #0277BD; border-radius: 5px;"><v-icon style="color:white!important;">mdi-lambda</v-icon></v-btn> icon in the Spectrum Viewer toolbar
     </template>
 
     <div
@@ -31,7 +31,7 @@
       <p
         v-if="!state.lambda_on"
       >
-        Click the <v-icon>mdi-lambda</v-icon> icon in the Spectrum Viewer toolbar to display the line's rest wavelength on the graph.
+        You can toggle the line's rest wavelength on/off to see it overlayed on the graph.
       </p>
       <p
         v-if="state.lambda_on"
@@ -41,7 +41,7 @@
       <p
         v-if="state.lambda_on"
       >
-        You can click the <v-icon>mdi-lambda</v-icon> icon again to toggle the rest wavelength back off.
+        You can click the <v-btn icon tile dark small disabled class="mx-1" elevation="2" style="background-color: #0277BD; border-radius: 5px;"><v-icon style="color:white!important;">mdi-lambda</v-icon></v-btn> icon again to toggle the rest wavelength back off.
       </p>
     </div>
   </scaffold-alert>

@@ -12,6 +12,15 @@
         >
           State
         </v-btn>
+        <v-btn
+          color="error"
+          class="black--text"
+          @click="() => {
+            stage_state.marker = 'sho_est1';
+          }"
+        >
+          jump
+        </v-btn>
         Marker: {{ stage_state.marker }}
       </v-col>
     </v-row>
@@ -145,22 +154,26 @@
         cols="12"
         lg="8"
       >
-        <v-card
-          :color="stage_state.my_galaxies_plot_highlights.includes(stage_state.marker) ? 'info' : 'black'"
-          :class="stage_state.my_galaxies_plot_highlights.includes(stage_state.marker) ? 'pa-1 my-n1' : 'pa-0'"
-          outlined
-        >
-          <v-row>
-            <v-col cols="3">
+        <v-row>
+          <v-col cols="3">
+            <v-card
+              color="#385F73"
+            >
               <c-layer-toggle/>
-            </v-col>
-            <v-col>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card
+              :color="stage_state.my_galaxies_plot_highlights.includes(stage_state.marker) ? 'info' : 'black'"
+              :class="stage_state.my_galaxies_plot_highlights.includes(stage_state.marker) ? 'pa-1 my-n1' : 'pa-0'"
+              outlined
+            >
               <v-lazy>
                 <jupyter-widget :widget="viewers.layer_viewer"/>
               </v-lazy>
-            </v-col>
-          </v-row>
-        </v-card>
+            </v-card>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col
             cols="10"

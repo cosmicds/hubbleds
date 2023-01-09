@@ -31,7 +31,7 @@
             >
               <v-col cols="6">
                 <p>
-                  Welcome to the <b><i>Hubble's Law</i> Cosmic Data Story</b> where you will use real astronomical data&#8212;old and new&#8212;to investigate the mysteries of our Universe. In particular, let's ask:
+                  Welcome to the <strong><i>Hubble's Law</i> Cosmic Data Story</strong> where you will use real astronomical data&#8212;old and new&#8212;to investigate the mysteries of our Universe. In particular, let's ask:
                 </p>
                 <v-card
                   class="justify-center pa-2 mx-12 my-8"
@@ -51,10 +51,10 @@
                   </p>
                 </v-card>
                 <p>
-                  When scientists collect data to answer questions no one has answered yet, there is no answer key in the back of some book. So, as you explore this data story, you will learn how to <b>evaluate the reliability</b> of your results. Are the data really good enough to support a conclusion? <b>How can you know?</b> 
+                  When scientists collect data to answer questions no one has answered yet, there is no answer key in the back of some book. So, as you explore this data story, you will learn how to <strong>evaluate the reliability</strong> of your results. Are the data really good enough to support a conclusion? <strong>How can you know?</strong> 
                 </p>
                 <p>
-                  Just as scientists constantly must, you'll <b>determine what can be concluded</b> from the data at-hand, and <b>how much confidence</b> you can have in your conclusions.
+                  Just as scientists constantly must, you'll <strong>determine what can be concluded</strong> from the data at-hand, and <strong>how much confidence</strong> you can have in your conclusions.
                 </p>
                 <p>
                   Let's get started.
@@ -86,7 +86,7 @@
             <v-row>
               <v-col cols="6">
                 <p>
-                  Imagine that you are an astronomer living in the <b>early 1920s</b>. You and your colleagues around the world, including Albert Einstein, would agree that the <b>universe is unchanging</b> and <b>everlasting.</b> In other words, you expect that the universe always has been and will be the way it is the way you see it now. This picture of an unchanging universe had rarely been questioned throughout human history, thanks in large part to <b>Aristotle</b>, who embraced perfection and permanence. 
+                  Imagine that you are an astronomer living in the <strong>early 1920s</strong>. You and your colleagues around the world, including Albert Einstein, would agree that the <strong>universe is unchanging</strong> and <strong>everlasting.</strong> In other words, you expect that the universe always has been and will be the way it is the way you see it now. This picture of an unchanging universe had rarely been questioned throughout human history, thanks in large part to <strong>Aristotle</strong>, who embraced perfection and permanence. 
                 </p>
                 </v-col>
                 <v-col cols="6">
@@ -99,7 +99,7 @@
                   class="text-center mt-2 grey--text"
                   style="width: 100%;"
                 >
-                  <i>Plato (red robe) and his pupil Aristotle (blue robe) at the center of “The School of Athens,” painted by Raphael for the walls of the Vatican between 1509 and 1511. Aristotle lived from 384-322 BC, and his theory of an unchanging universe persisted until the time of Edwin Hubble, 23 centuries later. </i>
+                  <i>Plato (red robe) and his pupil Aristotle (blue robe) at the center of “The School of Athens,” painted by Raphael for the walls of the Vatican between 1509 and 1511. Aristotle lived from 384-322 BC, and his theory of an unchanging universe persisted until the time of Edwin Hubble, 23 centuries later.</i>
                 </div>
               </v-col>
                 </p>
@@ -120,13 +120,13 @@
                   style="min-height: 120px;"
                 >
                   <p>
-                    The frame below provides an <b>interactive view </b>of the night sky, using images from real observations.
+                    The frame below provides an <strong>interactive view</strong> of the night sky, using images from real observations.
                   </p>
                   <p>
-                    The brighter band you see going diagonally across the frame (before you try the controls) is caused by stars and dust in our home galaxy, called the <b>Milky Way.</b>
+                    The brighter band you see going diagonally across the frame (before you try the controls) is caused by stars and dust in our home galaxy, called the <strong>Milky Way.</strong>
                   </p>
                   <p>
-                    You can explore this view and see what is in the night sky, as astronomers have been doing for centuries. <b>Pan</b> (click and drag) and <b>zoom</b> (scroll in and out) to see parts of the sky beyond this view.
+                    You can explore this view and see what is in the night sky, as astronomers have been doing for centuries. <strong>Pan</strong> (click and drag) and <strong>zoom</strong> (scroll in and out) to see parts of the sky beyond this view.
                 </div>
                 <div
                   class="mb-2 mx-4"
@@ -199,7 +199,7 @@
             </v-row>
           </v-container>                                      
         </v-card-text>
-       </v-window-item>
+      </v-window-item>
 
       <v-window-item :value="3" 
         class="no-transition"
@@ -212,10 +212,10 @@
                   style="min-height: 120px;"
                 >
                   <p>
-                    As you explore the cosmic sky, you may see stars and fuzzy blobs called <b>nebulae</b>. In the 1700's, French astronomer Charles Messier cataloged as many nebulae as he could find. They are known as Messier Objects and are identified by their catalog number. For example, M13 represents the 13th Messier Object in the catalog.
+                    As you explore the cosmic sky, you may see stars and fuzzy blobs called <strong>nebulae</strong>. In the 1700's, French astronomer Charles Messier cataloged as many nebulae as he could find. They are known as Messier Objects and are identified by their catalog number. For example, M13 represents the 13th Messier Object in the catalog.
                   </p>
                   <p>
-                    Click on the buttons to the right to <b>view some Messier Objects</b>. (Fun fact: “nebula” means “cloud” or “fog” in Latin.)
+                    Click on the buttons to the right to <strong>view some Messier Objects</strong>. (Fun fact: “nebula” means “cloud” or “fog” in Latin.)
                   </p>
                 </div>
                 <div
@@ -384,7 +384,7 @@
                   style="min-height: 120px;"
                 >
                   <p>
-                    <b>M31</b> and <b>M51</b> are examples of a particular type of nebula that interested astronomers in the early 1900s. They were known as <b>spiral nebulae</b> because of their distinctive spiral shape. In 1920, there was a Great Debate between astronomers Harlow Shapley and Heber Curtis questioning whether the spiral nebulae were perhaps young solar systems being born within our Milky Way galaxy or were "island universes” beyond it.
+                    <strong>M31</strong> and <strong>M51</strong> are examples of a particular type of nebula that interested astronomers in the early 1900s. They were known as <strong>spiral nebulae</strong> because of their distinctive spiral shape. In 1920, there was a Great Debate between astronomers Harlow Shapley and Heber Curtis questioning whether the spiral nebulae were perhaps young solar systems being born within our Milky Way galaxy or were "island universes” beyond it.
                   </p>
                   <p>
                     While you view these spiral nebulae, ponder what you would need to know to determine if they are within the Milky Way or beyond it. (Don't worry if you don't know. You will learn in this Data Story.) 
@@ -528,7 +528,7 @@
             <v-row>
               <v-col>
                 <p>
-                  Between 1907&#8211;1921, Harvard astronomer <b>Henrietta Leavitt</b> observed Cepheid variable stars in a nebula called the Small Magellanic Cloud (SMC). By analyzing changes in the Cepheid stars’ brightness over time, she discovered that <b>fainter Cepheids vary more slowly than brighter ones</b>, as shown in her graph below. This important discovery made it possible to determine distances to spiral nebulae and finally resolve the Shapley-Curtis Great Debate: it turned out that spiral nebulae are far beyond the Milky Way and constitute <b>individual galaxies</b> in their own right.
+                  Between 1907&#8211;1921, Harvard astronomer <strong>Henrietta Leavitt</strong> observed Cepheid variable stars in a nebula called the Small Magellanic Cloud (SMC). By analyzing changes in the Cepheid stars’ brightness over time, she discovered that <strong>fainter Cepheids vary more slowly than brighter ones</strong>, as shown in her graph below. This important discovery made it possible to determine distances to spiral nebulae and finally resolve the Shapley-Curtis Great Debate: it turned out that spiral nebulae are far beyond the Milky Way and constitute <strong>individual galaxies</strong> in their own right.
                 </p>
               </v-col>
             </v-row>
@@ -595,7 +595,7 @@
             <v-row>
               <v-col>
                 <p>
-                  Around this same time, astronomer <b>Vesto Slipher</b> observed spiral nebulae using a spectrograph. Spectrographs can reveal a lot about an object in space, like what the object is made of or how fast it is moving toward or away from the observer.
+                  Around this same time, astronomer <strong>Vesto Slipher</strong> observed spiral nebulae using a spectrograph. Spectrographs can reveal a lot about an object in space, like what the object is made of or how fast it is moving toward or away from the observer.
                 </p>
                 <p>
                   Recall that the prevailing view in the early 1900s was that the universe is unchanging and eternal. As a result, the dominant expectation was that distant spiral nebulae are either not moving at all, or if they are moving then they are moving randomly.
