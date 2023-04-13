@@ -7,7 +7,7 @@ from cosmicds.phases import Stage
 from cosmicds.utils import API_URL, CDSJSONEncoder
 from echo import add_callback
 
-from .data_management import MEAS_TO_STATE, STUDENT_MEASUREMENTS_LABEL, UNITS_TO_STATE
+from .data_management import MEAS_TO_STATE, STUDENT_MEASUREMENTS_LABEL, UNITS_TO_STATE, DISTANCE_COMPONENT, VELOCITY_COMPONENT
 from .utils import HUBBLE_ROUTE_PATH, distance_from_angular_size, velocity_from_wavelengths
 
 
@@ -84,17 +84,17 @@ class HubbleStage(Stage):
         # We block submission to avoid sending unnecessary requests
         data = self.data_collection[dc_name]
         if comp_name == "measwave":
-            velocity = data["velocity"][index]
+            velocity = data[VELOCITY_COMPONENT][index]
             if velocity is not None:
                 rest = data["restwave"][index]
                 new_velocity = velocity_from_wavelengths(value, rest)
-                self.update_data_value(dc_name, "velocity", new_velocity, index, block_submit=True)
+                self.update_data_value(dc_name, VELOCITY_COMPONENT , new_velocity, index, block_submit=True)
 
         if comp_name == "angular_size":
-            distance = data["distance"][index]
+            distance = data[DISTANCE_COMPONENT][index]
             if distance is not None:
                 new_distance = distance_from_angular_size(value)
-                self.update_data_value(dc_name, "distance", new_distance, index, block_submit=True)
+                self.update_data_value(dc_name, DISTANCE_COMPONENT, new_distance, index, block_submit=True)
 
         # Submit a measurement, if necessary
         if self.app_state.update_db \
