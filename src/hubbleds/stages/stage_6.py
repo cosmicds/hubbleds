@@ -1,7 +1,7 @@
 from os.path import join
 from pathlib import Path
 
-from echo import CallbackProperty, add_callback, callback_property
+from echo import CallbackProperty, add_callback, callback_property, keep_in_sync
 from glue.core.message import NumericalDataChangedMessage
 from glue.core import Subset
 from traitlets import Bool, default
@@ -28,6 +28,8 @@ class StageState(CDSState):
     our_age = CallbackProperty(0)
 
     max_prodata_index = CallbackProperty(0)
+
+    total_score = CallbackProperty(0)
     
     markers = [
         'pro_dat0',
@@ -125,6 +127,7 @@ class StageFive(HubbleStage):
         # self.stage_state.marker = self.stage_state.markers[0]
         
         add_callback(self.stage_state, 'marker', self._on_marker_update, echo_old=True)
+        self._score_sync = keep_in_sync(self.story_state, 'total_score', self.stage_state, 'total_score');
         
         prodata_viewer = self.add_viewer(HubbleScatterView, "prodata_viewer",
                                          "Professional Data")

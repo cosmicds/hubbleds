@@ -13,7 +13,7 @@
       class="mb-4"
     >
     <p>
-      You have completed the Hubble Data Story with {{ story_state.total_score}} <v-icon>mdi-piggy-bank</v-icon> points. Nice work!
+      You have completed the Hubble Data Story with {{ state.total_score }} <v-icon>mdi-piggy-bank</v-icon> points. Nice work!
     </p>
     <p>
       You may be wondering "So what's the <strong>right</strong> answer?"
@@ -29,6 +29,6 @@
 
 <script>
 module.exports = {
- props: ['state', 'story_state']
+ props: ['state'] 
 }
 </script>

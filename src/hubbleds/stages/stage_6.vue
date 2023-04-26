@@ -76,8 +76,7 @@
         <guideline-story-finish
           v-if="stage_state.marker == 'sto_fin1'"
           v-intersect.once="scrollIntoView"
-          :state="stage_state"
-          :story_state="story_state"/>
+          :state="stage_state"/> 
 
       </v-col>
       <v-col
