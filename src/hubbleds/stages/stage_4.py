@@ -1,17 +1,15 @@
 from functools import partial
-from os.path import join
-from pathlib import Path
 
-from numpy import asarray, where
+from numpy import where
 from cosmicds.components.layer_toggle import LayerToggle
 from cosmicds.components.table import Table
-from cosmicds.phases import CDSState
 from cosmicds.registries import register_stage
 from cosmicds.utils import extend_tool, load_template, update_figure_css
 from echo import CallbackProperty, add_callback, remove_callback, DictCallbackProperty, ListCallbackProperty
 from glue.core.message import NumericalDataChangedMessage
 from glue.core.data import Data
 from glue_jupyter.link import link
+from hubbleds.marker_state import MarkerState
 from hubbleds.utils import IMAGE_BASE_URL, AGE_CONSTANT
 from traitlets import default, Bool
 from ..data.styles import load_style
@@ -24,7 +22,7 @@ from ..viewers import HubbleScatterView
 from ..viewers.viewers import HubbleFitLayerView
 
 
-class StageState(CDSState):
+class StageState(MarkerState):
     trend_response = CallbackProperty(False)
     relvel_response = CallbackProperty(False)
     race_response = CallbackProperty(False)
@@ -35,16 +33,11 @@ class StageState(CDSState):
     stage_4_complete = CallbackProperty(False)
     stage_ready = CallbackProperty(False)
 
-    marker = CallbackProperty("")
-    indices = CallbackProperty({})
-    advance_marker = CallbackProperty(True)
-
     image_location = CallbackProperty(f"{IMAGE_BASE_URL}/stage_three")
 
     hypgal_distance = CallbackProperty(0)
     hypgal_velocity = CallbackProperty(0)
     age_const = CallbackProperty(float(AGE_CONSTANT))
-
 
     #TrendsData ver
     define_trend = CallbackProperty(False)
@@ -110,24 +103,6 @@ class StageState(CDSState):
         'my_galaxies_plot_highlights', 'all_galaxies_plot_highlights',
     ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.marker_index = 0
-        self.marker = self.markers[0]
-        self.indices = {marker: idx for idx, marker in enumerate(self.markers)}
-
-    def marker_before(self, marker):
-        return self.indices[self.marker] < self.indices[marker]
-
-    def marker_after(self, marker):
-        return self.indices[self.marker] > self.indices[marker]
-    
-    def marker_reached(self, marker):
-        return self.indices[self.marker] >= self.indices[marker]
-
-    def move_marker_forward(self, marker_text, _value=None):
-        index = min(self.markers.index(marker_text) + 1, len(self.markers) - 1)
-        self.marker = self.markers[index]
 
 @register_stage(story="hubbles_law", index=4, steps=[
     # "MY DATA"

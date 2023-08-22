@@ -2,13 +2,13 @@ import logging
 import requests
 
 import astropy.units as u
-from astropy.coordinates import SkyCoord
 from cosmicds.components.table import Table
-from cosmicds.phases import CDSState
 from cosmicds.registries import register_stage
 from cosmicds.utils import extend_tool, load_template, API_URL
 from echo import CallbackProperty, add_callback, ignore_callback, callback_property, delay_callback, ListCallbackProperty
 from traitlets import default, Bool
+
+from hubbleds.marker_state import MarkerState
 
 from ..components import DistanceSidebar, DistanceTool, DosDontsSlideShow
 from ..data_management import *
@@ -40,7 +40,7 @@ def print_function_name(func):
         return func(*args, **kwargs)
     return wrapper
 
-class StageState(CDSState):
+class StageState(MarkerState):
     intro = CallbackProperty(True)
     galaxy = CallbackProperty({})
     galaxy_selected = CallbackProperty(False)
@@ -50,9 +50,6 @@ class StageState(CDSState):
     angsizes_total = CallbackProperty(0)
     distances_total = CallbackProperty(0)
 
-    marker = CallbackProperty("")
-    indices = CallbackProperty({})
-    advance_marker = CallbackProperty(True)
     image_location_distance = CallbackProperty(f"{IMAGE_BASE_URL}/stage_two_distance")
     image_location_dosdonts = CallbackProperty(f"{IMAGE_BASE_URL}/stage_two_dos_donts")
     distance_sidebar = CallbackProperty(False)
@@ -167,52 +164,6 @@ class StageState(CDSState):
         'csv_highlights', 'table_highlights',
         'distances_total', 'image_location'
     ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.marker = self.markers[0]
-        self.indices = {marker: idx for idx, marker in enumerate(self.markers)}
-        
-    
-    @callback_property
-    def marker_forward(self):
-        return None
-
-    @callback_property
-    def marker_backward(self):
-        return None
-    
-    @marker_backward.setter
-    def marker_backward(self, value):
-        if value is None:
-            return
-        index = self.indices[self.marker]
-        new_index = min(max(index - value, 0), len(self.markers) - 1)
-        self.marker = self.markers[new_index]
-
-    @marker_forward.setter
-    def marker_forward(self, value):
-        if value is None:
-            return
-        index = self.indices[self.marker]
-        new_index = min(max(index + value, 0), len(self.markers) - 1)
-        self.marker = self.markers[new_index]
-
-    def marker_before(self, marker):
-        return self.indices[self.marker] < self.indices[marker]
-
-    def move_marker_forward(self, marker_text, _value=None):
-        index = min(self.markers.index(marker_text) + 1, len(self.markers) - 1)
-        self.marker = self.markers[index]
-    
-    def marker_after(self, marker):
-        return self.indices[self.marker] > self.indices[marker]
-
-    def marker_reached(self, marker):
-        return self.indices[self.marker] >= self.indices[marker]
-
-    def marker_index(self, marker):
-        return self.indices[marker]
     
 
 @register_stage(story="hubbles_law", index=3, steps=[

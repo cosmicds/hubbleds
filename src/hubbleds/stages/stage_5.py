@@ -5,13 +5,13 @@ from glue.core.subset import RangeSubsetState
 from numpy import where
 # from cosmicds.components.layer_toggle import LayerToggle
 from cosmicds.components import PercentageSelector, StatisticsSelector, Table 
-from cosmicds.phases import CDSState
 from cosmicds.registries import register_stage
 from cosmicds.utils import extend_tool, load_template, update_figure_css
 from echo import CallbackProperty, DictCallbackProperty, add_callback, callback_property, ListCallbackProperty, delay_callback
 from glue.core.message import NumericalDataChangedMessage
 from glue_jupyter.link import link
 from hubbleds.components.id_slider import IDSlider
+from hubbleds.marker_state import MarkerState
 from hubbleds.utils import IMAGE_BASE_URL, AGE_CONSTANT
 from traitlets import default, Bool
 from ..data.styles import load_style
@@ -24,7 +24,7 @@ from ..viewers.viewers import \
     HubbleClassHistogramView, HubbleHistogramView
 
 
-class StageState(CDSState):
+class StageState(MarkerState):
     relage_response = CallbackProperty(False)
     two_hist_response = CallbackProperty(False)
     two_hist3_response = CallbackProperty(False)
@@ -70,10 +70,6 @@ class StageState(CDSState):
             "Mode"
         ]
     })
-
-    marker = CallbackProperty("")
-    indices = CallbackProperty({})
-    advance_marker = CallbackProperty(True)
 
     image_location = CallbackProperty(f"{IMAGE_BASE_URL}/mean_median_mode") 
     class_data_size = CallbackProperty(0)
@@ -172,44 +168,6 @@ class StageState(CDSState):
         'my_class_hist_highlights', 'all_classes_hist_highlights',
     ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.marker_index = 0
-        self.marker = self.markers[0]
-        self.indices = {marker: idx for idx, marker in enumerate(self.markers)}
-
-    @callback_property
-    def marker_forward(self):
-        return None
-
-    @callback_property
-    def marker_backward(self):
-        return None
-    
-    @marker_backward.setter
-    def marker_backward(self, value):
-        index = self.indices[self.marker]
-        new_index = min(max(index - value, 0), len(self.markers) - 1)
-        self.marker = self.markers[new_index]
-
-    @marker_forward.setter
-    def marker_forward(self, value):
-        index = self.indices[self.marker]
-        new_index = min(max(index + value, 0), len(self.markers) - 1)
-        self.marker = self.markers[new_index]
-
-    def marker_before(self, marker):
-        return self.indices[self.marker] < self.indices[marker]
-
-    def marker_after(self, marker):
-        return self.indices[self.marker] > self.indices[marker]
-    
-    def marker_reached(self, marker):
-        return self.indices[self.marker] >= self.indices[marker]
-
-    def move_marker_forward(self, marker_text, _value=None):
-        index = min(self.markers.index(marker_text) + 1, len(self.markers) - 1)
-        self.marker = self.markers[index]
 
 @register_stage(story="hubbles_law", index=5, steps=[
     # "CLASS AGE",
