@@ -6,6 +6,7 @@ from cosmicds.phases import CDSState
 class MarkerState(CDSState):
     marker = CallbackProperty("")
     markers = CallbackProperty([])
+    max_marker_index = CallbackProperty(0)
     indices = CallbackProperty({})
     advance_marker = CallbackProperty(True)
     progress = CallbackProperty(0)
@@ -27,12 +28,16 @@ class MarkerState(CDSState):
 
     @marker_backward.setter
     def marker_backward(self, value):
+        if value is None:
+            return
         index = self.indices[self.marker]
         new_index = min(max(index - value, 0), len(self.markers) - 1)
         self.marker = self.markers[new_index]
 
     @marker_forward.setter
     def marker_forward(self, value):
+        if value is None:
+            return
         index = self.indices[self.marker]
         new_index = min(max(index + value, 0), len(self.markers) - 1)
         self.marker = self.markers[new_index]
@@ -54,5 +59,8 @@ class MarkerState(CDSState):
         return self.indices[marker]
 
     def _on_marker_update(self, marker):
-        index = self.indices[marker]
-        self.progress = max(index / len(self.markers), self.progress)
+        index = self.indices.get(marker, None)
+        if index is None:
+            return
+        self.max_marker_index = max(index, self.max_marker_index)
+        self.progress = self.max_marker_index / len(self.markers)
