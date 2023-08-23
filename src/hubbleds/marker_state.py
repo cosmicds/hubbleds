@@ -6,6 +6,7 @@ from cosmicds.phases import CDSState
 class MarkerState(CDSState):
     marker = CallbackProperty("")
     markers = CallbackProperty([])
+    n_markers = CallbackProperty(0)
     max_marker_index = CallbackProperty(0)
     indices = CallbackProperty({})
     advance_marker = CallbackProperty(True)
@@ -15,6 +16,7 @@ class MarkerState(CDSState):
         super().__init__(*args, **kwargs)
         self.marker_index = 0
         self.marker = self.markers[0]
+        self.n_markers = len(self.markers)
         self.indices = {marker: idx for idx, marker in enumerate(self.markers)}
         add_callback(self, 'marker', self._on_marker_update)
 
