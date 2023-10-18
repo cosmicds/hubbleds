@@ -1,34 +1,27 @@
 import logging
 from random import sample
-from pathlib import Path
-from os.path import join
-
 
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 from cosmicds.components.table import Table
-from cosmicds.phases import CDSState
 from cosmicds.registries import register_stage
-from cosmicds.utils import load_template, update_figure_css, debounce, extend_tool
+from cosmicds.utils import load_template, update_figure_css, debounce
 from echo import add_callback, ignore_callback, CallbackProperty, \
-    DictCallbackProperty, ListCallbackProperty, delay_callback, \
-    callback_property
+    DictCallbackProperty, ListCallbackProperty
 from glue.core import Data
-from glue.core.message import NumericalDataChangedMessage, SubsetUpdateMessage
+from glue.core.message import NumericalDataChangedMessage
 from numpy import isin, zeros
-from traitlets import Bool, default, validate
+from traitlets import Bool, default
+
+from hubbleds.marker_state import MarkerState
 
 from ..components import SpectrumSlideshow, SelectionTool, SpectrumMeasurementTutorialSequence, DotplotTutorialSlideshow
 from ..data.styles import load_style
 from ..data_management import *
 from ..stage import HubbleStage
 from ..utils import GALAXY_FOV, H_ALPHA_REST_LAMBDA, IMAGE_BASE_URL, \
-    MG_REST_LAMBDA, SPEED_OF_LIGHT, velocity_from_wavelengths
+    MG_REST_LAMBDA, velocity_from_wavelengths
 from ..viewers import SpectrumView, HubbleDotPlotView
-from ..viewers.viewers import HubbleHistogramView
-from glue.core.data_factories import load_data
-from bqplot.marks import Lines
-from glue_jupyter.link import link
 
 log = logging.getLogger()
 
@@ -51,7 +44,7 @@ def print_function_name(func):
         return func(*args, **kwargs)
     return wrapper
 
-class StageState(CDSState):
+class StageState(MarkerState):
     gals_total = CallbackProperty(0)
     gals_max = CallbackProperty(5)
     gal_selected = CallbackProperty(False)
@@ -69,9 +62,7 @@ class StageState(CDSState):
     velocities_total = CallbackProperty(0)
     zoom_tool_activated = CallbackProperty(False)
     stage_1_complete = CallbackProperty(False)
-    show_meas_tutorial = CallbackProperty(False)
-    
-    
+    show_meas_tutorial = CallbackProperty(False) 
 
     doppler_calc_state = DictCallbackProperty({
         'step': 0,
@@ -113,9 +104,6 @@ class StageState(CDSState):
     meas_two_row_selected = CallbackProperty(False) #need to reinitialize to false
     meas_two_made = CallbackProperty(False) #need to reinitialize to false
     
-    marker = CallbackProperty("")
-    marker_backward = CallbackProperty()
-    marker_forward = CallbackProperty()
     indices = DictCallbackProperty()
     image_location = CallbackProperty(f"{IMAGE_BASE_URL}/stage_one_spectrum")
     lambda_rest = CallbackProperty(0)
@@ -137,8 +125,6 @@ class StageState(CDSState):
     has_bad_velocities = CallbackProperty(False)
     bad_velocity_index = ListCallbackProperty([])
     has_multiple_bad_velocities = CallbackProperty(False)
-    
-    
     
     markers = CallbackProperty([
         'mee_gui1',
@@ -228,43 +214,6 @@ class StageState(CDSState):
         'velocity_tolerance', 'has_bad_velocities',
         'bad_velocity_index', 'has_multiple_bad_velocities'
     ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.marker = self.markers[0]
-        self.indices = {marker: idx for idx, marker in enumerate(self.markers)}
-
-    @callback_property
-    def marker_forward(self):
-        return None
-
-    @callback_property
-    def marker_backward(self):
-        return None
-    
-    @marker_backward.setter
-    def marker_backward(self, value):
-        index = self.indices[self.marker]
-        new_index = min(max(index - value, 0), len(self.markers) - 1)
-        self.marker = self.markers[new_index]
-
-    @marker_forward.setter
-    def marker_forward(self, value):
-        index = self.indices[self.marker]
-        new_index = min(max(index + value, 0), len(self.markers) - 1)
-        self.marker = self.markers[new_index]
-
-    def marker_before(self, marker):
-        return self.indices[self.marker] < self.indices[marker]
-
-    def marker_after(self, marker):
-        return self.indices[self.marker] > self.indices[marker]
-
-    def marker_reached(self, marker):
-        return self.indices[self.marker] >= self.indices[marker]
-
-    def marker_index(self, marker):
-        return self.indices[marker]
 
 
 @register_stage(story="hubbles_law", index=1, steps=[
