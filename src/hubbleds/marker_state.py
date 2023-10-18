@@ -65,4 +65,4 @@ class MarkerState(CDSState):
         if index is None:
             return
         self.max_marker_index = max(index, self.max_marker_index)
-        self.progress = self.max_marker_index / len(self.markers)
+        self.progress = self.max_marker_index / (len(self.markers) - 1)
