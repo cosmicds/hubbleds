@@ -631,7 +631,6 @@ def Page():
                         else:
                             example_measurements_glue = gjapp.data_collection[EXAMPLE_GALAXY_MEASUREMENTS]
                             example_measurements_glue.style.color = "red"
-
                 
                         egsd = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA]
                         add_link(
