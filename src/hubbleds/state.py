@@ -8,7 +8,6 @@ from functools import cached_property
 from astropy.table import Table
 from pydantic import Field
 
-
 from solara.toestand import Ref
 
 from .free_response import FreeResponses
