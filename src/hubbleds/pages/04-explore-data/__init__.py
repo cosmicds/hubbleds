@@ -410,7 +410,9 @@ def Page():
                                            x_axis_label="Distance (Mpc)",
                                            y_axis_label="Velocity (km/s)",
                                            viewer_height=DEFAULT_VIEWER_HEIGHT,
-                                           plot_margins=PLOTLY_MARGINS,draw_enabled=draw_enabled.value, fit_enabled=fit_enabled.value)
+                                           plot_margins=PLOTLY_MARGINS,
+                                           draw_enabled=draw_enabled.value,
+                                           fit_enabled=fit_enabled.value)
 
             with rv.Col(cols=10, offset=1):
                 if COMPONENT_STATE.value.current_step_at_or_after(
