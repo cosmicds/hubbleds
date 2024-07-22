@@ -38,7 +38,7 @@ def Layout(children=[]):
             GLOBAL_STATE, LOCAL_STATE
         )
 
-        logger.info("Finished loading state.")
+        logger.info("Finished loading measurements.")
         loaded_states.set(True)
 
         Ref(LOCAL_STATE.fields.measurements_loaded).set(True)
