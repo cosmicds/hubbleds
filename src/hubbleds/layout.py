@@ -70,5 +70,6 @@ def Layout(children=[]):
         children=children,
         story_name=LOCAL_STATE.value.story_id,
         story_title=LOCAL_STATE.value.title,
+        on_student_info_loaded=_on_student_info_loaded,
     ):
         pass
