@@ -338,8 +338,20 @@ def Page():
                     layers_visible = (False, True)
                     with rv.Col(class_="no-padding"):
                         PlotlyLayerToggle(chart_id="line-draw-viewer",
+                        # (Plotly calls layers traces, but we'll use layers for consistency with glue).
+                        # For the line draw viewer:
+                        # Layer 0 = line that the student draws
+                        # Layer 1, 2 = fit lines for data layers.
+                        # Layer 3, 4 = data layers.
+                        # Layer 5 = endpoint for drawn line.
+                        # Add Layer 6 = best fit galaxy marker.
                                           layer_indices=(3, 4),
-                                          initial_selected=(1, 1),
+
+                        # These are the indices (within the specified tuple, which has 2 data layers) of the layers that we want to have initially checked/displayed. 
+                        # If only 1 layer is selected, you still need the comma, otherwise this will be interpreted as an int instead of a tuple. This means "check & display layer 1, which is the student data layer."
+                        
+                                          initial_selected=(1,),
+                                          enabled=(False, True),
                                           colors=colors,
                                           labels=("Class Data", "My Data"))
                     with rv.Col(class_="no-padding"):
