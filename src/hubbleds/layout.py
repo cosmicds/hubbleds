@@ -38,7 +38,7 @@ def Layout(children=[]):
             GLOBAL_STATE, LOCAL_STATE
         )
 
-        logger.info("Finished loading measurements.")
+        logger.info("Finished loading state.")
         loaded_states.set(True)
 
         Ref(LOCAL_STATE.fields.measurements_loaded).set(True)
@@ -70,6 +70,5 @@ def Layout(children=[]):
         children=children,
         story_name=LOCAL_STATE.value.story_id,
         story_title=LOCAL_STATE.value.title,
-        on_student_info_loaded=_on_student_info_loaded,
     ):
         pass
