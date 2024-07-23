@@ -335,12 +335,19 @@ def Page():
                 show=COMPONENT_STATE.value.is_current_step(Marker.sho_est2),
             )
 
+        enabled = solara.use_reactive((False, True))
+        def _on_marker_update(marker):
+            if Marker.is_at_or_after(marker, Marker.tre_dat2):
+                enabled.set((True, True))
+            else:
+                enabled.set((False, True))
+        Ref(COMPONENT_STATE.fields.current_step).subscribe(_on_marker_update)
+
         with rv.Col(class_="no-padding"):
             if COMPONENT_STATE.value.current_step_between(Marker.tre_dat1, Marker.sho_est2):
                 with solara.Columns([3,9], classes=["no-padding"]):
                     colors = ("#3A86FF", "#FB5607")
                     sizes = (8, 12)
-                    layers_visible = (False, True)
                     with rv.Col(class_="no-padding"):
                         PlotlyLayerToggle(chart_id="line-draw-viewer",
                         # (Plotly calls layers traces, but we'll use layers for consistency with glue).
@@ -356,13 +363,14 @@ def Page():
                         # If only 1 layer is selected, you still need the comma, otherwise this will be interpreted as an int instead of a tuple. This means "check & display layer 1, which is the student data layer."
 
                                           initial_selected=(1,),
-                                          enabled=(False, True),
+                                          enabled=enabled.value,
                                           colors=colors,
                                           labels=("Class Data", "My Data"))
                     with rv.Col(class_="no-padding"):
                         if student_plot_data.value and class_plot_data.value:
                             # Note the ordering here - we want the student data on top
                             layers = (class_plot_data.value, student_plot_data.value)
+                            layers_visible = (False, True)
 
                             plot_data=[
                                 {
