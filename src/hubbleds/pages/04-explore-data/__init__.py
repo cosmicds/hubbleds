@@ -335,13 +335,29 @@ def Page():
                 show=COMPONENT_STATE.value.is_current_step(Marker.sho_est2),
             )
 
-        enabled = solara.use_reactive((False, True))
+        layers_enabled = solara.use_reactive((False, True))
+        draw_enabled = solara.use_reactive(False)
+        fit_enabled = solara.use_reactive(False)
+
         def _on_marker_update(marker):
-            if Marker.is_at_or_after(marker, Marker.tre_dat2):
-                enabled.set((True, True))
+            if Marker.is_between(marker, Marker.tre_dat2, Marker.hub_exp1):
+                layers_enabled.set((True, True))
             else:
-                enabled.set((False, True))
+                layers_enabled.set((False, True))
+
+            if Marker.is_at_or_after(marker, Marker.tre_lin2):
+                draw_enabled.set(True)
+            else:
+                draw_enabled.set(False)
+
+            if Marker.is_at_or_after(marker, Marker.bes_fit1):
+                fit_enabled.set(True)
+            else:
+                fit_enabled.set(False)
+            
         Ref(COMPONENT_STATE.fields.current_step).subscribe(_on_marker_update)
+
+
 
         with rv.Col(class_="no-padding"):
             if COMPONENT_STATE.value.current_step_between(Marker.tre_dat1, Marker.sho_est2):
@@ -363,7 +379,7 @@ def Page():
                         # If only 1 layer is selected, you still need the comma, otherwise this will be interpreted as an int instead of a tuple. This means "check & display layer 1, which is the student data layer."
 
                                           initial_selected=(1,),
-                                          enabled=enabled.value,
+                                          enabled=layers_enabled.value,
                                           colors=colors,
                                           labels=("Class Data", "My Data"))
                     with rv.Col(class_="no-padding"):
@@ -394,7 +410,7 @@ def Page():
                                            x_axis_label="Distance (Mpc)",
                                            y_axis_label="Velocity (km/s)",
                                            viewer_height=DEFAULT_VIEWER_HEIGHT,
-                                           plot_margins=PLOTLY_MARGINS)
+                                           plot_margins=PLOTLY_MARGINS,draw_enabled=draw_enabled.value, fit_enabled=fit_enabled.value)
 
             with rv.Col(cols=10, offset=1):
                 if COMPONENT_STATE.value.current_step_at_or_after(

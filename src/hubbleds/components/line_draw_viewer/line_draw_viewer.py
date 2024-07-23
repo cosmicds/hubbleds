@@ -27,7 +27,9 @@ def LineDrawViewer(chart_id: str,
                    viewer_height: Optional[int]=None,
                    plot_margins: Optional[dict]=None,
                    on_line_drawn: Optional[Callable]=None,
-                   on_line_fit: Optional[Callable[[list[float]], None]]=None):
+                   on_line_fit: Optional[Callable[[list[float]], None]]=None,
+                   draw_enabled: Optional[bool]=True,
+                   fit_enabled: Optional[bool]=True,):
 
     draw_active = solara.use_reactive(False)
     fit_active = solara.use_reactive(False)
@@ -52,8 +54,16 @@ def LineDrawViewer(chart_id: str,
 
             rv.Spacer()
 
-            fit_button = solara.IconButton(classes=["toolbar"], icon_name="mdi-chart-timeline-variant", on_click=on_fit_clicked)
-            draw_button = solara.IconButton(classes=["toolbar"], icon_name="mdi-message-draw", on_click=on_draw_clicked)
+            fit_button = solara.IconButton(
+                classes=["toolbar"], icon_name="mdi-chart-timeline-variant", on_click=on_fit_clicked,
+                disabled=(not fit_enabled)
+            )
+            
+            draw_button = solara.IconButton(
+                classes=["toolbar"], icon_name="mdi-message-draw", on_click=on_draw_clicked, 
+                disabled=(not draw_enabled)
+            )
+            
             rv.BtnToggle(v_model="selected", children=[fit_button, draw_button], background_color="primary", borderless=True)
 
         LineDrawPlot(chart_id=chart_id,
