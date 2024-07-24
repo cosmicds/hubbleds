@@ -1,7 +1,7 @@
 <script>
 export default {
   name: "LineDrawPlot",
-  props: ["chart_id", "active", "fit_active", "line_drawn", "line_fit", "plot_data", "x_axis_label", "y_axis_label", "height", "margin"],
+  props: ["chart_id", "active", "fit_active", "line_drawn", "line_fit", "plot_data", "x_axis_label", "y_axis_label", "height", "margins", "display_best_fit_gal", "best_fit_gal_layer_index"],
   async mounted() {
     await window.plotlyPromise;
 
@@ -90,6 +90,7 @@ export default {
       fitLineTraceIndices: [],
       endpointSize: 10,
       lastFitSlopes: [],
+      bestFitGalaxyTraceIndex: 0,
     };
   },
   methods: {
@@ -285,7 +286,7 @@ export default {
   computed: {
     endpointTraceIndex() {
       return 2 * this.plotDataCount + 1;
-    }
+    },
   },
   watch: {
     chart() {
@@ -324,6 +325,43 @@ export default {
         }
       } else {
         Plotly.update(this.chart_id, { visible: false }, {}, this.fitLineTraceIndices);
+      }
+    },
+    display_best_fit_gal(value) {
+      if (value) {
+        if (this.fit_active) {
+          x_best_fit_galaxy = 0.5 * ( this.element._fullLayout.xaxis.range[1] - this.element._fullLayout.xaxis.range[0]);
+          const slopes = this.lastFitSlopes;
+          if (slopes.length > 0) {
+            const bestfitslope = slopes[this.best_fit_gal_layer_index];
+            y_best_fit_galaxy = bestfitslope * x_best_fit_galaxy;
+            const trace = {
+              x: [x_best_fit_galaxy],
+              y: [y_best_fit_galaxy],
+              mode: "markers", 
+              marker: { size: 14, color: "orange" },
+              visible: true,
+              hoverinfo: "skip"
+            };
+            Plotly.addTraces(this.chart_id, trace);
+
+            // Store best fit galaxy trace index
+            const chartElement = document.getElementById(this.chart_id);
+            if (chartElement) {
+              const nTraces = chartElement.data.length;
+              this.bestFitGalaxyTraceIndex = nTraces - 1;
+            }
+          }
+        } else {
+          // If fit is not active, no best fit galaxy to display
+          return;
+        }
+      } else {
+        try {
+          Plotly.deleteTraces(this.chart_id, this.bestFitGalaxyTraceIndex);
+        } catch (e) {
+          console.warn(e);
+        }
       }
     },
     movingLine(value) {

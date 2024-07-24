@@ -14,6 +14,8 @@ def LineDrawPlot(chart_id: str,
                  y_axis_label: Optional[str]=None,
                  height: Optional[int]=None,
                  margins: Optional[dict]=None,
+                 display_best_fit_gal: Optional[bool]=False,
+                 best_fit_gal_layer_index: Optional[int]=None,
 ):
     pass
 
@@ -29,10 +31,13 @@ def LineDrawViewer(chart_id: str,
                    on_line_drawn: Optional[Callable]=None,
                    on_line_fit: Optional[Callable[[list[float]], None]]=None,
                    draw_enabled: Optional[bool]=True,
-                   fit_enabled: Optional[bool]=True,):
+                   fit_enabled: Optional[bool]=True,
+                   display_best_fit_gal: Optional[bool]=False,
+                   best_fit_gal_layer_index: Optional[int]=None,):
 
     draw_active = solara.use_reactive(False)
     fit_active = solara.use_reactive(False)
+    # best_fit_active = solara.use_reactive(False)
 
     def on_draw_clicked():
         fit_active.set(False)
@@ -41,6 +46,9 @@ def LineDrawViewer(chart_id: str,
     def on_fit_clicked():
         draw_active.set(False)
         fit_active.set(not fit_active.value)
+
+    # def on_best_fit_clicked():
+    #     best_fit_active.set(not best_fit_active.value)
 
     # If we want to disable the tool after finishing a line draw
     # pass this function to `LineDrawPlot` as `event_line_drawn`
@@ -63,6 +71,10 @@ def LineDrawViewer(chart_id: str,
                 classes=["toolbar"], icon_name="mdi-message-draw", on_click=on_draw_clicked, 
                 disabled=(not draw_enabled)
             )
+
+            # best_fit_button = solara.IconButton(
+            #     classes=["toolbar"], icon_name="mdi-star-box-outline", on_click=on_best_fit_clicked, 
+            # )
             
             rv.BtnToggle(v_model="selected", children=[fit_button, draw_button], background_color="primary", borderless=True)
 
@@ -76,4 +88,6 @@ def LineDrawViewer(chart_id: str,
                      y_axis_label=y_axis_label,
                      height=viewer_height,
                      margins=plot_margins,
+                     display_best_fit_gal=display_best_fit_gal,
+                     best_fit_gal_layer_index=best_fit_gal_layer_index
         )
