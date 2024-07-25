@@ -39,7 +39,7 @@
 
 <script>
 export default {
-  props: ["chart_id", "layer_indices", "labels", "colors", "initial_selected"],
+  props: ["chart_id", "layer_indices", "initial_selected", "enabled", "colors", "labels", ],
   data() {
     return {
       element: null,
