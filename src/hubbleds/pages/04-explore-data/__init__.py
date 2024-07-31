@@ -1,3 +1,4 @@
+import asyncio
 from cosmicds.utils import empty_data_from_model_class, DEFAULT_VIEWER_HEIGHT
 from cosmicds.viewers import CDSScatterView
 from echo import delay_callback
@@ -12,7 +13,7 @@ from solara.toestand import Ref
 from typing import Dict, List, Tuple
 
 from cosmicds.components import ScaffoldAlert, StateEditor, ViewerLayout
-from hubbleds.components import DataTable, HubbleExpUniverseSlideshow, LineDrawViewer, PlotlyLayerToggle
+from hubbleds.components import DataTable, HubbleExpUniverseSlideshow, LineDrawViewer, PlotlyLayerToggle, Stage4WaitingScreen
 from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, StudentMeasurement, get_multiple_choice, get_free_response, mc_callback, fr_callback
 from hubbleds.viewers.hubble_scatter_viewer import HubbleScatterView
 from .component_state import COMPONENT_STATE, Marker
@@ -26,24 +27,11 @@ logger = setup_logger("STAGE 4")
 GUIDELINE_ROOT = Path(__file__).parent / "guidelines"
 
 
-@solara.lab.task
-async def load_class_data():
-    logger.info("Loading class data")
-    class_measurements = LOCAL_API.get_class_measurements(GLOBAL_STATE, LOCAL_STATE)
-    logger.info(len(class_measurements))
-    measurements = Ref(LOCAL_STATE.fields.class_measurements)
-    student_ids = Ref(LOCAL_STATE.fields.stage_4_class_data_students)
-    if class_measurements and not student_ids.value:
-        ids = [int(id) for id in np.unique([m.student_id for m in class_measurements])]
-        student_ids.set(ids)
-    measurements.set(class_measurements)
-
-    class_data_points = [m for m in class_measurements if m.student_id in student_ids.value]
-    return class_data_points
-
-
 @solara.component
 def Page():
+
+    StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API)
+
     loaded_component_state = solara.use_reactive(False)
     router = solara.use_router()
 
@@ -68,6 +56,46 @@ def Page():
         logger.info("Wrote component state to database.")
 
     solara.lab.use_task(_write_component_state, dependencies=[COMPONENT_STATE.value])
+
+    def load_class_data():
+        logger.info("Loading class data")
+        class_measurements = LOCAL_API.get_class_measurements(GLOBAL_STATE, LOCAL_STATE)
+        logger.info(len(class_measurements))
+        measurements = Ref(LOCAL_STATE.fields.class_measurements)
+        student_ids = Ref(LOCAL_STATE.fields.stage_4_class_data_students)
+        if not class_measurements:
+            return []
+
+        if student_ids.value:
+            class_data_points = [m for m in class_measurements if m.student_id in student_ids.value]
+        else:
+            class_data_points = class_measurements
+            ids = [int(id) for id in np.unique([m.student_id for m in class_measurements])]
+            ready = len(class_measurements) >= min(50, 5 * GLOBAL_STATE.value.classroom.size)
+            if ready:
+                ids = [int(id) for id in np.unique([m.student_id for m in class_measurements])]
+                student_ids.set(ids)
+                Ref(LOCAL_STATE.fields.enough_students_ready).set(True)
+        measurements.set(class_measurements)
+            
+        return class_data_points
+
+    async def keep_checking_class_data():
+        enough_students_ready = Ref(LOCAL_STATE.fields.enough_students_ready)
+        LOCAL_API.update_class_size(LOCAL_STATE.value.story_id, GLOBAL_STATE)
+        while not enough_students_ready.value:
+            load_class_data()
+            await asyncio.sleep(10)
+
+    solara.lab.use_task(keep_checking_class_data, dependencies=[])
+
+    if COMPONENT_STATE.value.current_step == Marker.wwt_wait:
+        Stage4WaitingScreen(
+            can_advance=LOCAL_STATE.value.enough_students_ready,
+            on_advance_click=lambda: transition_next(COMPONENT_STATE),
+        )
+        return
+
 
     class_plot_data = solara.use_reactive([])
 
@@ -114,9 +142,6 @@ def Page():
 
     gjapp, viewers = solara.use_memo(glue_setup, dependencies=[])
 
-    if not (load_class_data.value or load_class_data.pending):
-        load_class_data()
-
     def _on_class_data_loaded(class_data_points: List[StudentMeasurement]):
         logger.info("Setting up class glue data")
         if not class_data_points:
@@ -143,11 +168,6 @@ def Page():
         layer_viewer.state.title = "Our Data"
 
         class_plot_data.set(class_data_points)
-
-    if load_class_data.value:
-        _on_class_data_loaded(load_class_data.value)
-
-    StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API)
 
     with solara.ColumnsResponsive(12, large=[4,8]):
         with rv.Col():
