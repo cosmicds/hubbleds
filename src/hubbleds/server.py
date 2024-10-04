@@ -2,6 +2,7 @@ from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Mount, Route
+from solara.server import settings
 
 import solara.server.starlette
 
@@ -11,7 +12,7 @@ def root(request: Request):
 
 
 routes = [
-    Route("/", endpoint=root),
+    # Route("/", endpoint=root),
     Mount("/hubbles-law/", routes=solara.server.starlette.routes),
 ]
 
