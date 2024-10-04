@@ -1,1 +1,1 @@
-web: uvicorn hubbleds.server:app --port=8865
+web: uvicorn hubbleds.server:app --port=8000
