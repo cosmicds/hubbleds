@@ -117,17 +117,15 @@ def DotplotViewer(
             if not line_ids:
                 return
             for (viewer, viewer_line_ids) in zip(viewers, line_ids):
-                lines = list(viewer.figure.select_traces(lambda t: t.meta in viewer_line_ids))
-                viewer.figure.data = list(reversed([t for t in viewer.figure.data if t not in lines]))
-        
+                shapes = viewer.figure.layout.shapes
+                shapes = tuple(s for s in shapes if s.name not in viewer_line_ids)
+                viewer.figure.layout.shapes = shapes
+
         
         def _add_vertical_line(viewer: PlotlyBaseView, value: Number, color: str, label: str = None, line_ids: list[str] = []):
-            line = vertical_line_mark(viewer.layers[0], value, color, label = label)
             line_id = str(uuid4())
-            line["meta"] = line_id
             line_ids.append(line_id)
-            
-            viewer.figure.add_trace(line)
+            viewer.figure.add_vline(x=value, line_color=color, line_width=2, name=line_id)
 
         
         def _add_data(viewer: PlotlyBaseView, data: Union[Data, tuple]):
@@ -270,7 +268,8 @@ def DotplotViewer(
                     spikedash="solid",
                     spikemode="across",
                     spikesnap="cursor",
-                    showspikes=True
+                    showspikes=True,
+                    tickformat=",.0f",
                 ),
             )
             

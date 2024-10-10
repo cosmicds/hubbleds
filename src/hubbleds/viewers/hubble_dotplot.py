@@ -15,8 +15,8 @@ HubbleDotPlotView = cds_viewer(
     HubbleDotPlotViewer,
     name="HubbleDotPlotView",
     viewer_tools=[
+        "hubble:wavezoom",
         "plotly:home",
-        "hubble:wavezoom"
     ],
     label="Dot Plot",
 )

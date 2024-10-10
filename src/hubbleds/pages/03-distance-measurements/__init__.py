@@ -236,9 +236,10 @@ def Page():
             selected_example_galaxy = Ref(COMPONENT_STATE.fields.selected_example_galaxy)
             if len(LOCAL_STATE.value.example_measurements) > 0:
                 logger.info('Setting selected example galaxy')
-                num = 1 if COMPONENT_STATE.value.current_step_at_or_after(Marker.dot_seq5) else 0
-                selected_example_galaxy.set(LOCAL_STATE.value.example_measurements[num].galaxy.model_dump(exclude={'spectrum'}))
-                logger.info(f'Selected example galaxy: {selected_example_galaxy.value}')
+                if COMPONENT_STATE.value.current_step_at_or_after(Marker.cho_row1):
+                    num = 1 if COMPONENT_STATE.value.current_step_at_or_after(Marker.dot_seq5) else 0
+                    selected_example_galaxy.set(LOCAL_STATE.value.example_measurements[num].galaxy.model_dump(exclude={'spectrum'}))
+                    logger.info(f'Selected example galaxy on init: {selected_example_galaxy.value}')
         
         angular_sizes_total = 0
         for measurement in LOCAL_STATE.value.measurements:
@@ -759,16 +760,10 @@ def Page():
                 
                 @solara.lab.computed
                 def selected_example_galaxy_index() -> list:
-                    # if use_second_measurement.value:
-                    #     return [0]
                     if COMPONENT_STATE.value.selected_example_galaxy is None:
                         return []
                     if 'id' not in COMPONENT_STATE.value.selected_example_galaxy:
                         return []
-                    # return [LOCAL_STATE.value.get_example_measurement_index(
-                    #     COMPONENT_STATE.value.selected_example_galaxy['id'],
-                    #     measurement_number=example_galaxy_measurement_number.value
-                    #     )]
                     return [0]
                 
                 @solara.lab.computed
