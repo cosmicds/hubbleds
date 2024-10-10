@@ -1,1 +1,1 @@
-web: uvicorn hubbleds.server:app --port=8000 --root-path=/hubbles-law
+web: solara run hubbleds.pages --port=8000 --no-open --production
