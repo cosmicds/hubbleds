@@ -1,8 +1,9 @@
+from os import getenv
 from cosmicds.layout import BaseLayout
 from .state import GLOBAL_STATE, LOCAL_STATE
 import solara
 from solara.toestand import Ref
-from cosmicds.components import MathJaxSupport, PlotlySupport
+from cosmicds.components import MathJaxSupport, PlotlySupport, GoogleAnalyticsSupport
 from hubbleds.remote import LOCAL_API
 from cosmicds.logger import setup_logger
 
@@ -14,6 +15,7 @@ def Layout(children=[]):
 
     MathJaxSupport()
     PlotlySupport()
+    GoogleAnalyticsSupport(tag=getenv("GOOGLE_ANALYTICS_TAG"))
     logger.info("Mounted external libraries.")
 
     student_id = Ref(GLOBAL_STATE.fields.student.id)
