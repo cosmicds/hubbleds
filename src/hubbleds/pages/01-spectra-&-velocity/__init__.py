@@ -577,7 +577,7 @@ def Page():
                 print("is galaxy selected:", galaxy_is_selected.value)             
 
             show_example_data_table = COMPONENT_STATE.value.current_step_between(
-            Marker.cho_row1, Marker.rem_gal1 #placeholder so it doesn't break - change to last new dot_seq marker.
+            Marker.cho_row1, Marker.dot_seq14 #placeholder so it doesn't break - change to last new dot_seq marker.
             )
             if show_example_data_table:
                 selection_tool_galaxy = selected_example_measurement
@@ -1331,11 +1331,21 @@ def Page():
                             measurement = Ref(
                                 LOCAL_STATE.fields.measurements[measurement_index]
                             )
-                            measurement.set(
-                                measurement.value.model_copy(
-                                    update={"obs_wave_value": value}
+                            
+                            if measurement.value.velocity_value is None:
+                                measurement.set(
+                                    measurement.value.model_copy(
+                                        update={"obs_wave_value": value}
+                                    )
                                 )
-                            )
+                                
+                            else:
+                                velocity = velocity_from_wavelengths(value, measurement.value.rest_wave_value)
+                                measurement.set(
+                                    measurement.value.model_copy(
+                                        update={"obs_wave_value": value, "velocity_value": velocity}
+                                    )
+                                )
 
                             obs_wave = Ref(COMPONENT_STATE.fields.obs_wave)
                             obs_wave.set(value)
