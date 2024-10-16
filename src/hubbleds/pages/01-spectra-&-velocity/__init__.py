@@ -622,21 +622,29 @@ def Page():
                 show=COMPONENT_STATE.value.is_current_step(Marker.cho_row1),
                 speech=speech.value,
             )
-
-            def _on_validated_transition(validated):
+            
+            validation_4_failed = Ref(
+                COMPONENT_STATE.fields.doppler_state.validation_4_failed
+            )
+            
+            def _on_validate_transition(validated):
+                logger.info("Validated transition to dop_cal4: %s", validated)
+                validation_4_failed.set(not validated)
+                if not validated:
+                    return
+                
                 if validated:
                     transition_next(COMPONENT_STATE)
 
                 show_doppler_dialog = Ref(COMPONENT_STATE.fields.show_doppler_dialog)
+                logger.info("Setting show_doppler_dialog to %s", validated)
                 show_doppler_dialog.set(validated)
 
-            validation_4_failed = Ref(
-                COMPONENT_STATE.fields.doppler_state.validation_4_failed
-            )
+            
             ScaffoldAlert(
                 GUIDELINE_ROOT / "GuidelineDopplerCalc4.vue",
                 event_next_callback=lambda _: transition_next(COMPONENT_STATE),
-                event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
+                # event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.current_step_in(
                     [Marker.dop_cal4, Marker.dop_cal5]
@@ -649,9 +657,10 @@ def Page():
                         else None
                     ),
                     "failed_validation_4": validation_4_failed.value,
+                    "fill_values": not validation_4_failed.value,
                 },
-                event_failed_validation_4_callback=validation_4_failed.set,
-                event_on_validated_transition=_on_validated_transition,
+                # event_failed_validation_4_callback=_on_validated_transition,
+                event_on_validate_transition=_on_validate_transition,
                 speech=speech.value,
             )
 
