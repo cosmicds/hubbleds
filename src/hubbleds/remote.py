@@ -99,7 +99,7 @@ class LocalAPI(BaseAPI):
         r = self.request_session.get(url)
             
         measurements = Ref(local_state.fields.measurements)
-        if r.status_code == 200:
+        if r.status_code == 200 and GLOBAL_STATE.value.update_db:
             measurement_json = r.json()
 
             parsed_measurements = []
@@ -125,6 +125,11 @@ class LocalAPI(BaseAPI):
         )
 
         sample_measurement_json = r.json()
+        
+        if not GLOBAL_STATE.value.update_db:
+            # force it to generate new sample measurements
+            # which won't be written to the database
+            sample_measurement_json = {"measurements": []}
 
         if len(sample_measurement_json["measurements"]) == 0:
             logger.info(
@@ -207,7 +212,7 @@ class LocalAPI(BaseAPI):
             "Stored example measurements for student %s.",
             global_state.value.student.id,
         )
-
+    # This function does not seem to be used
     def get_measurement(
         self,
         galaxy_id: int,
@@ -257,7 +262,11 @@ class LocalAPI(BaseAPI):
 
     def delete_all_measurements(
         self, global_state: Reactive[GlobalState], local_state: Reactive[LocalState]
-    ):
+    ):  
+        if not GLOBAL_STATE.value.update_db: 
+            logger.info('Skipping DB delete')
+            return
+        
         url = f"{self.API_URL}/{local_state.value.story_id}/measurements/{global_state.value.student.id}"
         measurements_json = self.request_session.get(url).json()
 

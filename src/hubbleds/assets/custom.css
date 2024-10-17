@@ -245,6 +245,28 @@ footer .v-card__text {
 
 /***** 
     ================================
+    DEMO VERSION TAG
+    ================================
+*****/
+header.cosmicds-appbar > div.v-toolbar__content > h3::after {
+    content: "DEMO Version: Progress and measurements are not saved";
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: red;
+  
+    /* position: absolute;
+    top: 100%;
+    left: 0%; */
+  
+    padding-inline: 20px;
+    padding-block: 10px;
+    border-radius: 40px;
+    margin-left: 20px;  
+}
+
+/***** 
+    ================================
     Solara/Vuetify default overrides 
     ================================
 *****/
