@@ -8,7 +8,6 @@ from functools import cached_property
 from astropy.table import Table
 from pydantic import Field
 
-
 from solara.toestand import Ref
 
 from .free_response import FreeResponses
@@ -139,6 +138,7 @@ class LocalState(BaseLocalState):
     snackbar_message: str = ""
     stage_4_class_data_students: list[int] = []
     stage_5_class_data_students: list[int] = []
+    last_route: Optional[str] = None
 
     @cached_property
     def galaxies(self) -> list[GalaxyData]:
