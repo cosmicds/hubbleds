@@ -13,6 +13,19 @@ from .data_management import (
 from .utils import _add_link
 from .state import StudentMeasurement
 
+def create_measurement_subsets(gjapp: JupyterApplication, data: Data):
+    if data.label in gjapp.data_collection:
+        data = gjapp.data_collection[data.label]
+        current_subsets = data.subsets
+        if 'first measurement' not in (s.label for s in current_subsets):
+            first = data.new_subset(data.id['measurement_number'] == 'first', label='first measurement')
+            first.style.color = "#C94456"
+            first.style.alpha = 1.0
+        if 'second measurement' not in (s.label for s in current_subsets):
+            second = data.new_subset(data.id['measurement_number'] == 'second', label='second measurement')
+            second.style.color = "#4449C9"
+            second.style.alpha = 1.0
+
 def create_example_subsets(gjapp: JupyterApplication, data: Data):
     if EXAMPLE_GALAXY_MEASUREMENTS in gjapp.data_collection:
         example_data = gjapp.data_collection[EXAMPLE_GALAXY_MEASUREMENTS]
@@ -35,6 +48,21 @@ def link_example_seed_and_measurements(gjapp: JupyterApplication):
         _add_link(gjapp, egsd, DB_ANGSIZE_FIELD, example_data, "ang_size_value")
         _add_link(gjapp, egsd, DB_DISTANCE_FIELD, example_data, "est_dist_value")
         
+def link_seed_data(gjapp):
+    if EXAMPLE_GALAXY_SEED_DATA in gjapp.data_collection:
+        egsd = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA]
+        if EXAMPLE_GALAXY_SEED_DATA + '_first' in gjapp.data_collection:
+            first = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA + '_first']
+            _add_link(gjapp, egsd, DB_VELOCITY_FIELD, first, DB_VELOCITY_FIELD)
+            _add_link(gjapp, egsd, DB_MEASWAVE_FIELD, first, DB_MEASWAVE_FIELD)
+            _add_link(gjapp, egsd, DB_ANGSIZE_FIELD, first, DB_ANGSIZE_FIELD)
+            _add_link(gjapp, egsd, DB_DISTANCE_FIELD, first, DB_DISTANCE_FIELD)
+        if EXAMPLE_GALAXY_SEED_DATA + '_second' in gjapp.data_collection:
+            second = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA + '_second']
+            _add_link(gjapp, egsd, DB_VELOCITY_FIELD, second, DB_VELOCITY_FIELD)
+            _add_link(gjapp, egsd, DB_MEASWAVE_FIELD, second, DB_MEASWAVE_FIELD)
+            _add_link(gjapp, egsd, DB_ANGSIZE_FIELD, second, DB_ANGSIZE_FIELD)
+            _add_link(gjapp, egsd, DB_DISTANCE_FIELD, second, DB_DISTANCE_FIELD)
 
 def _update_second_example_measurement(example_measurements: list[StudentMeasurement]):
         changed = ''
