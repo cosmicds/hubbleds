@@ -173,7 +173,7 @@ class LocalAPI(BaseAPI):
         
         if not GLOBAL_STATE.value.update_db: 
             logger.info('Skipping DB write')
-            return
+            return False
         
         url = f"{self.API_URL}/{local_state.value.story_id}/submit-measurement/"
 
@@ -191,13 +191,14 @@ class LocalAPI(BaseAPI):
             "Stored measurements for student `%s`.",
             global_state.value.student.id,
         )
+        return True
 
     def put_sample_measurements(
         self, global_state: Reactive[GlobalState], local_state: Reactive[LocalState]
     ):
         if not GLOBAL_STATE.value.update_db: 
             logger.info('Skipping DB write')
-            return
+            return False
         
         url = f"{self.API_URL}/{local_state.value.story_id}/sample-measurement/"
     
@@ -222,6 +223,7 @@ class LocalAPI(BaseAPI):
                 "Stored example measurements for student %s.",
                 global_state.value.student.id,
             )
+        return True
 
     def get_measurement(
         self,
@@ -370,7 +372,7 @@ class LocalAPI(BaseAPI):
     ):
         if not GLOBAL_STATE.value.update_db: 
             logger.info('Skipping DB write')
-            return
+            return False
         
         logger.info("Serializing stage state into DB.")
 
@@ -390,6 +392,9 @@ class LocalAPI(BaseAPI):
         if r.status_code != 200:
             logger.error("Failed to write story state to database.")
             logger.error(r.text)
+            return False
+        
+        return True
 
     def put_story_state(
         self,
@@ -398,7 +403,7 @@ class LocalAPI(BaseAPI):
     ):
         if not GLOBAL_STATE.value.update_db: 
             logger.info('Skipping DB write')
-            return
+            return False
         
         logger.info("Serializing state into DB.")
 
@@ -417,6 +422,9 @@ class LocalAPI(BaseAPI):
         if r.status_code != 200:
             logger.error("Failed to write story state to database.")
             logger.error(r.text)
+            return False
+        
+        return True
 
 
     def get_example_seed_measurement(

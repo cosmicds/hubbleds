@@ -34,9 +34,14 @@ def Page():
             return
 
         # Listen for changes in the states and write them to the database
-        LOCAL_API.put_stage_state(GLOBAL_STATE, LOCAL_STATE, COMPONENT_STATE)
+        res = LOCAL_API.put_stage_state(GLOBAL_STATE, LOCAL_STATE, COMPONENT_STATE)
+        
+        if res:
+            logger.info("Wrote component state for stage 2 to database.")
+        else:
+            logger.info("Did not write component state for stage 2 to database.")
 
-        logger.info("Wrote component state for stage 2 to database.")
+        
 
     logger.info("Trying to write component state for stage 2.")
     solara.lab.use_task(_write_component_state, dependencies=[COMPONENT_STATE.value])

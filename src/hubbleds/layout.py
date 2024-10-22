@@ -33,7 +33,7 @@ def Layout(children=[]):
 
         # Retrieve the student's app and local states
         LOCAL_API.get_app_story_states(GLOBAL_STATE, LOCAL_STATE)
-        Ref(GLOBAL_STATE.fields.update_db).set(True)
+
 
         # Load in the student's measurements
         measurements = LOCAL_API.get_measurements(GLOBAL_STATE, LOCAL_STATE)
@@ -55,14 +55,17 @@ def Layout(children=[]):
             return
 
         # Listen for changes in the states and write them to the database
-        LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)
+        put_state = LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)
 
         # Be sure to write the measurement data separately since it's stored
         #  in another location in the database
-        LOCAL_API.put_measurements(GLOBAL_STATE, LOCAL_STATE)
-        LOCAL_API.put_sample_measurements(GLOBAL_STATE, LOCAL_STATE)
-
-        logger.info("Wrote state to database.")
+        put_meas = LOCAL_API.put_measurements(GLOBAL_STATE, LOCAL_STATE)
+        put_samp = LOCAL_API.put_sample_measurements(GLOBAL_STATE, LOCAL_STATE)
+        
+        if put_state and put_meas and put_samp:
+            logger.info("Wrote state to database.")
+        else:
+            logger.info(f"Did not write {'story state' if not put_state else ''} {'measurements' if not put_meas else ''} {'sample measurements' if not put_samp else ''} to database.")
 
     solara.lab.use_task(
         _write_local_global_states, dependencies=[GLOBAL_STATE.value, LOCAL_STATE.value]
