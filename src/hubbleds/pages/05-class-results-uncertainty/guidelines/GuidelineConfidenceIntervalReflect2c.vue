@@ -76,7 +76,7 @@
       </v-row>
       <v-row>
         <v-col
-          cols="12"
+          cols="11"
           lg="3"
         >
           <free-response
@@ -90,8 +90,11 @@
             @fr-emit="fr_callback($event)"
           ></free-response>
         </v-col>
-        <v-col>
-          Gyr
+        <v-col
+          class="fr-unit-custom"
+          cols="1"
+          lg="2">
+          Gyr<p>&nbsp;</p>
         </v-col>
       </v-row>
 
@@ -158,7 +161,7 @@
       </v-row>
       <v-row>
         <v-col
-          cols="12"
+          cols="11"
           lg="3">
           <free-response
             outlined
@@ -172,11 +175,13 @@
           ></free-response>
         </v-col>
         <v-col
+          class="fr-unit-custom"
+          cols="1"
           lg="2">
-          Gyr
+          Gyr<p>&nbsp;</p>
         </v-col>
               <v-col
-          cols="12"
+          cols="11"
           lg="3">
           <free-response
             outlined
@@ -190,8 +195,10 @@
           ></free-response>
         </v-col>
         <v-col
+          class="fr-unit-custom"
+          cols="1"
           lg="2">
-          Gyr
+          Gyr<p>&nbsp;</p>
         </v-col>
       </v-row>
 

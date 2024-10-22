@@ -268,3 +268,10 @@ div.plotly .hoverlayer g.axistext {
 } */
  
 
+.fr-unit-custom {
+    font-size: 1.25em;
+    line-height: 0.5;
+    align-self: center;
+    font-weight: bold;
+    padding-left: 0;
+}

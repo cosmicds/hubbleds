@@ -72,7 +72,7 @@
       </v-row>
       <v-row>
         <v-col
-          cols="12"
+          cols="11"
           lg="3"
         >
           <free-response
@@ -86,8 +86,11 @@
             @fr-emit="(e) => {best_guess_answered = true;fr_callback(e);}"
           ></free-response>
         </v-col>
-        <v-col>
-          Gyr
+        <v-col
+          class="fr-unit-custom"
+          cols="1"
+          lg="2">
+          Gyr<p>&nbsp;</p>
         </v-col>
       </v-row>
 
