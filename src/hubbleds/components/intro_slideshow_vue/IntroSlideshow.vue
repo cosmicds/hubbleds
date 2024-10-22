@@ -320,7 +320,7 @@
               <v-btn
                 color="accent"
                 class="mx-4 black--text"
-                @click="{
+                @click="() => {
                   timerComplete[0] = false;
                   step++;
                 }"
@@ -378,8 +378,8 @@
                                 dec: 22.014,
                                 fov: 350, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M1', // name of object
                               });
+                              target = 'M1';
                               startTimerIfNeeded(1);
                             }"
                             color="warning"
@@ -402,8 +402,8 @@
                                 dec: 36.46,
                                 fov: 700, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M13', // name of object
                               });
+                              target = 'M13';
                               startTimerIfNeeded(1);
                             }"
                             color="warning"
@@ -426,8 +426,8 @@
                                 dec: 41.27,
                                 fov: 6000, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M31' // name of object
                               });
+                              target = 'M31';
                               startTimerIfNeeded(1);
                             }"
                             color="warning"
@@ -450,8 +450,8 @@
                                 dec: -5.39,
                                 fov:7500, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M42' // name of object
                               });
+                              target = 'M42';
                               startTimerIfNeeded(1);  
                             }"
                             color="warning"
@@ -474,8 +474,8 @@
                                 dec: 47.195,
                                 fov: 700, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M51' // name of object
                               });
+                              target = 'M51';
                               startTimerIfNeeded(1);
                             }"
                             color="warning"
@@ -498,8 +498,8 @@
                                 dec: 69.68,
                                 fov: 400, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M82' // name of object
                               });
+                              target = 'M82';
                               startTimerIfNeeded(1);
                             }"
                             color="warning"
@@ -540,7 +540,7 @@
               <v-btn
                 color="accent"
                 class="mx-4 black--text"
-                @click="{
+                @click="() => {
                   timerComplete[1] = false;
                   step++;
                 }"
@@ -626,8 +626,8 @@
                                 dec: 41.27,
                                 fov: 6000, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M31' // name of object
                               });
+                              target = 'M31';
                               startTimerIfNeeded(2);
                             }"
                             color="warning"
@@ -663,8 +663,8 @@
                                 dec: 47.195,
                                 fov: 700, // optional, in arcseconds, default is 90
                                 instant: false, // also optional, false by default
-                                target: 'M51', // name of object
                               });
+                              target = 'M51';
                               startTimerIfNeeded(2);
                             }"
                             color="warning"
@@ -718,7 +718,7 @@
               <v-btn
                 color="accent"
                 class="mx-4 black--text"
-                @click="{
+                @click="() => {
                   timerComplete[2] = false;
                   step++;
                 }"
@@ -864,8 +864,8 @@
               dec: 41.27,
               fov: 6000, // optional, in arcseconds, default is 90
               instant: true, // also optional, false by default
-              target: 'M31' // name of object
             };
+            target = 'M31';
           }
           go_to_location(options)
         }"
@@ -923,8 +923,8 @@
               dec: 41.27,
               fov: 6000, // optional, in arcseconds, default is 90
               instant: true, // also optional, false by default
-              target: 'M31' // name of object
             };
+            target = 'M31';
           }
           go_to_location(options)
         }"
@@ -933,7 +933,7 @@
       </v-btn>
       <!-- first button below just being used for testing, delete when using live with students -->
       <v-btn
-        v-if="step < length-1 && show_team_interface"
+        v-if="step < length-1 && debug"
         color="success"
         class="black--text"
         depressed
@@ -986,7 +986,7 @@
 
 <script>
 module.exports = {
-  props: ["continueText", "target"],
+  props: ["continueText"],
   data() {
     return {
       target: '',

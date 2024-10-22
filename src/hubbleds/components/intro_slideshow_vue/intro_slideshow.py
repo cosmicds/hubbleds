@@ -1,7 +1,6 @@
 
 import solara
 import reacton.ipyvuetify as rv
-from ipyvuetify import VuetifyTemplate
 
 @solara.component_vue("IntroSlideshow.vue")
 def IntroSlideshowVue(
