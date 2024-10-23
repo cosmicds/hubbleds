@@ -46,7 +46,9 @@ from hubbleds.utils import (
 )
 from hubbleds.example_measurement_helpers import (
     create_example_subsets,
+    create_measurement_subsets,
     link_example_seed_and_measurements,
+    link_seed_data,
     _update_second_example_measurement
 )
 
@@ -108,7 +110,8 @@ def Page():
         )
 
         if EXAMPLE_GALAXY_SEED_DATA not in gjapp.data_collection:
-            example_seed_data = LOCAL_API.get_example_seed_measurement(LOCAL_STATE, which='first')
+            example_seed_data = LOCAL_API.get_example_seed_measurement(LOCAL_STATE, which='both')
+            
             data = Data(
                 label=EXAMPLE_GALAXY_SEED_DATA,
                 **{
@@ -117,8 +120,23 @@ def Page():
                 }
             )
             gjapp.data_collection.append(data)
-        else:
-            data = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA]
+            # create 'first measurement' and 'second measurement' datasets
+            # create_measurement_subsets(gjapp, data)
+            first = Data(label = EXAMPLE_GALAXY_SEED_DATA + '_first', 
+                         **{k: np.asarray([r[k] for r in example_seed_data if r['measurement_number'] == 'first'])
+                            for k in example_seed_data[0].keys()}
+                            )
+            first.style.color = "#C94456"
+            gjapp.data_collection.append(first)
+            second = Data(label = EXAMPLE_GALAXY_SEED_DATA + '_second', 
+                         **{k: np.asarray([r[k] for r in example_seed_data if r['measurement_number'] == 'second'])
+                            for k in example_seed_data[0].keys()}
+                            )
+            second.style.color = "#4449C9"
+            gjapp.data_collection.append(second)
+            
+            link_seed_data(gjapp)
+        
         return gjapp
 
     gjapp = solara.use_memo(_glue_setup)
@@ -140,7 +158,7 @@ def Page():
 
     @computed
     def use_second_measurement():
-        return COMPONENT_STATE.value.current_step >= Marker.rem_vel1
+        return COMPONENT_STATE.value.current_step.value >= Marker.rem_vel1.value
 
     @computed
     def selected_example_measurement():
@@ -385,32 +403,57 @@ def Page():
 
     
 
-    def create_dotplot_viewer(first_meas=True):
+    def create_dotplot_viewer(first_dotplot = True, show_which_meas = 'first', show_which_seed = 'first', ignore_full_seed_data = True, ignore_full_meas_data = True):
         print("\n\n ======== \ncreate_dotplot_viewer\n\n")
-        show = COMPONENT_STATE.value.current_step >= Marker.int_dot1
-        if show and (EXAMPLE_GALAXY_MEASUREMENTS in gjapp.data_collection):
+        show_meas = COMPONENT_STATE.value.current_step >= Marker.int_dot1        
+        ignore = []
+        
+        if show_meas and (EXAMPLE_GALAXY_MEASUREMENTS in gjapp.data_collection):
+            
+            if show_which_seed == 'first':
+                seed = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA + '_first']
+            elif show_which_seed == 'second':
+                seed = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA + '_second']
+            else:
+                seed = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA]
+            
             viewer_data = [
                 (gjapp.data_collection[EXAMPLE_GALAXY_MEASUREMENTS], "scatter"),
-                gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA],
+                seed
             ]
             # If the student has made a measurement, that is the 0th layer.
             layer0 = gjapp.data_collection[EXAMPLE_GALAXY_MEASUREMENTS]
             zorder = [5, 1]
+            if ignore_full_meas_data:
+                ignore.append(gjapp.data_collection[EXAMPLE_GALAXY_MEASUREMENTS])
+            if show_which_meas == 'second': # ignore the first
+                first = subset_by_label(layer0, "first measurement")
+                if first is not None:
+                    ignore.append(first)
+            elif show_which_meas == 'first': # ignore the second
+                second = subset_by_label(layer0, "second measurement")
+                if second is not None:
+                    ignore.append(second)
         else:
             viewer_data = [gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA]]
             # If the student has NOT made a measurement, the seed data is the 0th layer.
             layer0 = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA]
             zorder = None
+        
+        # seed_data = gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA]
+        # if ignore_full_seed_data:
+        #     ignore.append(gjapp.data_collection[EXAMPLE_GALAXY_SEED_DATA])
+        # if show_which_seed == 'second': # ignore the first
+        #     first = subset_by_label(seed_data, "first measurement")
+        #     if first is not None:
+        #         ignore.append(first)
+        # elif show_which_seed == 'first': # ignore the second
+        #     second = subset_by_label(seed_data, "second measurement")
+        #     if second is not None:
+        #         ignore.append(second)
 
-        ignore = [gjapp.data_collection[EXAMPLE_GALAXY_MEASUREMENTS]]
-        if first_meas:
-            first = subset_by_label(layer0, "first measurement")
-            if first is not None:
-                ignore.append(first)
-        else:
-            second = subset_by_label(layer0, "second measurement")
-            if second is not None:
-                ignore.append(second)
+        
+        
         
         # we'll need to use/modify this for syncing 2 dot plots or for syncing auto-zoomed in x-ranges.
         def _on_click_callback(point):
@@ -418,25 +461,32 @@ def Page():
             wavelength = sync_example_velocity_to_wavelength(point.xs[0])
             if wavelength:
                 sync_wavelength_line.set(wavelength)
-        logger.info(f"\n {ignore} \n")
-        return DotplotViewer(
-            gjapp,
-            title="Dotplot: Example Galaxy Velocities" if first_meas else "Dotplot: Example Galaxy Velocities (2nd Measurement)",
-            data=viewer_data,
-            component_id=DB_VELOCITY_FIELD,
-            vertical_line_visible=show_synced_lines.value,  #COMPONENT_STATE.value.current_step_between(Marker.dot_seq2, Marker.dot_seq6),
-            line_marker_at=sync_velocity_line,
-            line_marker_color='green' if show_synced_lines.value else 'green',
-            on_click_callback=_on_click_callback,
-            unit="km / s",
-            x_label="Velocity (km/s)",
-            y_label="Number",
-            zorder=zorder,
-            nbin=74,
-            x_bounds=dotplot_bounds,
-            reset_bounds=dotplot_reset_bounds,
-            hide_layers=ignore,  # type: ignore
-        )
+        logger.info(f"\n IGNORED LAYERS: {ignore} \n")
+        with solara.Div() as main:
+            title = "Dotplot: Example Galaxy Velocities"
+            if not first_dotplot:
+                title += " (2nd Measurement)"
+            solara.Text(title)
+            solara.Text(f"Ignored layers: {ignore}")
+            DotplotViewer(
+                gjapp,
+                title=title,
+                data=viewer_data,
+                component_id=DB_VELOCITY_FIELD,
+                vertical_line_visible=show_synced_lines.value,  #COMPONENT_STATE.value.current_step_between(Marker.dot_seq2, Marker.dot_seq6),
+                line_marker_at=sync_velocity_line,
+                line_marker_color='green' if show_synced_lines.value else 'green',
+                on_click_callback=_on_click_callback,
+                unit="km / s",
+                x_label="Velocity (km/s)",
+                y_label="Number",
+                zorder=zorder,
+                nbin=74,
+                x_bounds=dotplot_bounds,
+                reset_bounds=dotplot_reset_bounds,
+                hide_layers=ignore,  # type: ignore
+            )
+        return main
     
     speech = Ref(GLOBAL_STATE.fields.speech)
 
@@ -693,7 +743,8 @@ def Page():
                         )
                     )
                     
-                    # add_example_measurements_to_glue()
+                    if COMPONENT_STATE.value.current_step == Marker.rem_vel1:
+                        add_example_measurements_to_glue()
 
                 DopplerSlideshow(
                     dialog=COMPONENT_STATE.value.show_doppler_dialog,
@@ -1068,7 +1119,10 @@ def Page():
                                         
                 if EXAMPLE_GALAXY_MEASUREMENTS in gjapp.data_collection:
                     # add_example_measurements_to_glue() # make sure updated measurements are in glue
-                    create_dotplot_viewer()
+                    create_dotplot_viewer(
+                        show_which_meas='first' if COMPONENT_STATE.value.current_step != Marker.rem_vel1 else 'second',
+                        show_which_seed='first'
+                    )
 
     # Dot Plot 2nd measurement row
 
@@ -1085,7 +1139,11 @@ def Page():
                 )
             with rv.Col(cols=12, lg=8):
                 print("Creating 2nd dotplot viewer")
-                create_dotplot_viewer(first_meas=False)
+                create_dotplot_viewer(
+                    first_dotplot=False,
+                    show_which_meas='second',
+                    show_which_seed='second'
+                )
 
 
     # Spectrum Viewer row
@@ -1295,7 +1353,7 @@ def Page():
                             COMPONENT_STATE.value.current_step_between(
                             Marker.obs_wav1, Marker.obs_wav2
                         )
-                        or COMPONENT_STATE.value.current_step >= Marker.rem_vel1
+                        or COMPONENT_STATE.value.current_step == Marker.rem_vel1
                         ),
                         on_obs_wave_measured=_example_wavelength_measured_callback,
                         on_obs_wave_tool_clicked=lambda: obs_wave_tool_activated.set(
