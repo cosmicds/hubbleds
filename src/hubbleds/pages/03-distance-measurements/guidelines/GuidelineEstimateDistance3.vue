@@ -5,10 +5,13 @@
     max-width="800"
     elevation="6"
     header-text="Estimate Distance"
-    next-text="calculate"
+    :next-text="state_view.fill_values ? 'next' : 'calculate'"
     @back="back_callback()"
     @next="() => {
       const expectedAnswers = [state_view.meas_theta];
+      if (state_view.fill_values) {
+        next_callback();
+      }
       
       if (validateAnswersJS(['gal_ang_size'], expectedAnswers)) {
         next_callback();
@@ -25,9 +28,16 @@
         Enter the <b>angular size</b> of your galaxy in <b>arcseconds</b> in the box.
       </p>
       <div
+        v-if="!state_view.fill_values"
         class="JaxEquation my-8"
       >
         $$ D = \frac{ {{ Math.round(state_view.distance_const) }} }{\bbox[#FBE9E7]{\input[gal_ang_size][]{}}} $$
+      </div>
+      <div
+        v-else
+        class="JaxEquation my-8"
+      >
+      $$ D = \frac{ {{ Math.round(state_view.distance_const) }} }{\textcolor{black}{\colorbox{#FFAB91}{ {{ (state_view.meas_theta).toFixed(0) }} } } } \text{ Mpc}$$
       </div>
       <v-divider role="presentation"></v-divider>
       <div

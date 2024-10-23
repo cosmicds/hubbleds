@@ -61,6 +61,7 @@ class ComponentState(BaseComponentState, BaseState):
     n_meas: int = 0
     bad_measurement: bool = False
     distances_total: int = 0
+    fill_est_dist_values: bool = False
     
     show_dotplot_lines: bool = True
     angular_size_line: Optional[float | int] = None

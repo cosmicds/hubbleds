@@ -27,7 +27,7 @@ logger = setup_logger("DOTPLOT")
 from glue_jupyter import JupyterApplication
 
 def valid_two_element_array(arr: Union[None, list]):
-    return not (arr is None or len(arr) != 2)
+    return not (arr is None or len(arr) != 2 or np.isnan(arr).any())
 
 def different_value(arr, value, index):
     if not valid_two_element_array(arr):
@@ -321,8 +321,11 @@ def DotplotViewer(
                     not valid_two_element_array(x_bounds.value) or
                     not np.isclose(x_bounds.value, new_range).all()
                     ):
-                    logger.info(f'({title}) reset x_bounds ({new_range[0]:0.2f}, {new_range[1]:0.2f})')
-                    x_bounds.set(new_range)
+                    if valid_two_element_array(new_range):
+                        logger.info(f'({title}) reset x_bounds ({new_range[0]:0.2f}, {new_range[1]:0.2f})')
+                        x_bounds.set(new_range)
+                    else:
+                        logger.info(f'Skipped setting x_bounds: {new_range}')
                 else:
                     logger.info(f'({title}) Bounds already set')
             

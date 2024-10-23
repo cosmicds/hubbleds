@@ -9,9 +9,13 @@
       :can-advance="can_advance"
       @next="() =>
       {
+        if (state_view.fill_values) {
+          next_callback();
+          return;
+        }
         const expectedAnswers = [state_view.lambda_obs, state_view.lambda_rest];
         const isValidated = !!validateAnswersJS(['lam_obs', 'lam_rest'], expectedAnswers);
-        on_validated_transition(isValidated);
+        on_validate_transition(isValidated);
       }"
       :speech="speech"
   >
@@ -24,10 +28,19 @@
       </p>
       <div
           class="JaxEquation my-8"
+          v-show="!state_view.fill_values"
       >
         $$ v = c \times \left( \frac{\bbox[#FBE9E7]{\input[lam_obs][]{}} \text{ &#8491;}}{\bbox[#FBE9E7]{\input[lam_rest][]{}}\text{
         &#8491;}} - 1 \right) $$
       </div>
+      <div
+          class="JaxEquation my-8"
+          v-show="state_view.fill_values"
+      >
+      $$ v = c \times \left( \frac{\textcolor{black}{\colorbox{#FFAB91}{ {{ state_view.lambda_obs.toFixed(0) }} }} \text{
+        &#8491;}}{\textcolor{black}{\colorbox{#FFAB91}{ {{ state_view.lambda_rest.toFixed(0) }} }} \text{ &#8491;}} - 1 \right) $$
+      </div>
+      
       <v-card
           class="legend mt-8"
           color="info"
@@ -184,7 +197,7 @@ export default {
       return inputIDs.every((id, index) => {
         const value = this.parseAnswer(id);
         console.log(id, index, value, expectedAnswers[index], value && value === expectedAnswers[index]);
-        this.failed_validation_4_callback((!(value && value === expectedAnswers[index])));
+        // this.failed_validation_4_callback((!(value && value === expectedAnswers[index])));
         return value && value === expectedAnswers[index];
       });
     }
