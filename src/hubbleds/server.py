@@ -13,7 +13,8 @@ def root(request: Request):
 
 routes = [
     # Route("/", endpoint=root),
-    Mount("/", routes=solara.server.starlette.routes),
+    Mount("/hubbles-law", routes=solara.server.starlette.routes),
+    # Mount("/", routes=solara.server.starlette.routes),
 ]
 
 app = Starlette(routes=routes)

@@ -1,1 +1,1 @@
-web: solara run hubbleds.pages --port=8000 --no-open --production
+web: uvicorn hubbleds.server:app --port=8000
