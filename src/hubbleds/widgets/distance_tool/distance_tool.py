@@ -62,6 +62,7 @@ class DistanceTool(v.VueTemplate):
         self._rt = RepeatedTimer(self.UPDATE_TIME, self._update_wwt_state)
         self._rt.start()
         self.update_text()
+        self.resetting = False
         super().__init__(*args, **kwargs)
 
     def __del__(self):
@@ -76,6 +77,7 @@ class DistanceTool(v.VueTemplate):
                                           instant=True)
 
     def reset_canvas(self):
+        self.resetting = True
         self.send({"method": "reset", "args": []})
 
     def update_text(self):
@@ -172,6 +174,8 @@ class DistanceTool(v.VueTemplate):
     def validate_angular_size(self, angular_size, check = True):
         if not self.guard:
             return True
+        if self.resetting:
+            return self.bad_measurement
         if not check:
             return self.bad_measurement
         max_wwt_size = Angle("60 deg")

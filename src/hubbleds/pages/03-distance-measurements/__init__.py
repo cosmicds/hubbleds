@@ -111,13 +111,13 @@ def DistanceToolComponent(galaxy, show_ruler, angular_size_callback, ruler_count
     
     solara.use_effect(turn_on_guard, [use_guard])
     
-    def reset_canvas():
+    def _reset_canvas():
         logger.info('resetting canvas')
         widget = cast(DistanceTool,solara.get_widget(tool))
         widget.reset_canvas()
     
     
-    solara.use_effect(reset_canvas, [reset_canvas])
+    solara.use_effect(_reset_canvas, [reset_canvas])
 
     def _define_callbacks():
         widget = cast(DistanceTool,solara.get_widget(tool))
@@ -420,7 +420,6 @@ def Page():
         
         if marker_new == Marker.dot_seq5:
             # clear the canvas before we get to the second measurement. 
-            COMPONENT_STATE.value.show_ruler = False
             reset_canvas.set(reset_canvas.value + 1)
             
             
@@ -587,7 +586,7 @@ def Page():
             def _get_ruler_clicks_cb(count):
                 ruler_click_count = Ref(COMPONENT_STATE.fields.ruler_click_count)
                 ruler_click_count.set(count)
-
+                
             DistanceToolComponent(
                 galaxy=current_galaxy.value,
                 show_ruler=COMPONENT_STATE.value.show_ruler,
@@ -596,7 +595,7 @@ def Page():
                 bad_measurement_callback=_bad_measurement_cb,
                 use_guard=True,
                 brightness_callback=lambda b: logger.info(f'Update Brightness: {b}'),
-                reset_canvas=reset_canvas
+                reset_canvas=reset_canvas.value
             )
             
             if COMPONENT_STATE.value.bad_measurement:
