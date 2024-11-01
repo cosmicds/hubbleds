@@ -3,6 +3,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Mount, Route
 from solara.server import settings
+from starlette.middleware.sessions import SessionMiddleware
 
 import solara.server.starlette
 
@@ -18,3 +19,12 @@ routes = [
 ]
 
 app = Starlette(routes=routes)
+
+from solara_enterprise.auth.starlette import oauth
+
+# TODO: `secret_key` defined here is for TESTING ONLY
+app.add_middleware(
+    SessionMiddleware,
+    secret_key="some-secret-key",
+    max_age=None,
+)
