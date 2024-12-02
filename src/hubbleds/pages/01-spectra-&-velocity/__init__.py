@@ -721,9 +721,15 @@ def Page():
             )
 
             # This whole slideshow is basically dop_cal5
-            if COMPONENT_STATE.value.current_step_between(
-                Marker.dop_cal4, Marker.che_mea1
-            ):
+            if (
+                (
+                    show_values.value and COMPONENT_STATE.value.current_step_between(
+                    Marker.dop_cal4, Marker.dop_cal5
+                ) 
+                or 
+                    COMPONENT_STATE.value.current_step_between(
+                    Marker.dop_cal4, Marker.che_mea1))
+                ):
                 show_doppler_dialog = Ref(COMPONENT_STATE.fields.show_doppler_dialog)
                 step = Ref(COMPONENT_STATE.fields.doppler_state.step)
                 validation_5_failed = Ref(
@@ -761,6 +767,7 @@ def Page():
                         add_example_measurements_to_glue()
 
                 DopplerSlideshow(
+                    show_button=show_values.value and COMPONENT_STATE.value.current_step_between(Marker.dop_cal4, Marker.dop_cal5),
                     dialog=COMPONENT_STATE.value.show_doppler_dialog,
                     titles=COMPONENT_STATE.value.doppler_state.titles,
                     step=COMPONENT_STATE.value.doppler_state.step,

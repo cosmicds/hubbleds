@@ -3,6 +3,19 @@
       v-model="dialog"
       max-width="800px"
   >
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        v-if="show_button"
+        v-bind="attrs"
+        v-on="on"
+        block
+        color="secondary"
+        elevation="2"
+        @click.stop="() => { opened = true; dialog_opened_callback() }"
+      >
+        View Doppler Calculation
+      </v-btn>
+    </template>
     <v-card
         class="mx-auto"
     >
