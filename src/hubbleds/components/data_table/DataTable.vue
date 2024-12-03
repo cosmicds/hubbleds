@@ -50,7 +50,11 @@
       </template>
 
       <template v-slot:item.name="{ item }">
-        {{ item.galaxy.name }}
+        {{
+          item.galaxy.name.endsWith(".fits") ?
+          item.galaxy.name.slice(0, -5) :
+          item.galaxy.name
+        }}
       </template>
 
       <template v-slot:item.element="{ item }">
