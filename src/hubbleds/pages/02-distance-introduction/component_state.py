@@ -1,6 +1,6 @@
 import solara
 import enum
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 from cosmicds.state import BaseState
 from hubbleds.base_marker import BaseMarker 
 from hubbleds.base_component_state import BaseComponentState
@@ -14,7 +14,23 @@ class DistanceSlideshow(BaseModel):
 
 class ComponentState(BaseComponentState, BaseState):
     current_step: Marker = Marker.mea_dis1
+    total_steps: int = len(Marker)
     stage_id: str = "distance_introduction"
     distance_slideshow_state: DistanceSlideshow = DistanceSlideshow()
+    
+    _max_step: int = 0 # not included in model
+    
+    # computed fields are included in the model when serialized
+    @computed_field
+    @property
+    def max_step(self) -> int:
+        self._max_step = max(self.current_step.value, self._max_step) # type: ignore
+        return self._max_step
+    
+    @computed_field
+    @property
+    def progress(self) -> float:
+        return round((self._max_step + 1) / self.total_steps, 3)
+
 
 COMPONENT_STATE = solara.reactive(ComponentState())
