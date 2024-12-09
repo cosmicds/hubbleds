@@ -864,8 +864,8 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq2),
-                event_mc_callback=lambda event: mc_callback(event = event, local_state = LOCAL_STATE),
-                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, 'ang_meas_consensus'), 'score_tag': 'ang_meas_consensus'}
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'ang_meas_consensus'), 'score_tag': 'ang_meas_consensus'}
             )
             ScaffoldAlert(
                 GUIDELINE_ROOT / "GuidelineDotplotSeq3.vue",
@@ -887,8 +887,8 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq4a),
-                event_mc_callback=lambda event: mc_callback(event = event, local_state = LOCAL_STATE),
-                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, 'ang_meas_dist_relation'), 'score_tag': 'ang_meas_dist_relation'}
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'ang_meas_dist_relation'), 'score_tag': 'ang_meas_dist_relation'}
             )
             # Not doing the 2nd measurement #dot_seq6 is comparison of 1st and 2nd measurement
             # ScaffoldAlert(
@@ -897,8 +897,8 @@ def Page():
             #     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
             #     can_advance=COMPONENT_STATE.value.can_transition(next=True),
             #     show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq6),
-            #     event_mc_callback=lambda event: mc_callback(event = event, local_state = LOCAL_STATE, callback=set_mc_scoring),
-            #     state_view={'mc_score': get_multiple_choice(LOCAL_STATE, 'ang_meas_consensus_2'), 'score_tag': 'ang_meas_consensus_2'}
+            #     event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE), callback=set_mc_scoring),
+            #     state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'ang_meas_consensus_2'), 'score_tag': 'ang_meas_consensus_2'}
             # )
             # Not doing the 2nd measurement #dot_seq7 is transition to doing all galaxies. This is not dot_seq5
             # ScaffoldAlert(
