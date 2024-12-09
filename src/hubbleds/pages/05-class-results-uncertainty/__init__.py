@@ -20,8 +20,8 @@ from cosmicds.viewers import CDSHistogramView
 from hubbleds.base_component_state import transition_next, transition_previous
 from hubbleds.components import UncertaintySlideshow, IdSlider
 from hubbleds.tools import *  # noqa
-from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, StudentMeasurement, get_free_response, get_multiple_choice, mc_callback, fr_callback
-from hubbleds.utils import make_summary_data, models_to_glue_data
+from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, ClassSummary, StudentMeasurement, get_free_response, get_multiple_choice, mc_callback, fr_callback
+from hubbleds.utils import age_in_gyr_simple, create_single_summary, make_summary_data, models_to_glue_data
 from hubbleds.viewers.hubble_histogram_viewer import HubbleHistogramView
 from hubbleds.viewers.hubble_scatter_viewer import HubbleScatterView
 from .component_state import COMPONENT_STATE, Marker
@@ -137,7 +137,14 @@ def Page():
             student_ids.set(ids)
         measurements.set(class_measurements)
 
-        all_measurements, student_summaries, class_summaries = LOCAL_API.get_all_data(LOCAL_STATE)
+        all_measurements, student_summaries, class_summaries = LOCAL_API.get_all_data(GLOBAL_STATE, LOCAL_STATE)
+        if GLOBAL_STATE.value.classroom.class_info is not None:
+            class_distances = [distance for m in class_measurements if ((distance := m.est_dist_value) is not None and m.velocity_value is not None)]
+            class_velocities = [velocity for m in class_measurements if (m.est_dist_value is not None and (velocity := m.velocity_value) is not None)]
+            my_class_h0, my_class_age = create_single_summary(distances=class_distances, velocities=class_velocities)
+            class_summaries.append(ClassSummary(class_id=GLOBAL_STATE.value.classroom.class_info["id"], hubble_fit_value=my_class_h0, age_value=my_class_age))
+            all_measurements.extend(class_measurements)
+
         all_meas = Ref(LOCAL_STATE.fields.all_measurements)
         all_stu_summaries = Ref(LOCAL_STATE.fields.student_summaries)
         all_cls_summaries = Ref(LOCAL_STATE.fields.class_summaries)
