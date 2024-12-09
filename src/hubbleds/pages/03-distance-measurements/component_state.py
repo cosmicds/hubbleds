@@ -1,7 +1,7 @@
 import solara
 import enum
 
-from pydantic import field_validator
+from pydantic import field_validator, computed_field
 
 from cosmicds.state import BaseState
 from hubbleds.base_marker import BaseMarker 
@@ -48,6 +48,7 @@ class Marker(enum.Enum, BaseMarker):
 
 class ComponentState(BaseComponentState, BaseState):
     current_step: Marker = Marker.ang_siz1
+    total_steps: int = len(Marker)
     stage_id: str = "distance_measurements"
     
     example_angular_sizes_total: int = 0
@@ -66,6 +67,21 @@ class ComponentState(BaseComponentState, BaseState):
     show_dotplot_lines: bool = True
     angular_size_line: Optional[float | int] = None
     distance_line: Optional[float | int] = None
+    
+    _max_step: int = 0 # not included in model
+    
+    # computed fields are included in the model when serialized
+    @computed_field
+    @property
+    def max_step(self) -> int:
+        self._max_step = max(self.current_step.value, self._max_step) # type: ignore
+        return self._max_step
+    
+    @computed_field
+    @property
+    def progress(self) -> float:
+        return round((self._max_step + 1) / self.total_steps, 3)
+
     
     @field_validator("current_step", mode="before")
     def convert_int_to_enum(cls, v: Any) -> Marker:

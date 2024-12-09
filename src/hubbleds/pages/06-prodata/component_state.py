@@ -32,6 +32,7 @@ class Marker(enum.Enum, BaseMarker):
     
 class ComponentState(BaseComponentState, BaseState):
     current_step: Marker = Marker.pro_dat0
+    total_steps: int = len(Marker)
     stage_id: str = "professional_data"
     
     # TODO: I don't think our_age is used anywhere

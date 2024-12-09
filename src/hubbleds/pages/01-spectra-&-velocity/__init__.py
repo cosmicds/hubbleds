@@ -786,8 +786,7 @@ def Page():
                     event_next_callback=lambda _: transition_next(COMPONENT_STATE),
                     event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
                     state_view={
-                        "mc_score": get_multiple_choice(
-                            LOCAL_STATE, "interpret-velocity"
+                        "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "interpret-velocity"
                         ),
                         "score_tag": "interpret-velocity",
                     },
@@ -844,7 +843,7 @@ def Page():
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
                 show=COMPONENT_STATE.value.is_current_step(Marker.ref_vel1),
-                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, "reflect_vel_value"), 'score_tag': 'reflect_vel_value'},
+                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "reflect_vel_value"), 'score_tag': 'reflect_vel_value'},
                 speech=speech.value,
             )
             ScaffoldAlert(
@@ -1122,7 +1121,7 @@ def Page():
                     event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
                     show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq8),
                     state_view={
-                        "mc_score": get_multiple_choice(LOCAL_STATE, "vel_meas_consensus"),
+                        "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "vel_meas_consensus"),
                         "score_tag": "vel_meas_consensus",
                     },
                     speech=speech.value,
@@ -1488,22 +1487,18 @@ def Page():
                                 max_step_completed=COMPONENT_STATE.value.velocity_reflection_state.max_step_completed,
                                 reflection_complete=COMPONENT_STATE.value.reflection_complete,
                                 state_view={
-                                    "mc_score_2": get_multiple_choice(
-                                        LOCAL_STATE, "wavelength-comparison"
+                                    "mc_score_2": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "wavelength-comparison"
                                     ),
                                     "score_tag_2": "wavelength-comparison",
-                                    "mc_score_3": get_multiple_choice(LOCAL_STATE, "galaxy-motion"),
+                                    "mc_score_3": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "galaxy-motion"),
                                     "score_tag_3": "galaxy-motion",
-                                    "mc_score_4": get_multiple_choice(
-                                        LOCAL_STATE, "steady-state-consistent"
+                                    "mc_score_4": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "steady-state-consistent"
                                     ),
                                     "score_tag_4": "steady-state-consistent",
-                                    "mc_score_5": get_multiple_choice(
-                                        LOCAL_STATE, "moving-randomly-consistent"
+                                    "mc_score_5": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "moving-randomly-consistent"
                                     ),
                                     "score_tag_5": "moving-randomly-consistent",
-                                    "mc_score_6": get_multiple_choice(
-                                        LOCAL_STATE, "peers-data-agree"
+                                    "mc_score_6": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "peers-data-agree"
                                     ),
                                     "score_tag_6": "peers-data-agree",
                                 },
