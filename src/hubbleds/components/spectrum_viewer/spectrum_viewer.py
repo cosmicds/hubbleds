@@ -113,7 +113,7 @@ def SpectrumViewer(
     def _spectrum_clicked(**kwargs):
         if spectrum_click_enabled:
             vertical_line_visible.set(True)
-            on_obs_wave_measured(round(kwargs["points"]["xs"][0]))
+            on_obs_wave_measured(kwargs["points"]["xs"][0])
         if marker_position is not None:
             # vertical_line_visible.set(False)
             value = kwargs["points"]["xs"][0]
@@ -181,10 +181,11 @@ def SpectrumViewer(
                     # hover_data={"wave": False, "flux": False},
                     # line_shape="hvh", # step line plot
                     )
-        fig.update_traces(hovertemplate='Wavelength: %{x:0.1f} Å') #
+        fig.update_traces(hovertemplate='Wavelength: %{x:0.0f} Å') #
         fig.update_layout(
             hoverlabel=dict(
                 font_size=16,
+                bgcolor="white"
             ),
         )
 
@@ -260,21 +261,31 @@ def SpectrumViewer(
 
         fig.add_shape(
             editable=False,
-            x0=galaxy_data.redshift_rest_wave_value - 5,
-            x1=galaxy_data.redshift_rest_wave_value + 5,
-            y0=0.85,
-            y1=0.9,
-            xref="x",
+            x0=galaxy_data.redshift_rest_wave_value - 1.5,
+            x1=galaxy_data.redshift_rest_wave_value + 1.5,
+            y0=0.82,
+            y1=0.99,
+            yref="paper",
+            # xref="x",
             line_color="red",
             fillcolor="red",
             ysizemode="scaled",
+        )
+
+        fig.add_annotation(
+            x=galaxy_data.redshift_rest_wave_value + 7,
+            y= 0.99,
             yref="paper",
-            label={
-                "text": f"{galaxy_data.element} (observed)",
-                "textposition": "top center",
-                "yanchor": "bottom",
-            },
-            # visible=
+            text=f"{galaxy_data.element} (observed)",
+            showarrow=False,
+            font=dict(
+                family="Arial, sans-serif",
+                size=14,
+                color="red",
+                weight="bold"
+            ),
+            xanchor="left",
+            yanchor="top",
         )
 
         fig.add_shape(
@@ -288,12 +299,27 @@ def SpectrumViewer(
             line_color="black",
             ysizemode="scaled",
             yref="paper",
-            line=dict(dash="dot"),
-            label={
-                "text": f"{galaxy_data.element} (rest)",
-                "textposition": "top center",
-                "yanchor": "bottom",
-            },
+            line=dict(
+                dash="dot",
+                width=4
+            ),
+            visible=1 in toggle_group_state.value,
+        )
+
+        fig.add_annotation(
+            x=galaxy_data.rest_wave_value - 7,
+            y= 0.99,
+            yref="paper",
+            text=f"{galaxy_data.element} (rest)",
+            showarrow=False,
+            font=dict(
+                family="Arial, sans-serif",
+                size=14,
+                color="black",
+                weight="bold"
+            ),
+            xanchor="right",
+            yanchor="top",
             visible=1 in toggle_group_state.value,
         )
 
