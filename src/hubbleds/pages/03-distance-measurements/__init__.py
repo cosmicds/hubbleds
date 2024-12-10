@@ -772,7 +772,7 @@ def Page():
                         "text": "Galaxy Name",
                         "align": "start",
                         "sortable": False,
-                        "value": "galaxy_id"
+                        "value": "name"
                     },
                     { "text": "&theta; (arcsec)", "value": "ang_size_value" },
                     { "text": "Distance (Mpc)", "value": "est_dist_value" },
