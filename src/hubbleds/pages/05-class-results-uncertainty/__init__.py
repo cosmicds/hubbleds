@@ -137,7 +137,7 @@ def Page():
             student_ids.set(ids)
         measurements.set(class_measurements)
 
-        all_measurements, student_summaries, class_summaries = LOCAL_API.get_all_data(LOCAL_STATE)
+        all_measurements, student_summaries, class_summaries = LOCAL_API.get_all_data(GLOBAL_STATE, LOCAL_STATE)
         all_meas = Ref(LOCAL_STATE.fields.all_measurements)
         all_stu_summaries = Ref(LOCAL_STATE.fields.student_summaries)
         all_cls_summaries = Ref(LOCAL_STATE.fields.class_summaries)

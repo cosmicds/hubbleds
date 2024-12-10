@@ -9,7 +9,6 @@ from cosmicds.remote import BaseAPI
 from cosmicds.state import GlobalState, BaseState, GLOBAL_STATE
 from solara import Reactive
 from solara.toestand import Ref
-from functools import cached_property
 from cosmicds.logger import setup_logger
 from typing import List
 
@@ -328,9 +327,12 @@ class LocalAPI(BaseAPI):
 
     def get_all_data(
         self,
+        global_state: Reactive[GlobalState],
         local_state: Reactive[LocalState],
     ) -> tuple[list[StudentMeasurement], list[StudentSummary], list[ClassSummary]]:
         url = f"{self.API_URL}/{local_state.value.story_id}/all-data?minimal=True"
+        if global_state.value.classroom.class_info is not None:
+            url += f"&class_id={global_state.value.classroom.class_info['id']}"
         r = self.request_session.get(url)
         res_json = r.json()
 
