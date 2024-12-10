@@ -1,6 +1,6 @@
 import solara
 
-from pydantic import field_validator
+from pydantic import field_validator, computed_field
 
 from cosmicds.state import BaseState
 from hubbleds.base_marker import BaseMarker
@@ -32,6 +32,7 @@ class Marker(enum.Enum, BaseMarker):
     
 class ComponentState(BaseComponentState, BaseState):
     current_step: Marker = Marker.pro_dat0
+    total_steps: int = len(Marker)
     stage_id: str = "professional_data"
     
     # TODO: I don't think our_age is used anywhere
@@ -42,6 +43,20 @@ class ComponentState(BaseComponentState, BaseState):
     allow_too_close_correct: bool = True
     
     fit_line_shown: bool = False
+    
+    _max_step: int = 0 # not included in model
+    
+    # computed fields are included in the model when serialized
+    @computed_field
+    @property
+    def max_step(self) -> int:
+        self._max_step = max(self.current_step.value, self._max_step) # type: ignore
+        return self._max_step
+    
+    @computed_field
+    @property
+    def progress(self) -> float:
+        return round(100 * (self._max_step + 1) / (self.total_steps - 1))
     
     
 

@@ -394,9 +394,9 @@ def Page():
                     can_advance=COMPONENT_STATE.value.can_transition(next=True),
                     show=COMPONENT_STATE.value.is_current_step(Marker.you_age1c),
                     state_view={
-                        "low_guess": get_free_response(LOCAL_STATE, "likely-low-age").get("response"),
-                        "high_guess": get_free_response(LOCAL_STATE, "likely-high-age").get("response"),
-                        "best_guess": get_free_response(LOCAL_STATE, "best-guess-age").get("response"),
+                        "low_guess": get_free_response(LOCAL_STATE, COMPONENT_STATE,"likely-low-age").get("response"),
+                        "high_guess": get_free_response(LOCAL_STATE, COMPONENT_STATE,"likely-high-age").get("response"),
+                        "best_guess": get_free_response(LOCAL_STATE, COMPONENT_STATE,"best-guess-age").get("response"),
                     }                    
                 )
 
@@ -423,9 +423,9 @@ def Page():
                     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                     can_advance=COMPONENT_STATE.value.can_transition(next=True),
                     show=COMPONENT_STATE.value.is_current_step(Marker.rel_age1),
-                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                     state_view={
-                        "mc_score": get_multiple_choice(LOCAL_STATE, "age-slope-trend"),
+                        "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "age-slope-trend"),
                         "score_tag": "age-slope-trend"
                     }
                 )
@@ -522,11 +522,11 @@ def Page():
                         UncertaintySlideshow(
                             event_on_slideshow_finished=lambda _: Ref(COMPONENT_STATE.fields.uncertainty_slideshow_finished).set(True),
                             step=COMPONENT_STATE.value.uncertainty_state.step,
-                            age_calc_short1=get_free_response(LOCAL_STATE, "shortcoming-1").get("response"),
-                            age_calc_short2=get_free_response(LOCAL_STATE, "shortcoming-2").get("response"),
-                            age_calc_short_other=get_free_response(LOCAL_STATE, "other-shortcomings").get("response"),    
+                            age_calc_short1=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-1").get("response"),
+                            age_calc_short2=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-2").get("response"),
+                            age_calc_short_other=get_free_response(LOCAL_STATE, COMPONENT_STATE,"other-shortcomings").get("response"),    
                             event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
-                            free_responses=[get_free_response(LOCAL_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE,'systematic-uncertainty')]   
+                            free_responses=[get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE, COMPONENT_STATE,'systematic-uncertainty')]   
                         )
             
     #--------------------- Row 3: ALL DATA HUBBLE VIEWER - during class sequence -----------------------
@@ -578,11 +578,11 @@ def Page():
                     UncertaintySlideshow(
                         event_on_slideshow_finished=lambda _: Ref(COMPONENT_STATE.fields.uncertainty_slideshow_finished).set(True),
                         step=COMPONENT_STATE.value.uncertainty_state.step,
-                        age_calc_short1=get_free_response(LOCAL_STATE, "shortcoming-1").get("response"),
-                        age_calc_short2=get_free_response(LOCAL_STATE, "shortcoming-2").get("response"),
-                        age_calc_short_other=get_free_response(LOCAL_STATE, "other-shortcomings").get("response"),  
+                        age_calc_short1=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-1").get("response"),
+                        age_calc_short2=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-2").get("response"),
+                        age_calc_short_other=get_free_response(LOCAL_STATE, COMPONENT_STATE,"other-shortcomings").get("response"),  
                         event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
-                        free_responses=[get_free_response(LOCAL_STATE, 'shortcoming-4'), get_free_response(LOCAL_STATE, 'systematic-uncertainty')]
+                        free_responses=[get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE, COMPONENT_STATE,'systematic-uncertainty')]
                 )
 
     #--------------------- Row 4: OUR CLASS HISTOGRAM VIEWER -----------------------
@@ -657,9 +657,9 @@ def Page():
         show=COMPONENT_STATE.value.is_current_step(Marker.mos_lik4),
         event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
         state_view={
-            'free_response_a': get_free_response(LOCAL_STATE,'best-guess-age'),
+            'free_response_a': get_free_response(LOCAL_STATE, COMPONENT_STATE,'best-guess-age'),
             # 'best_guess_answered': LOCAL_STATE.value.question_completed("best-guess-age"),
-            'free_response_b': get_free_response(LOCAL_STATE,'my-reasoning')
+            'free_response_b': get_free_response(LOCAL_STATE, COMPONENT_STATE,'my-reasoning')
         }
     )
 
@@ -671,10 +671,10 @@ def Page():
         show=COMPONENT_STATE.value.is_current_step(Marker.con_int3),
         event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
         state_view={
-            'free_response_a': get_free_response(LOCAL_STATE,'likely-low-age'),
-            'free_response_b': get_free_response(LOCAL_STATE,'likely-high-age'),
+            'free_response_a': get_free_response(LOCAL_STATE, COMPONENT_STATE,'likely-low-age'),
+            'free_response_b': get_free_response(LOCAL_STATE, COMPONENT_STATE,'likely-high-age'),
             # 'high_low_answered': LOCAL_STATE.value.question_completed("likely-low-age") and LOCAL_STATE.value.question_completed("likely-high-age"),
-            'free_response_c': get_free_response(LOCAL_STATE,'my-reasoning-2'),
+            'free_response_c': get_free_response(LOCAL_STATE, COMPONENT_STATE,'my-reasoning-2'),
         }
     )
 
@@ -724,9 +724,9 @@ def Page():
                     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                     can_advance=COMPONENT_STATE.value.can_transition(next=True),
                     show=COMPONENT_STATE.value.is_current_step(Marker.two_his2),
-                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                     state_view = {
-                        "mc_score": get_multiple_choice(LOCAL_STATE, "histogram-range"),
+                        "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "histogram-range"),
                         "score_tag": "histogram-range"
                     }
                 )
@@ -736,9 +736,9 @@ def Page():
                     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                     can_advance=COMPONENT_STATE.value.can_transition(next=True),
                     show=COMPONENT_STATE.value.is_current_step(Marker.two_his3),
-                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                     state_view = {
-                        "mc_score": get_multiple_choice(LOCAL_STATE, "histogram-percent-range"),
+                        "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "histogram-percent-range"),
                         "score_tag": "histogram-percent-range"
                     }
                 )
@@ -748,9 +748,9 @@ def Page():
                     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                     can_advance=COMPONENT_STATE.value.can_transition(next=True),
                     show=COMPONENT_STATE.value.is_current_step(Marker.two_his4),
-                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                     state_view = {
-                        "mc_score": get_multiple_choice(LOCAL_STATE, "histogram-distribution"),
+                        "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "histogram-distribution"),
                         "score_tag": "histogram-distribution"
                     }
                 )
@@ -762,7 +762,7 @@ def Page():
                     show=COMPONENT_STATE.value.is_current_step(Marker.two_his5),
                     event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
                     state_view={
-                        'free_response': get_free_response(LOCAL_STATE,'unc-range-change-reasoning'),
+                        'free_response': get_free_response(LOCAL_STATE, COMPONENT_STATE,'unc-range-change-reasoning'),
                     }
                 )
                 ScaffoldAlert(
@@ -788,12 +788,12 @@ def Page():
             show=COMPONENT_STATE.value.is_current_step(Marker.con_int2c),
             event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
             state_view={
-                "low_guess": get_free_response(LOCAL_STATE, "likely-low-age").get("response"),
-                "high_guess": get_free_response(LOCAL_STATE, "likely-high-age").get("response"),
-                "best_guess": get_free_response(LOCAL_STATE, "best-guess-age").get("response"),
-                'free_response_a': get_free_response(LOCAL_STATE, 'new-most-likely-age'),
-                'free_response_b': get_free_response(LOCAL_STATE, 'new-likely-low-age'),
-                'free_response_c': get_free_response(LOCAL_STATE, 'new-likely-high-age'),
-                'free_response_d': get_free_response(LOCAL_STATE, 'my-updated-reasoning'),
+                "low_guess": get_free_response(LOCAL_STATE, COMPONENT_STATE,"likely-low-age").get("response"),
+                "high_guess": get_free_response(LOCAL_STATE, COMPONENT_STATE,"likely-high-age").get("response"),
+                "best_guess": get_free_response(LOCAL_STATE, COMPONENT_STATE,"best-guess-age").get("response"),
+                'free_response_a': get_free_response(LOCAL_STATE, COMPONENT_STATE,'new-most-likely-age'),
+                'free_response_b': get_free_response(LOCAL_STATE, COMPONENT_STATE,'new-likely-low-age'),
+                'free_response_c': get_free_response(LOCAL_STATE, COMPONENT_STATE,'new-likely-high-age'),
+                'free_response_d': get_free_response(LOCAL_STATE, COMPONENT_STATE,'my-updated-reasoning'),
             }
         )
