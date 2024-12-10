@@ -784,7 +784,7 @@ def Page():
                     event_set_student_vel=_velocity_calculated_callback,
                     event_set_student_c=student_c.set,
                     event_next_callback=lambda _: transition_next(COMPONENT_STATE),
-                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                     state_view={
                         "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "interpret-velocity"
                         ),
@@ -841,7 +841,7 @@ def Page():
                 event_next_callback=lambda _: transition_next(COMPONENT_STATE),
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
-                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                 show=COMPONENT_STATE.value.is_current_step(Marker.ref_vel1),
                 state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "reflect_vel_value"), 'score_tag': 'reflect_vel_value'},
                 speech=speech.value,
@@ -1118,7 +1118,7 @@ def Page():
                     event_next_callback=lambda _: transition_next(COMPONENT_STATE),
                     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                     can_advance=COMPONENT_STATE.value.can_transition(next=True),
-                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                    event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                     show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq8),
                     state_view={
                         "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "vel_meas_consensus"),
@@ -1503,7 +1503,7 @@ def Page():
                                     "score_tag_6": "peers-data-agree",
                                 },
                                 event_set_dialog=show_reflection_dialog.set,
-                                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                                 # These are numbered based on window-item value
                                 event_set_step=reflect_step.set,
                                 event_set_max_step_completed=reflect_max_step_completed.set,

@@ -78,7 +78,7 @@ def Page():
         image_location=f"{IMAGE_BASE_URL}/stage_two_intro",
         event_set_step=step.set,
         event_set_max_step_completed=max_step_completed.set,
-        event_mc_callback=lambda event: mc_callback(event=event, local_state=LOCAL_STATE),
+        event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
         state_view={
             "mc_score_1": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "which-galaxy-closer"
                 ),
