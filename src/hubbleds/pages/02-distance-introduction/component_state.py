@@ -30,7 +30,8 @@ class ComponentState(BaseComponentState, BaseState):
     @computed_field
     @property
     def progress(self) -> float:
-        return round((self._max_step + 1) / self.total_steps, 3)
+        # +1 for zero index, -1 for extra step
+        return round(100 * (self._max_step + 1) / (self.total_steps))
 
 
 COMPONENT_STATE = solara.reactive(ComponentState())

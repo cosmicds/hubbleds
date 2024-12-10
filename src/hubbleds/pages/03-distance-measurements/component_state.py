@@ -80,7 +80,7 @@ class ComponentState(BaseComponentState, BaseState):
     @computed_field
     @property
     def progress(self) -> float:
-        return round((self._max_step + 1) / self.total_steps, 3)
+        return round(100 * (self._max_step + 1) / (self.total_steps - 1))
 
     
     @field_validator("current_step", mode="before")
