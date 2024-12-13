@@ -25,9 +25,6 @@
       <p>
         The information in the boxes will suggest what you should focus on, or what you should do next.
       </p>
-      <p>
-        The images, tables, or graph where the guideline suggests action will also be highlighted with an <b>orange outline</b>.
-      </p>
     </div>
 
   </scaffold-alert>

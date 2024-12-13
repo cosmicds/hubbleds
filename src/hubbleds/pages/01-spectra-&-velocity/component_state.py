@@ -58,6 +58,7 @@ class Marker(enum.Enum, BaseMarker):
     # dot_seq14 = enum.auto()
     exp_ski1 = enum.auto()
     rem_gal1 = enum.auto()
+    exp_ski2 = enum.auto()
 
     # skip for short demo
     # ref_dat1 = enum.auto()
@@ -212,16 +213,16 @@ class ComponentState(BaseComponentState, BaseState):
     
     # change gate to account for above and below being skipped
     @property
-    def dop_cal6_gate(self) -> bool:
+    def exp_ski2_gate(self) -> bool:
         return self.obs_wave_total >= 5
 
     # @property
     # def dop_cal6_gate(self) -> bool:
     #     return self.reflection_complete
 
-    # @property
-    # def ref_vel1_gate(self) -> bool:
-    #     return self.velocities_total >= 5
+    @property
+    def end_sta1_gate(self) -> bool:
+        return self.velocities_total >= 5
 
     @property
     def nxt_stg_gate(self) -> bool:

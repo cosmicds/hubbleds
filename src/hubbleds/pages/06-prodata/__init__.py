@@ -375,13 +375,13 @@ def Page():
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.sto_fin2),
             )
-            ScaffoldAlert(
-                GUIDELINE_ROOT / "GuidelineStoryFinish3.vue",
-                event_next_callback=lambda _: transition_next(COMPONENT_STATE),
-                event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
-                can_advance=COMPONENT_STATE.value.can_transition(next=True),
-                show=COMPONENT_STATE.value.is_current_step(Marker.sto_fin3),
-            )
+            # ScaffoldAlert(
+            #     GUIDELINE_ROOT / "GuidelineStoryFinish3.vue",
+            #     event_next_callback=lambda _: transition_next(COMPONENT_STATE),
+            #     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
+            #     can_advance=COMPONENT_STATE.value.can_transition(next=True),
+            #     show=COMPONENT_STATE.value.is_current_step(Marker.sto_fin3),
+            # )
         
         with rv.Col(class_="no-padding"):
             with solara.Columns([3,9], classes=["no-padding"]):

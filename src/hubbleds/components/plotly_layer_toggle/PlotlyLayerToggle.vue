@@ -4,6 +4,7 @@
     light
     variant="outlined"
     color="white"
+    class="layer_toggle"
   >
     <v-list-item-group
       multiple

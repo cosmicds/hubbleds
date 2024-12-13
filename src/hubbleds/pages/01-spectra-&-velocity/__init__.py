@@ -598,6 +598,14 @@ def Page():
                 },
                 speech=speech.value,
             )
+            ScaffoldAlert(
+                GUIDELINE_ROOT / "GuidelineExplainSkip2.vue",
+                event_next_callback=lambda _: transition_next(COMPONENT_STATE),
+                event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
+                can_advance=COMPONENT_STATE.value.can_transition(next=True),
+                show=COMPONENT_STATE.value.is_current_step(Marker.exp_ski2),
+                speech=speech.value,
+            )
             if COMPONENT_STATE.value.is_current_step(Marker.rem_gal1):
                 solara.Button(label="DEMO SHORTCUT: FILL λ MEASUREMENTS", on_click=_fill_lambdas, style="text-transform: none;", classes=["demo-button"])
             ScaffoldAlert(

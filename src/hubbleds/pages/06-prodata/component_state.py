@@ -28,7 +28,7 @@ class Marker(enum.Enum, BaseMarker):
     pro_dat9 = enum.auto()
     sto_fin1 = enum.auto()
     sto_fin2 = enum.auto()
-    sto_fin3 = enum.auto()
+    # sto_fin3 = enum.auto()
     
 class ComponentState(BaseComponentState, BaseState):
     current_step: Marker = Marker.pro_dat0
