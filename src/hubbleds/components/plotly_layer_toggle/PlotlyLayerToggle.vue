@@ -41,7 +41,15 @@
 
 <script>
 export default {
-  props: ["chart_id", "layer_indices", "initial_selected", "enabled", "colors", "labels", ],
+  props: [
+    "chart_id",
+    "layer_indices",
+    "initial_selected",
+    "enabled",
+    "colors",
+    "labels",
+    "layer_toggled",
+  ],
   data() {
     return {
       element: null,
@@ -67,6 +75,9 @@ export default {
         this.getElement();
       }
       Plotly.restyle(this.element, { visible }, {}, index);
+      if (this.layer_toggled) {
+        this.layer_toggled({ index, visible });
+      }
     },
     toggleVisibility(index) {
       let makeVisible = false;
