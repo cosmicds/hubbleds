@@ -20,8 +20,11 @@ def SpectrumViewer(
     spectrum_click_enabled: bool = False,
     show_obs_wave_line: bool = True,
     on_obs_wave_measured: Callable = None,
-    on_obs_wave_tool_clicked: Callable = lambda: None,
+    on_rest_wave_tool_clicked: Callable = lambda: None,
     on_zoom_tool_clicked: Callable = lambda: None,
+    on_zoom_tool_toggled: Callable = lambda: None,
+    on_zoom: Callable = lambda: None,
+    on_reset_tool_clicked: Callable = lambda: None,
     marker_position: Optional[solara.Reactive[float]] = None,
     on_set_marker_position: Callable = lambda x: None,
     spectrum_bounds: Optional[solara.Reactive[list[float]]] = None,
@@ -61,8 +64,8 @@ def SpectrumViewer(
             max_spectrum_bounds.set([spec["wave"].min(), spec["wave"].max()])
     
 
-    def _obs_wave_tool_toggled():
-        on_obs_wave_tool_clicked()
+    def _rest_wave_tool_toggled():
+        on_rest_wave_tool_clicked()
 
 
 
@@ -87,7 +90,7 @@ def SpectrumViewer(
         except:
             x_bounds.set([])
             y_bounds.set([])
-        
+
         if "relayout_data" in event:
             if "xaxis.range[0]" in event["relayout_data"] and "xaxis.range[1]" in event["relayout_data"]:
                 if spectrum_bounds is not None:
@@ -95,6 +98,7 @@ def SpectrumViewer(
                         event["relayout_data"]["xaxis.range[0]"],
                         event["relayout_data"]["xaxis.range[1]"],
                     ])
+                on_zoom()
 
     def _on_reset_button_clicked(*args, **kwargs):
         x_bounds.set([])
@@ -107,6 +111,8 @@ def SpectrumViewer(
                 ])
         except Exception as e:
             print(e)
+
+        on_reset_tool_clicked()
     
     solara.use_effect(_on_reset_button_clicked, dependencies=[galaxy_data])
 
@@ -119,7 +125,10 @@ def SpectrumViewer(
             value = kwargs["points"]["xs"][0]
             marker_position.set(value)
             on_set_marker_position(value)
-            
+
+    def _zoom_button_clicked():
+        on_zoom_tool_clicked()
+        on_zoom_tool_toggled()  
 
     with rv.Card():
         with rv.Toolbar(class_="toolbar", dense=True):
@@ -127,6 +136,13 @@ def SpectrumViewer(
                 solara.Text("SPECTRUM VIEWER")
 
             rv.Spacer()
+
+            solara.IconButton(
+                flat=True,
+                tile=True,
+                icon_name="mdi-cached",
+                on_click=_on_reset_button_clicked,
+            )
 
             with rv.BtnToggle(
                 v_model=toggle_group_state.value,
@@ -139,22 +155,13 @@ def SpectrumViewer(
 
                 solara.IconButton(
                     icon_name="mdi-select-search",
-                    on_click=on_zoom_tool_clicked,
+                    on_click=_zoom_button_clicked,
                 )
 
                 solara.IconButton(
                     icon_name="mdi-lambda",
-                    on_click=_obs_wave_tool_toggled,
+                    on_click=_rest_wave_tool_toggled,
                 )
-
-            rv.Divider(vertical=True)
-
-            solara.IconButton(
-                flat=True,
-                tile=True,
-                icon_name="mdi-cached",
-                on_click=_on_reset_button_clicked,
-            )
 
         if spec_data_task.value is None:
             with rv.Sheet(
@@ -374,6 +381,7 @@ def SpectrumViewer(
             dependencies=dependencies,
             config={
                 "displayModeBar": False,
+                "showTips": False 
             },
         )
 
