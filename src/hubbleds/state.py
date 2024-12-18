@@ -1,6 +1,7 @@
 from pydantic import BaseModel, computed_field, field_validator, Field
 from solara import Reactive
 from cosmicds.state import BaseState, GLOBAL_STATE, BaseLocalState
+from hubbleds.base_component_state import BaseComponentState
 from typing import Optional
 import solara
 import datetime
@@ -198,24 +199,43 @@ class LocalState(BaseLocalState):
 
 LOCAL_STATE = solara.reactive(LocalState())
 
+from typing import TypeVar
+BaseComponentStateT = TypeVar('BaseComponentStateT', bound='BaseComponentState')
 
-def get_free_response(local_state: Reactive[LocalState], tag: str):
+
+def get_free_response(local_state: Reactive[LocalState], component_state: Reactive[BaseComponentStateT], tag: str):
     # get question as serializable dictionary
     # also initializes the question by using get_or_create method
     free_responses = local_state.value.free_responses
-    return free_responses.get_or_create(tag).model_dump()
+    fr = free_responses.get_or_create(tag)
+    if hasattr(component_state.value, 'stage_id'):
+        fr.stage = component_state.value.stage_id # type: ignore
+    else:
+        logger.error('COMPONENT_STATE as no stage_id')
+    return fr.model_dump()
 
 
-def get_multiple_choice(local_state: Reactive[LocalState], tag: str):
+def get_multiple_choice(local_state: Reactive[LocalState], component_state: Reactive[BaseComponentStateT], tag: str):
     # get question as serializable dictionary
     # also initializes the question by using get_or_create method
     multiple_choices = local_state.value.mc_scoring
-    return multiple_choices.get_model_dump(tag)
+    question = multiple_choices.get(tag)
+    # need this here to catch *not fresh* students
+    if question and question.stage == '':
+        if hasattr(component_state.value, 'stage_id'):
+            multiple_choices[tag].stage = component_state.value.stage_id # type: ignore
+        else:
+            logger.error('COMPONENT_STATE as no stage_id')
+    model =  multiple_choices.get_model_dump(tag)
+    logger.info(f'get_multiple_choice {model}')
+    
+    return model
 
 
 def mc_callback(
     event,
     local_state: Reactive[LocalState],
+    component_state: Reactive[BaseComponentStateT],
     callback: Optional[Callable[[MCScoring], None]] = None,
 ):
     """
@@ -230,9 +250,14 @@ def mc_callback(
     if event[0] == "mc-initialize-response":
         if event[1] not in mc_scoring:
             mc_scoring.add(event[1])
+            if hasattr(component_state.value, 'stage_id'):
+                mc_scoring[event[1]].stage = component_state.value.stage_id # type: ignore
             LOCAL_STATE.set(local_state.value)
             if callback is not None:
                 callback(mc_scoring)
+        elif mc_scoring[event[1]].stage == '':
+            if hasattr(component_state.value, 'stage_id'):
+                mc_scoring[event[1]].stage = component_state.value.stage_id # type: ignore
 
     # mc-score event returns a data which is an mc-score dictionary (includes tag)
     elif event[0] == "mc-score":
