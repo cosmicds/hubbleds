@@ -1,6 +1,6 @@
 import solara
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, computed_field
 
 from cosmicds.state import BaseState
 from hubbleds.base_marker import BaseMarker
@@ -53,6 +53,7 @@ class UncertaintyState(BaseModel):
 
 class ComponentState(BaseComponentState, BaseState):
     current_step: Marker = Marker.first()
+    total_steps: int = len(Marker)
     stage_id: str = "class_results_and_uncertainty"
     student_low_age: int = 0
     student_high_age: int = 0
@@ -62,6 +63,21 @@ class ComponentState(BaseComponentState, BaseState):
     uncertainty_state: UncertaintyState = UncertaintyState()
     uncertainty_slideshow_finished: bool = False
     class_best_fit_clicked: bool = False
+    
+    _max_step: int = 0 # not included in model
+    
+    # computed fields are included in the model when serialized
+    @computed_field
+    @property
+    def max_step(self) -> int:
+        self._max_step = max(self.current_step.value, self._max_step) # type: ignore
+        return self._max_step
+    
+    @computed_field
+    @property
+    def progress(self) -> float:
+        return round(100 * (self._max_step + 1) / (self.total_steps - 1))
+
 
     @field_validator("current_step", mode="before")
     def convert_int_to_enum(cls, v: Any) -> Marker:

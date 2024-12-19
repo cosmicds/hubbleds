@@ -9,6 +9,7 @@ class MCScore(GenericQuestion):
     choice: int | None = None
     tries: int = 0
     wrong_attempts: int = 0
+    stage: str | float = ''
     
     # not required but is useful for debugging/introspection
     def update(self, score: int, choice: int, tries: int, wrong_attempts: int):
@@ -26,7 +27,7 @@ class MCScoring(GenericContainer[MCScore]):
     _item_attribute_name: str = "scores"
     
     def add(self, tag: str) -> MCScore:
-        return self.add_item(tag, MCScore)    
+        return self.add_item(tag, MCScore)
     
     def get_or_create(self, tag: str) -> MCScore:
         return self.get_or_create_item(tag, MCScore)  

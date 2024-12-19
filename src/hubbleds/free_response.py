@@ -9,6 +9,7 @@ class FreeResponse(GenericQuestion):
     tag: str = ""
     response: str = ""
     initialized: bool = True
+    stage: str | float = ''
     
     # not required but is useful for debugging/introspection
     def update(self, response: str = ''):
@@ -25,7 +26,7 @@ class FreeResponses(GenericContainer[FreeResponse]):
     _item_attribute_name: str = "responses"
     
     def add(self, tag: str):
-        self.add_item(tag, FreeResponse)
+        return self.add_item(tag, FreeResponse)
         
     def get_or_create(self, tag: str):
         return self.get_or_create_item(tag, FreeResponse)        
