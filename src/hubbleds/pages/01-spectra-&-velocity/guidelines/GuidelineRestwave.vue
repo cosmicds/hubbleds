@@ -24,7 +24,7 @@
         The galaxy spectrum has {{ state_view.selected_example_galaxy.element == 'Mg-I' ? 'a' : 'an' }} {{ state_view.selected_example_galaxy.element }} {{ state_view.selected_example_galaxy.element == 'Mg-I' ? 'absorption' : 'emission' }} line marked by a red vertical line on the graph.
       </p>
       <p
-        v-if="!state_view.lambda_used"
+        v-if="!state_view.lambda_on"
       >
         The known <b>rest wavelength</b> (&lambda;<sub>rest</sub>) for the line is recorded in your table.
       </p>
