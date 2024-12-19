@@ -304,6 +304,16 @@ div.plotly .hoverlayer g.hovertext {
 }
 
 .v-dialog.v-dialog--active .v-toolbar.dragging {
-  cursor: grabbing;
-  text-selection: none;
+    cursor: grabbing;
+    text-selection: none;
+}
+
+.card-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card-table td {
+    padding: 8px;
+    border: 1px solid #aaa;
 }
