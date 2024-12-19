@@ -276,3 +276,34 @@ div.plotly .hoverlayer g.hovertext {
     font-weight: bold;
     padding-left: 0;
 }
+
+.theme--dark.demo-button {
+    background-color: var(--success) !important;
+    color: black !important;
+}
+
+.theme--light .demo-button {
+    background-color: var(--success) !important;
+    color: white !important;
+}
+
+/* Sidebar navigation active item */
+.v-list-item-group .v-list-item--active:not(.layer_toggle .v-list-item--active) {
+    color: white;
+    background-color: var(--primary);
+}
+
+.v-application .layer_toggle {
+    border-color: black !important;
+}
+
+/* For setting the cursor for dialog dragging */
+.v-dialog.v-dialog--active .v-toolbar {
+    cursor: grab;
+    text-selection: none;
+}
+
+.v-dialog.v-dialog--active .v-toolbar.dragging {
+  cursor: grabbing;
+  text-selection: none;
+}

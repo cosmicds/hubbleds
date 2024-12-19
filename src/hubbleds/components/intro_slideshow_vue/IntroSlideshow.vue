@@ -933,9 +933,8 @@
       </v-btn>
       <!-- first button below just being used for testing, delete when using live with students -->
       <v-btn
-        v-if="step < length-1 && debug"
-        color="success"
-        class="black--text"
+        v-if="step < length-1"
+        class="demo-button"
         depressed
         @click="() => {
           slideshow_finished();
@@ -943,7 +942,7 @@
           // this.$refs.synth.stopSpeaking();
         }"
       >
-        get started
+        jump to Stage 1
       </v-btn>
       <v-btn
         v-if="step >= length-1"

@@ -408,6 +408,19 @@
           Next
         </v-btn>
         <v-btn
+          v-if="step < length-1"
+          class="demo-button"
+          depressed
+          @click="() => {
+            set_dialog(false);
+            on_reflection_complete();
+            set_step(0); 
+            // this.$refs.synth.stopSpeaking();
+          }"
+        >
+          move on
+        </v-btn>    
+        <v-btn
           v-if="step === length-1"
           color="accent"
           class="black--text"

@@ -151,7 +151,14 @@ def Page():
     if load_class_data.finished:
         _on_class_data_loaded(load_class_data.value)
 
-    StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API, show_all=True)
+    def _jump_stage_5():
+        router.push("05-class-results-uncertainty")
+
+    with solara.Row():
+        with solara.Column():
+            StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API, show_all=False)
+        with solara.Column():
+            solara.Button(label="Shortcut: Jump to Stage 5", on_click=_jump_stage_5, classes=["demo-button"])
 
     with solara.ColumnsResponsive(12, large=[4,8]):
         with rv.Col():

@@ -20,8 +20,8 @@ from cosmicds.viewers import CDSHistogramView
 from hubbleds.base_component_state import transition_next, transition_previous
 from hubbleds.components import UncertaintySlideshow, IdSlider
 from hubbleds.tools import *  # noqa
-from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, StudentMeasurement, get_free_response, get_multiple_choice, mc_callback, fr_callback
-from hubbleds.utils import make_summary_data, models_to_glue_data
+from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, ClassSummary, StudentMeasurement, get_free_response, get_multiple_choice, mc_callback, fr_callback
+from hubbleds.utils import age_in_gyr_simple, create_single_summary, make_summary_data, models_to_glue_data
 from hubbleds.viewers.hubble_histogram_viewer import HubbleHistogramView
 from hubbleds.viewers.hubble_scatter_viewer import HubbleScatterView
 from .component_state import COMPONENT_STATE, Marker
@@ -39,6 +39,8 @@ GUIDELINE_ROOT = Path(__file__).parent / "guidelines"
 def Page():
     solara.Title("HubbleDS")
     loaded_component_state = solara.use_reactive(False)
+    student_slider_setup, set_student_slider_setup = solara.use_state(False)
+    class_slider_setup, set_class_slider_setup = solara.use_state(False)
     router = solara.use_router()
 
     async def _load_component_state():
@@ -137,7 +139,17 @@ def Page():
             student_ids.set(ids)
         measurements.set(class_measurements)
 
-        all_measurements, student_summaries, class_summaries = LOCAL_API.get_all_data(LOCAL_STATE)
+        all_measurements, student_summaries, class_summaries = LOCAL_API.get_all_data(GLOBAL_STATE, LOCAL_STATE)
+        if GLOBAL_STATE.value.classroom.class_info is not None:
+            class_id = GLOBAL_STATE.value.classroom.class_info["id"]
+            class_distances = [distance for m in class_measurements if ((distance := m.est_dist_value) is not None and m.velocity_value is not None)]
+            class_velocities = [velocity for m in class_measurements if (m.est_dist_value is not None and (velocity := m.velocity_value) is not None)]
+            my_class_h0, my_class_age = create_single_summary(distances=class_distances, velocities=class_velocities)
+            class_summaries.append(ClassSummary(class_id=class_id, hubble_fit_value=my_class_h0, age_value=my_class_age))
+            for measurement in class_measurements:
+                measurement.class_id = class_id
+            all_measurements.extend(class_measurements)
+
         all_meas = Ref(LOCAL_STATE.fields.all_measurements)
         all_stu_summaries = Ref(LOCAL_STATE.fields.student_summaries)
         all_cls_summaries = Ref(LOCAL_STATE.fields.class_summaries)
@@ -192,7 +204,6 @@ def Page():
         student_slider_viewer.state.title = "My Class Data"
         student_slider_viewer.add_subset(student_slider_subset)
         student_slider_viewer.layers[0].state.visible = False
-        student_slider_viewer.toolbar.tools["hubble:linefit"].activate()
         show_layer_traces_in_legend(student_slider_viewer)
         show_legend(student_slider_viewer, show=True)
 
@@ -230,7 +241,6 @@ def Page():
         class_slider_viewer.state.title = "All Classes Data"
         class_slider_viewer.layers[0].state.visible = False
         class_slider_viewer.add_subset(class_slider_subset)
-        class_slider_viewer.toolbar.tools["hubble:linefit"].activate()
         show_layer_traces_in_legend(class_slider_viewer)
         show_legend(class_slider_viewer, show=True)        
 
@@ -253,6 +263,9 @@ def Page():
 
         for viewer in (student_hist_viewer, all_student_hist_viewer, class_hist_viewer):
             viewer.figure.update_layout(hovermode="closest")
+
+        for viewer in viewers.values():
+            viewer.state.reset_limits(visible_only=True)
 
         gjapp.data_collection.hub.subscribe(gjapp.data_collection, NumericalDataChangedMessage,
                                             handler=partial(_update_bins, two_hist_viewers),
@@ -311,7 +324,14 @@ def Page():
     line_fit_tool = viewers["layer"].toolbar.tools['hubble:linefit']
     add_callback(line_fit_tool, 'active',  _on_best_fit_line_shown)
 
-    StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API, show_all=True)
+    def _jump_stage_6():
+        router.push("06-prodata")
+
+    with solara.Row():
+        with solara.Column():
+            StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API, show_all=False)
+        with solara.Column():
+            solara.Button(label="Shortcut: Jump to Stage 6", on_click=_jump_stage_6, classes=["demo-button"])
 
     def _on_component_state_loaded(value: bool):
         if not value:
@@ -498,6 +518,11 @@ def Page():
                 color = student_highlight_color if highlighted else student_default_color
                 student_slider_subset.style.color = color
                 student_slider_subset.style.markersize = 12
+                if not student_slider_setup:
+                    viewer = viewers["student_slider"]
+                    viewer.state.reset_limits(visible_only=False)
+                    viewer.toolbar.tools["hubble:linefit"].activate()
+                    set_student_slider_setup(True)
 
             with rv.Col(class_="no-padding"):
                 ViewerLayout(viewer=viewers["student_slider"])
@@ -559,6 +584,11 @@ def Page():
                 class_slider_subset.subset_state = RangeSubsetState(id, id, all_data.id['class_id'])
                 color = class_highlight_color if highlighted else class_default_color
                 class_slider_subset.style.color = color
+                if not class_slider_setup:
+                    viewer = viewers["class_slider"]
+                    viewer.state.reset_limits(visible_only=False)
+                    viewer.toolbar.tools["hubble:linefit"].activate()
+                    set_class_slider_setup(True)
 
             with rv.Col():
                 ViewerLayout(viewer=viewers["class_slider"])

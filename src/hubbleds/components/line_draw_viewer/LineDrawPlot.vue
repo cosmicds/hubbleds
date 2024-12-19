@@ -237,19 +237,19 @@ export default {
     },
     linearRegression(x, y, forceOrigin=true) {
       const sum = (s, a) => s + a;
-      const sumX = x.reduce(sum);
-      const sumY = y.reduce(sum);
+      const sumXY = x.reduce((s, a, i) => s + a * y[i], 0);
+      const sumXsq = x.reduce((s, a) => s + a * a, 0);
       if (forceOrigin) {
-        const a = sumY / sumX;
+        const a = sumXY / sumXsq;
         return [a, 0];
       } else {
         const n = x.length;
-        const sumXsq = x.reduce((s, a) => s + a * a, 0);
-        const sumXY = x.reduce((s, a, i) => s + a * y[i], 0);
+        const sumX = x.reduce(sum);
+        const sumY = y.reduce(sum);
         const xAvg = sumX / n;
         const yAvg = sumY / n;
         const a = (n * sumXY - (sumX * sumY)) / (n * sumXsq - (sumX * sumX));
-        const b = yAvg - b * xAvg;
+        const b = yAvg - a * xAvg;
         return [a, b];
       }
     },

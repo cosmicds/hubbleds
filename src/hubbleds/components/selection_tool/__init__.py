@@ -1,15 +1,10 @@
-from random import randint
 
 import solara
-from solara import Reactive
-from hubbleds.base_component_state import BaseComponentState
-from glue.core import Data
 from reacton import ipyvuetify as rv
 from hubbleds.state import LOCAL_STATE
 from hubbleds.widgets import SelectionToolWidget
 from typing import Callable
-from hubbleds.state import GalaxyData, StudentMeasurement
-from solara.lab import Ref
+from hubbleds.state import GalaxyData
 
 
 @solara.component
@@ -19,7 +14,6 @@ def SelectionTool(
     galaxy_added_callback: Callable,
     deselect_galaxy_callback: Callable,
     selected_measurement: dict | None,
-    dependencies: list = None,
 ):
     with rv.Card() as main:
         with rv.Card(class_="pa-0 ma-0", elevation=0):

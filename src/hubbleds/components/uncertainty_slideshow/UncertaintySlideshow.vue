@@ -399,6 +399,20 @@
           {{ step < length-1 ? 'next' : '' }}
         </v-btn>
         <v-btn
+          v-if="step < length-1"
+          class="demo-button"
+          depressed
+          @click="() => {
+            $emit('close');
+            dialog = false;
+            step = 0;
+            on_slideshow_finished();
+            // this.$refs.synth.stopSpeaking();
+          }"
+        >
+          move on
+        </v-btn>        
+        <v-btn
           v-if = "step == length-1"
           color="accent"
           class="black--text"

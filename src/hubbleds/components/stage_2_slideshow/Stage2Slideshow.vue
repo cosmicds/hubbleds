@@ -832,8 +832,7 @@
       <!-- first button below just being used for testing, delete when using live with students -->
       <v-btn
         v-if="step < 12 && debug"
-        color="success"
-        class="black--text"
+        class="demo-button"
         depressed
         @click="() => {
           slideshow_finished();
@@ -841,7 +840,7 @@
           //this.$refs.synth.stopSpeaking();
         }"
       >
-        get started
+        Jump to Stage 3
       </v-btn>
       
       <v-btn
@@ -856,7 +855,7 @@
           //this.$refs.synth.stopSpeaking();
         }"
       >
-        get started
+        Stage 3
       </v-btn>
     </v-card-actions>
   </v-card>
