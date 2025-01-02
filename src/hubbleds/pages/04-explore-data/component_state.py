@@ -49,7 +49,7 @@ class ComponentState(BaseComponentState, BaseState):
     best_fit_click_count: int = 0
     best_fit_gal_vel: float = 100
     best_fit_gal_dist: float = 8000
-    
+    class_data_displayed: bool = False    
     _max_step: int = 0 # not included in model
     
     # computed fields are included in the model when serialized
@@ -64,7 +64,6 @@ class ComponentState(BaseComponentState, BaseState):
     def progress(self) -> float:
         return round(100 * (self._max_step + 1) / (self.total_steps - 1))
 
-
     @field_validator("current_step", mode="before")
     def convert_int_to_enum(cls, v: Any) -> Marker:
         if isinstance(v, int):
@@ -74,6 +73,10 @@ class ComponentState(BaseComponentState, BaseState):
     @property
     def tre_dat2_gate(self) -> bool:
         return LOCAL_STATE.value.question_completed("tre-dat-mc1")
+
+    @property
+    def tre_dat3_gate(self) -> bool:
+        return COMPONENT_STATE.value.class_data_displayed
     
     @property
     def rel_vel1_gate(self) -> bool:

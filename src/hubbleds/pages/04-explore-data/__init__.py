@@ -156,7 +156,7 @@ def Page():
 
     with solara.Row():
         with solara.Column():
-            StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API, show_all=False)
+            StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API, show_all=True)
         with solara.Column():
             solara.Button(label="Shortcut: Jump to Stage 5", on_click=_jump_stage_5, classes=["demo-button"])
 
@@ -398,23 +398,28 @@ def Page():
                     colors = ("#3A86FF", "#FB5607")
                     sizes = (8, 12)
                     with rv.Col(class_="no-padding"):
+
+                        def _layer_toggled(data):
+                            if data["visible"] and data["index"] is 3:
+                                Ref(COMPONENT_STATE.fields.class_data_displayed).set(True)
+
                         PlotlyLayerToggle(chart_id="line-draw-viewer",
-                        # (Plotly calls layers traces, but we'll use layers for consistency with glue).
-                        # For the line draw viewer:
-                        # Layer 0 = line that the student draws
-                        # Layer 1, 2 = fit lines for data layers.
-                        # Layer 3, 4 = data layers.
-                        # Layer 5 = endpoint for drawn line.
-                        # Add Layer 6 = best fit galaxy marker.
+                                          # (Plotly calls layers traces, but we'll use layers for consistency with glue).
+                                          # For the line draw viewer:
+                                          # Layer 0 = line that the student draws
+                                          # Layer 1, 2 = fit lines for data layers.
+                                          # Layer 3, 4 = data layers.
+                                          # Layer 5 = endpoint for drawn line.
+                                          # Add Layer 6 = best fit galaxy marker.
                                           layer_indices=(3, 4),
 
-                        # These are the indices (within the specified tuple, which has 2 data layers) of the layers that we want to have initially checked/displayed. 
-                        # If only 1 layer is selected, you still need the comma, otherwise this will be interpreted as an int instead of a tuple. This means "check & display layer 1, which is the student data layer."
-
+                                          # These are the indices (within the specified tuple, which has 2 data layers) of the layers that we want to have initially checked/displayed. 
+                                          # If only 1 layer is selected, you still need the comma, otherwise this will be interpreted as an int instead of a tuple. This means "check & display layer 1, which is the student data layer."
                                           initial_selected=(1,),
                                           enabled=layers_enabled.value,
                                           colors=colors,
-                                          labels=("Class Data", "My Data"))
+                                          labels=("Class Data", "My Data"),
+                                          event_layer_toggled=_layer_toggled)
                     with rv.Col(class_="no-padding"):
                         if student_plot_data.value and class_plot_data.value:
                             # Note the ordering here - we want the student data on top
