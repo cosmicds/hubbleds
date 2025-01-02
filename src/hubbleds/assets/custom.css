@@ -327,3 +327,24 @@ div.plotly .hoverlayer g.axistext {
 .v-application .layer_toggle {
     border-color: black !important;
 }
+
+/* For setting the cursor for dialog dragging */
+.v-dialog.v-dialog--active .v-toolbar {
+    cursor: grab;
+    text-selection: none;
+}
+
+.v-dialog.v-dialog--active .v-toolbar.dragging {
+    cursor: grabbing;
+    text-selection: none;
+}
+
+.card-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card-table td {
+    padding: 8px;
+    border: 1px solid #aaa;
+}

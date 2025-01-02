@@ -311,6 +311,7 @@ def Page():
             sync_example_wavelength_to_velocity(meas)
     
     loaded_component_state.subscribe(_initialize_state)
+    spectrum_bounds = solara.use_reactive([])
     
     def _sync_setup():
         sync_velocity_line = Ref(COMPONENT_STATE.fields.sync_velocity_line)
@@ -991,8 +992,7 @@ def Page():
                 show=COMPONENT_STATE.value.is_current_step(Marker.res_wav1),
                 state_view={
                     "selected_example_galaxy": selected_example_galaxy_data,
-                    "lambda_on": COMPONENT_STATE.value.obs_wave_tool_activated,
-                    "lambda_used": COMPONENT_STATE.value.obs_wave_tool_used,
+                    "lambda_on": COMPONENT_STATE.value.rest_wave_tool_activated,
                 },
                 speech=speech.value,
             )
@@ -1107,13 +1107,24 @@ def Page():
                         obs_wave_tool_used.set(True)
 
                     obs_wave_tool_used = Ref(COMPONENT_STATE.fields.obs_wave_tool_used)
-                    obs_wave_tool_activated = Ref(
-                        COMPONENT_STATE.fields.obs_wave_tool_activated
+                    rest_wave_tool_activated = Ref(
+                        COMPONENT_STATE.fields.rest_wave_tool_activated
                     )
                     zoom_tool_activated = Ref(
                         COMPONENT_STATE.fields.zoom_tool_activated
                     )
+                    zoom_tool_active = Ref(
+                        COMPONENT_STATE.fields.zoom_tool_active
+                    )
 
+
+                    def _on_zoom():
+                        zoom_tool_activated.set(True)
+                        zoom_tool_active.set(True)
+
+                    def _on_reset():
+                        zoom_tool_active.set(False)
+                    
                     SpectrumViewer(
                         galaxy_data=(
                             selected_example_measurement.value.galaxy
@@ -1124,10 +1135,12 @@ def Page():
                         spectrum_click_enabled=COMPONENT_STATE.value.current_step_at_or_after(
                             Marker.obs_wav1),
                         on_obs_wave_measured=_example_wavelength_measured_callback,
-                        on_obs_wave_tool_clicked=lambda: obs_wave_tool_activated.set(
+                        on_rest_wave_tool_clicked=lambda: rest_wave_tool_activated.set(
                             True
                         ),
-                        on_zoom_tool_clicked=lambda: zoom_tool_activated.set(True),
+                        on_zoom=_on_zoom,
+                        on_reset_tool_clicked=_on_reset,
+                        spectrum_bounds = spectrum_bounds, # type: ignore
                     )
 
                     spectrum_tutorial_opened = Ref(
