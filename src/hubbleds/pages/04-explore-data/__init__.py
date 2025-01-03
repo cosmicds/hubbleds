@@ -12,6 +12,7 @@ from solara.toestand import Ref
 from typing import Dict, List, Tuple
 
 from cosmicds.components import ScaffoldAlert, StateEditor, ViewerLayout
+from hubbleds.colors import CLASS_COLOR, STUDENT_HIGHLIGHT_COLOR
 from hubbleds.components import DataTable, HubbleExpUniverseSlideshow, LineDrawViewer, PlotlyLayerToggle
 from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, StudentMeasurement, get_multiple_choice, get_free_response, mc_callback, fr_callback
 from hubbleds.viewers.hubble_scatter_viewer import HubbleScatterView
@@ -130,7 +131,7 @@ def Page():
         if not class_data.components:
             class_data = empty_data_from_model_class(StudentMeasurement, label="Stage 4 Class Data")
         class_data = GLOBAL_STATE.value.add_or_update_data(class_data)
-        class_data.style.color = "#3A86FF"
+        class_data.style.color = CLASS_COLOR
         class_data.style.alpha = 1
         class_data.style.markersize = 10
 
@@ -395,7 +396,7 @@ def Page():
         with rv.Col(class_="no-padding"):
             if COMPONENT_STATE.value.current_step_between(Marker.tre_dat1, Marker.sho_est2):
                 with solara.Columns([3,9], classes=["no-padding"]):
-                    colors = ("#3A86FF", "#FB5607")
+                    colors = (CLASS_COLOR, STUDENT_HIGHLIGHT_COLOR)
                     sizes = (8, 12)
                     with rv.Col(class_="no-padding"):
 
