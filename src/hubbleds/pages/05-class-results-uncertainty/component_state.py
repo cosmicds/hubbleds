@@ -23,6 +23,7 @@ class Marker(enum.Enum, BaseMarker):
     lea_unc1 = enum.auto()
     mos_lik1 = enum.auto()
     age_dis1 = enum.auto()
+    sho_mya1 = enum.auto()
     mos_lik2 = enum.auto()
     mos_lik3 = enum.auto()
     mos_lik4 = enum.auto()

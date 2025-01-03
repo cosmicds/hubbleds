@@ -17,6 +17,9 @@
     <p>
       Click <v-icon>mdi-help-circle-outline</v-icon> to learn more about how the percentage ranges are determined.
     </p>
+    <p>
+      (Note: We do not highlight your own age measurement here to avoid cluttering the viewer.)
+    </p>
 
     </div>
   </scaffold-alert>

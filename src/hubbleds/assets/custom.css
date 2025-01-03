@@ -297,6 +297,10 @@ div.plotly .hoverlayer g.hovertext {
     border-color: black !important;
 }
 
+.layer_toggle {
+    max-width: 250px;
+}
+
 /* For setting the cursor for dialog dragging */
 .v-dialog.v-dialog--active .v-toolbar {
     cursor: grab;

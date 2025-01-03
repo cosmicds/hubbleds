@@ -1,5 +1,6 @@
 from contextlib import ExitStack
 from echo import delay_callback, add_callback
+from glue.core import Subset
 from glue.core.message import NumericalDataChangedMessage
 from glue.core.subset import RangeSubsetState
 from glue_jupyter import JupyterApplication
@@ -14,14 +15,14 @@ from pathlib import Path
 import reacton.ipyvuetify as rv
 from typing import Dict, Iterable, Optional, Tuple
 
-from cosmicds.components import PercentageSelector, ScaffoldAlert, StateEditor, StatisticsSelector, ViewerLayout
+from cosmicds.components import LayerToggle, PercentageSelector, ScaffoldAlert, StateEditor, StatisticsSelector, ViewerLayout
 from cosmicds.utils import empty_data_from_model_class, show_legend, show_layer_traces_in_legend
 from cosmicds.viewers import CDSHistogramView
 from hubbleds.base_component_state import transition_next, transition_previous
 from hubbleds.components import UncertaintySlideshow, IdSlider
 from hubbleds.tools import *  # noqa
-from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, ClassSummary, StudentMeasurement, get_free_response, get_multiple_choice, mc_callback, fr_callback
-from hubbleds.utils import age_in_gyr_simple, create_single_summary, make_summary_data, models_to_glue_data
+from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, ClassSummary, StudentMeasurement, StudentSummary, get_free_response, get_multiple_choice, mc_callback, fr_callback
+from hubbleds.utils import create_single_summary, make_summary_data, models_to_glue_data
 from hubbleds.viewers.hubble_histogram_viewer import HubbleHistogramView
 from hubbleds.viewers.hubble_scatter_viewer import HubbleScatterView
 from .component_state import COMPONENT_STATE, Marker
@@ -207,17 +208,33 @@ def Page():
         show_layer_traces_in_legend(student_slider_viewer)
         show_legend(student_slider_viewer, show=True)
 
+        student_id = GLOBAL_STATE.value.student.id
         class_summary_data = make_summary_data(class_data,
                                                input_id_field="student_id",
                                                output_id_field="id",
                                                label="Class Summaries")
         class_summary_data = GLOBAL_STATE.value.add_or_update_data(class_summary_data)
+        if len(class_summary_data.subsets) == 0:
+            my_summ_subset_state = RangeSubsetState(student_id, student_id, class_summary_data.id["id"])
+            my_summ_subset = class_summary_data.new_subset(subset=my_summ_subset_state,
+                                                           color="#FB5607",
+                                                           alpha=1,
+                                                           label="My Summary")
+        else:
+            my_summ_subset = class_summary_data.subsets[0]
+
+        my_measurements = LOCAL_STATE.value.measurements
+        my_distances = [distance for m in my_measurements if ((distance := m.est_dist_value) is not None and m.velocity_value is not None)]
+        my_velocities = [velocity for m in my_measurements if (m.est_dist_value is not None and (velocity := m.velocity_value) is not None)]
+        my_h0, my_age = create_single_summary(distances=my_distances, velocities=my_velocities)
+        student_summaries.append(StudentSummary(student_id=student_id, hubble_fit_value=my_h0, age_value=my_age))
 
         student_hist_viewer.add_data(class_summary_data)
         student_hist_viewer.state.x_att = class_summary_data.id['age_value']
         student_hist_viewer.state.x_axislabel = "Age (Gyr)"
         student_hist_viewer.state.title = "My class ages (5 galaxies each)"
-        student_hist_viewer.layers[0].state.color = "#8338EC"
+        student_hist_viewer.layers[0].state.color = "#3A86FF"
+        student_hist_viewer.add_subset(my_summ_subset)
 
         all_data = models_to_glue_data(all_measurements, label="All Measurements")
         all_data = GLOBAL_STATE.value.add_or_update_data(all_data)
@@ -320,6 +337,17 @@ def Page():
     def _on_best_fit_line_shown(active):
         if not class_best_fit_clicked.value:
             class_best_fit_clicked.set(active)
+
+    def show_class_hide_my_age_subset(value):
+        viewer=viewers["student_hist"]
+        viewer.layers[0].state.visible = True # in case student turned class off
+        viewer.layers[1].state.visible = not value
+
+    def _on_marker_updated(marker):
+        if Marker.is_at_or_before(marker, Marker.sho_mya1) or Marker.is_at_or_after(marker, Marker.con_int2):
+            show_class_hide_my_age_subset(True)
+
+    Ref(COMPONENT_STATE.fields.current_step).subscribe(_on_marker_updated)
 
     line_fit_tool = viewers["layer"].toolbar.tools['hubble:linefit']
     add_callback(line_fit_tool, 'active',  _on_best_fit_line_shown)
@@ -616,13 +644,17 @@ def Page():
                 )
 
     #--------------------- Row 4: OUR CLASS HISTOGRAM VIEWER -----------------------
+    class_summary_data = gjapp.data_collection["Class Summaries"]
+    def _on_percentage_selected_changed(_option, value):
+        my_summ_subset = class_summary_data.subsets[0]
+        my_summ_subset.style.alpha = 1 - int(value)
+
     if COMPONENT_STATE.value.current_step_between(Marker.age_dis1, Marker.con_int3):
         with solara.ColumnsResponsive(12, large=[5,7]):
             with rv.Col():
-                with rv.Row():
-                    class_summary_data = gjapp.data_collection["Class Summaries"]
-                    with rv.Col():
-                        if COMPONENT_STATE.value.current_step_between(Marker.mos_lik2, Marker.con_int3):
+                if COMPONENT_STATE.value.current_step_between(Marker.mos_lik2, Marker.con_int3):
+                    with rv.Row():
+                        with rv.Col():
                             StatisticsSelector(
                                 viewers=[viewers["student_hist"]],
                                 glue_data=[class_summary_data],
@@ -630,13 +662,14 @@ def Page():
                                 transform=round,
                             )
 
-                    with rv.Col():
-                        if COMPONENT_STATE.value.current_step_between(Marker.con_int2, Marker.con_int3):
-                            PercentageSelector(
-                                viewers=[viewers["student_hist"]],
-                                glue_data=[class_summary_data],
-                                units=["Gyr"],
-                            )
+                        with rv.Col():
+                            if COMPONENT_STATE.value.current_step_between(Marker.con_int2, Marker.con_int3):
+                                PercentageSelector(
+                                    viewers=[viewers["student_hist"]],
+                                    glue_data=[class_summary_data],
+                                    units=["Gyr"],
+                                    on_selected_changed=_on_percentage_selected_changed
+                                )
 
                 ScaffoldAlert(
                     GUIDELINE_ROOT / "GuidelineClassAgeDistribution.vue",
@@ -644,6 +677,13 @@ def Page():
                     event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                     can_advance=COMPONENT_STATE.value.can_transition(next=True),
                     show=COMPONENT_STATE.value.is_current_step(Marker.age_dis1),
+                )
+                ScaffoldAlert(
+                    GUIDELINE_ROOT / "GuidelineShowMyAgeDistribution.vue",
+                    event_next_callback=lambda _: transition_next(COMPONENT_STATE),
+                    event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
+                    can_advance=COMPONENT_STATE.value.can_transition(next=True),
+                    show=COMPONENT_STATE.value.is_current_step(Marker.sho_mya1),
                 )
                 ScaffoldAlert(
                     GUIDELINE_ROOT / "GuidelineMostLikelyValue2.vue",
@@ -675,8 +715,24 @@ def Page():
                     show=COMPONENT_STATE.value.is_current_step(Marker.con_int2),
                 )
 
-            with rv.Col():
-                ViewerLayout(viewer=viewers["student_hist"])
+            if COMPONENT_STATE.value.current_step_between(Marker.sho_mya1, Marker.con_int1):
+                with rv.Col():
+                    with rv.Row():
+                        def _toggle_ignore(layer):
+                            return layer.layer.label not in ("My Summary", "Class Summaries")
+
+                        LayerToggle(viewer=viewers["student_hist"],
+                                    layers=["Class Summaries", "My Summary"],
+                                    names={"Class Summaries": "Class Ages",
+                                           "My Summary": "My Age"},
+                                    ignore_conditions=[_toggle_ignore])
+
+                    with rv.Row():
+                        ViewerLayout(viewer=viewers["student_hist"])
+            else:
+                with rv.Col():
+                    ViewerLayout(viewer=viewers["student_hist"])
+                
 
 
     ScaffoldAlert(
