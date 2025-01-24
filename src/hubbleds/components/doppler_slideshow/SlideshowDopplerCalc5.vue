@@ -954,8 +954,13 @@ mjx-mpadded {
 
 <script>
 export default {
+  mounted() {
+    this.refreshMathJax([this.$el]);
+  },
+
   methods: {
     mathJaxObserver(entries, _observer, intersecting) {
+      console.log("mjax observer");
       if (intersecting) {
         this.$nextTick(() => {
           this.refreshMathJax(entries.map(entry => entry.target));
@@ -969,9 +974,14 @@ export default {
     },
 
     refreshMathJax(containers) {
-      const containersToReset = containers.filter(this.containsMathJax);
-      this.removeMathJax(containersToReset);
-      this.$nextTick(() => MathJax.typesetPromise(containersToReset));
+      window.MathJax.startup.promise.then(() => {
+        const containersToReset = containers.filter(this.containsMathJax);
+        console.log(containersToReset);
+        console.log("mjax");
+        console.log(MathJax);
+        this.removeMathJax(containersToReset);
+        this.$nextTick(() => MathJax.typesetPromise(containersToReset));
+      });
     },
 
     containsMathJax(container) {

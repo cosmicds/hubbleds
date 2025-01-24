@@ -759,12 +759,20 @@ def Page():
                     if COMPONENT_STATE.value.current_step == Marker.rem_vel1:
                         add_example_measurements_to_glue()
 
+                @computed
+                def doppler_dialog_flag():
+                    return COMPONENT_STATE.value.show_doppler_dialog and loaded_component_state.value
+
                 DopplerSlideshow(
-                    dialog=COMPONENT_STATE.value.show_doppler_dialog,
+                    dialog=doppler_dialog_flag.value,
                     titles=COMPONENT_STATE.value.doppler_state.titles,
                     step=COMPONENT_STATE.value.doppler_state.step,
                     length=COMPONENT_STATE.value.doppler_state.length,
-                    lambda_obs=round(COMPONENT_STATE.value.obs_wave),
+                    lambda_obs=(
+                        selected_example_measurement.value.obs_wave_value
+                        if selected_example_measurement.value is not None
+                        else None
+                    ),
                     lambda_rest=(
                         selected_example_measurement.value.rest_wave_value
                         if selected_example_measurement.value is not None
