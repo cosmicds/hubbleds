@@ -173,7 +173,7 @@ class BinHighlighter:
                 y=[self.ymax] * len(self.bins),
                 width=self.dx * self.selection_bin_width,
                 marker=marker_style,
-                hoverinfo="none",  # must capture the hover. skip will not work
+                hoverinfo="skip" if self.use_selection_layer else "none",  # must capture the hover. skip will not work
                 zorder=1000,
                 visible=True,
                 showlegend=False,
