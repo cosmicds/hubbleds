@@ -47,6 +47,7 @@ class BinHighlighter:
         nearest_in_bin: bool = True,
         show_all_bins: bool = False,
         setup_selection_layer: bool = False,
+        highlight_on_click: bool = False
     ):
         """
         Initialize the BinHighlighter.
@@ -121,6 +122,7 @@ class BinHighlighter:
         self.only_show_with_data = show_bins_with_data_only
         self.show_all_bins = show_all_bins
         self.setup_selection_layer = setup_selection_layer
+        self.highlight_on_click = highlight_on_click
 
 
     def _calculate_bins(self):
@@ -216,8 +218,11 @@ class BinHighlighter:
         if self.use_selection_layer:
             if self.setup_selection_layer:
                 self.add_selection_layer()
-            self.viewer.selection_layer.on_hover(self._on_hover)
-            self.viewer.selection_layer.on_unhover(self._on_unhover)
+            if self.highlight_on_click:
+                self.viewer.selection_layer.on_click(self._on_hover)
+            else:
+                self.viewer.selection_layer.on_hover(self._on_hover)
+                self.viewer.selection_layer.on_unhover(self._on_unhover)
         
         if self.show_all_bins:
             marker_style = {"color": "rgba(0,0,0,0)", "line": {"color": "rgba(0,0,0,1)"}}
@@ -305,7 +310,6 @@ class BinHighlighter:
             self.bin_layer.visible = not self.bin_layer.visible
         else:
             self.bin_layer.visible = show
-
 
 # Example of how one might set this up as a Glue Tool
 # However, this will not work as it does not adapt to the changing

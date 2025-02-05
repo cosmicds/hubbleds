@@ -354,8 +354,8 @@ def DotplotViewer(
                     x_bounds.set(new_range)
                 else:
                     logger.info(f'({title}) Bounds already set')
-                # if bin_highlighter is not None:
-                #     bin_highlighter.redraw()
+                
+                
             def bin_on_hover(trace, points, state):
                 if on_click_callback is not None:
                     on_click_callback(points)
@@ -364,9 +364,9 @@ def DotplotViewer(
                                              fill_color='rgba(0,0,0,.5)',
                                              show_all_bins=False,
                                              show_bins_with_data_only=True,
-                                             on_hover_callback=bin_on_hover,
+                                            #  on_hover_callback=bin_on_hover,
                                              use_selection_layer=True,
-                                             setup_selection_layer=False
+                                             setup_selection_layer=False,
                                              )
             def turn_off_bin_highlighter():
                 if bin_highlighter is not None:
