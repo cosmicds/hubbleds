@@ -273,9 +273,9 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.pro_dat1),
-                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE),
+                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                 state_view={
-                    'mc_score': get_multiple_choice(LOCAL_STATE, 'pro-dat1'), 'score_tag': 'pro-dat1',
+                    'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'pro-dat1'), 'score_tag': 'pro-dat1',
                     'class_color': MY_CLASS_COLOR_NAME,
                     'hubble1929_color': HUBBLE_1929_COLOR_NAME,
                     }
@@ -286,8 +286,8 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.pro_dat2),
-                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE),
-                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, 'pro-dat2'), 'score_tag': 'pro-dat2'}
+                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'pro-dat2'), 'score_tag': 'pro-dat2'}
             )
             # ScaffoldAlert(
             #     GUIDELINE_ROOT / "GuidelineProfessionalData3.vue",
@@ -304,12 +304,12 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.pro_dat4),
-                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE),
-                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
+                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, COMPONENT_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
                 state_view={
-                    'mc_score': get_multiple_choice(LOCAL_STATE, 'pro-dat4'), 
+                    'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'pro-dat4'), 
                     'score_tag': 'pro-dat4',
-                    'free_response': get_free_response(LOCAL_STATE, 'prodata-free-4'),
+                    'free_response': get_free_response(LOCAL_STATE, COMPONENT_STATE, 'prodata-free-4'),
                     'mc_completed': LOCAL_STATE.value.question_completed("pro-dat4"),
                 }
             )
@@ -329,13 +329,13 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.pro_dat6),
-                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE),
+                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                 state_view={
                     'hst_age': HST_KEY_AGE, 
                     'class_age': COMPONENT_STATE.value.class_age,
                     'ages_within': COMPONENT_STATE.value.ages_within,
                     'allow_too_close_correct': COMPONENT_STATE.value.allow_too_close_correct,
-                    'mc_score': get_multiple_choice(LOCAL_STATE, 'pro-dat6'), 
+                    'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'pro-dat6'), 
                     'score_tag': 'pro-dat6'
                 }
             )
@@ -345,12 +345,12 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.pro_dat7),
-                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE),
-                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
+                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, COMPONENT_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
                 state_view={
-                    'mc_score': get_multiple_choice(LOCAL_STATE, 'pro-dat7'), 
+                    'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'pro-dat7'), 
                     'score_tag': 'pro-dat7',
-                    'free_response': get_free_response(LOCAL_STATE, 'prodata-free-7'),
+                    'free_response': get_free_response(LOCAL_STATE, COMPONENT_STATE, 'prodata-free-7'),
                     'mc_completed': LOCAL_STATE.value.question_completed("pro-dat7"),
                 }                
             )
@@ -360,11 +360,11 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.pro_dat8),
-                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
+                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, COMPONENT_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
                 state_view={
-                    'free_response_a': get_free_response(LOCAL_STATE,'prodata-reflect-8a'),
-                    'free_response_b': get_free_response(LOCAL_STATE,'prodata-reflect-8b'),
-                    'free_response_c': get_free_response(LOCAL_STATE,'prodata-reflect-8c'),
+                    'free_response_a': get_free_response(LOCAL_STATE, COMPONENT_STATE,'prodata-reflect-8a'),
+                    'free_response_b': get_free_response(LOCAL_STATE, COMPONENT_STATE,'prodata-reflect-8b'),
+                    'free_response_c': get_free_response(LOCAL_STATE, COMPONENT_STATE,'prodata-reflect-8c'),
                 }
             )
             ScaffoldAlert(
@@ -373,8 +373,8 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.pro_dat9),
-                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE),
-                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, 'pro-dat9'), 'score_tag': 'pro-dat9'}
+                event_mc_callback = lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'pro-dat9'), 'score_tag': 'pro-dat9'}
             )
             ScaffoldAlert(
                 GUIDELINE_ROOT / "GuidelineStoryFinish.vue",

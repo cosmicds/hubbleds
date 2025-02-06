@@ -89,12 +89,20 @@ def update_second_example_measurement():
     else:
         logger.info('\t\t no changes for second measurement')
 
-@solara.component
-def DistanceToolComponent(galaxy, show_ruler, angular_size_callback, ruler_count_callback, use_guard, bad_measurement_callback, brightness_callback, reset_canvas):
+def DistanceToolComponent(galaxy,
+                          show_ruler,
+                          angular_size_callback,
+                          ruler_count_callback,
+                          use_guard,
+                          bad_measurement_callback,
+                          brightness_callback,
+                          reset_canvas,
+                          sdss_counter):
     tool = DistanceTool.element()
 
     def set_selected_galaxy():
         widget = solara.get_widget(tool)
+        widget.set_sdss()
         if galaxy:
             widget.measuring = False
             widget.go_to_location(galaxy["ra"], galaxy["decl"], fov=GALAXY_FOV)
@@ -149,6 +157,8 @@ def DistanceToolComponent(galaxy, show_ruler, angular_size_callback, ruler_count
             
         widget.observe(update_brightness, ["brightness"])
 
+        sdss_counter.subscribe(lambda _count: widget.set_sdss())
+
     solara.use_effect(_define_callbacks, [])
     
     
@@ -160,6 +170,8 @@ def Page():
     # === Setup State Loading and Writing ===
     loaded_component_state = solara.use_reactive(False)
     router = solara.use_router()
+
+    distance_tool_bg_count = solara.use_reactive(0)
 
     async def _load_component_state():
         LOCAL_API.get_stage_state(GLOBAL_STATE, LOCAL_STATE, COMPONENT_STATE)
@@ -451,9 +463,8 @@ def Page():
             # clear the canvas before we get to the second measurement. 
             COMPONENT_STATE.value.show_ruler = False
             reset_canvas.set(reset_canvas.value + 1)
-            
-            
-        
+
+        distance_tool_bg_count.set(distance_tool_bg_count.value + 1)
     
     Ref(COMPONENT_STATE.fields.current_step).subscribe_change(_on_marker_updated)
 
@@ -630,7 +641,8 @@ def Page():
                 bad_measurement_callback=_bad_measurement_cb,
                 use_guard=True,
                 brightness_callback=brightness_callback,
-                reset_canvas=reset_canvas
+                reset_canvas=reset_canvas,
+                sdss_counter=distance_tool_bg_count,
             )
             
             if COMPONENT_STATE.value.bad_measurement:
@@ -872,8 +884,8 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq2),
-                event_mc_callback=lambda event: mc_callback(event = event, local_state = LOCAL_STATE),
-                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, 'ang_meas_consensus'), 'score_tag': 'ang_meas_consensus'}
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'ang_meas_consensus'), 'score_tag': 'ang_meas_consensus'}
             )
             ScaffoldAlert(
                 GUIDELINE_ROOT / "GuidelineDotplotSeq3.vue",
@@ -895,8 +907,8 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq4a),
-                event_mc_callback=lambda event: mc_callback(event = event, local_state = LOCAL_STATE),
-                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, 'ang_meas_dist_relation'), 'score_tag': 'ang_meas_dist_relation'}
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
+                state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'ang_meas_dist_relation'), 'score_tag': 'ang_meas_dist_relation'}
             )
             # Not doing the 2nd measurement #dot_seq6 is comparison of 1st and 2nd measurement
             # ScaffoldAlert(

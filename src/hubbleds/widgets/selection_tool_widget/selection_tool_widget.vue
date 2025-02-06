@@ -165,28 +165,48 @@
         </template>
         Reset view
       </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            fab
+            dark
+            top 
+            right
+            absolute
+            style="margin-top: 96px"
+            color="#CCCCCC"
+            class="selection-fab black--text"
+            v-bind="attrs"
+            v-on="on"
+            v-show="Object.keys(candidate_galaxy).length !== 0"
+            @click="clear_tile_cache()">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+        Refresh images
+      </v-tooltip>
     </div>
   </v-card>
 </template>
 
 <style scoped>
-//#selection-root {
-//  --toolbar-height: 48px;
-//  --widget-height: 400px;
-//  height: calc(var(--toolbar-height) + var(--widget-height));
-//  width: 100%;
-//}
+/* #selection-root {
+  --toolbar-height: 48px;
+  --widget-height: 400px;
+  height: calc(var(--toolbar-height) + var(--widget-height));
+  width: 100%;
+} */
 
 .selection-content {
   width: 100%;
   height: 400px;
 }
 
-//.wwt-widget {
-//  height: 400px;
-//  width: 100%;
-//  position: absolute;
-//}
+/* .wwt-widget {
+  height: 400px;
+  width: 100%;
+  position: absolute;
+} */
 
 .selection-fab {
   --margin: 15px;

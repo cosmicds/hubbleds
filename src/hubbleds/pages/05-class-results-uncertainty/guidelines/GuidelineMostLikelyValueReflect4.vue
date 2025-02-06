@@ -130,6 +130,11 @@ export default {
       best_guess_answered: false,
     }
   },
+  mounted() {
+    if (this.state_view.free_response_a.response != '' && !this.best_guess_answered) {
+      this.best_guess_answered = true;
+    }
+  },
 }
 </script>
 

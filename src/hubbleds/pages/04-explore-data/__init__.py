@@ -218,9 +218,9 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.tre_dat1),
-                event_mc_callback=lambda event: mc_callback(event=event, local_state=LOCAL_STATE),
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                 state_view={
-                    "mc_score": get_multiple_choice(LOCAL_STATE, "tre-dat-mc1"),
+                    "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "tre-dat-mc1"),
                     "score_tag": "tre-dat-mc1"
                 }
             )
@@ -237,9 +237,9 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.tre_dat3),
-                event_mc_callback=lambda event: mc_callback(event=event, local_state=LOCAL_STATE),
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                 state_view={
-                    'mc_score': get_multiple_choice(LOCAL_STATE, 'tre-dat-mc3'),
+                    'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'tre-dat-mc3'),
                     'score_tag': 'tre-dat-mc3'
                 }
             )
@@ -249,9 +249,9 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.rel_vel1),
-                event_mc_callback=lambda event: mc_callback(event = event, local_state = LOCAL_STATE),
+                event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                 state_view={
-                    'mc_score': get_multiple_choice(LOCAL_STATE, 'galaxy-trend'),
+                    'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'galaxy-trend'),
                     'score_tag': 'galaxy-trend'
                 }
             )
@@ -331,11 +331,11 @@ def Page():
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.sho_est1),
-                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
+                event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, COMPONENT_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
                 state_view={
-                    'free_response_a': get_free_response(LOCAL_STATE, 'shortcoming-1'),
-                    'free_response_b': get_free_response(LOCAL_STATE, 'shortcoming-2'),
-                    'free_response_c': get_free_response(LOCAL_STATE, 'other-shortcomings'),
+                    'free_response_a': get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-1'),
+                    'free_response_b': get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-2'),
+                    'free_response_c': get_free_response(LOCAL_STATE, COMPONENT_STATE,'other-shortcomings'),
                 }
             )
             ScaffoldAlert(
@@ -493,13 +493,13 @@ def Page():
                         step=COMPONENT_STATE.value.hubble_slideshow_state.step,
                         max_step_completed=COMPONENT_STATE.value.hubble_slideshow_state.max_step_completed,
                         state_view={
-                            "mc_score": get_multiple_choice(LOCAL_STATE, "race-age"),
+                            "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "race-age"),
                             "score_tag": "race-age"
                         },
                         
                         event_set_dialog=dialog.set,
                         event_set_step=step.set,
                         event_set_max_step_completed=max_step_completed.set,
-                        event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE),
+                        event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                         event_on_slideshow_finished=lambda _: slideshow_finished.set(True),
                     )

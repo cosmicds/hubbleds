@@ -78,15 +78,11 @@ def Page():
         image_location=f"{IMAGE_BASE_URL}/stage_two_intro",
         event_set_step=step.set,
         event_set_max_step_completed=max_step_completed.set,
-        event_mc_callback=lambda event: mc_callback(event=event, local_state=LOCAL_STATE),
+        event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
         state_view={
-            "mc_score_1": get_multiple_choice(
-                LOCAL_STATE, "which-galaxy-closer"
-                ),
+            "mc_score_1": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "which-galaxy-closer"),
             "score_tag_1": "which-galaxy-closer",
-            "mc_score_2": get_multiple_choice(
-                LOCAL_STATE, "how-much-closer-galaxies"
-                ), 
+            "mc_score_2": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "how-much-closer-galaxies"), 
             "score_tag_2": "how-much-closer-galaxies",
         },
         event_slideshow_finished=lambda _: router.push("03-distance-measurements"),

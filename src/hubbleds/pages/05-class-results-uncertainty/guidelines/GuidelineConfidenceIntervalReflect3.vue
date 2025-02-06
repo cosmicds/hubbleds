@@ -163,6 +163,11 @@ export default {
   },
   computed: {
     high_low_answered() {
+      if (this.state_view.free_response_a.response !== '' && this.state_view.free_response_b.response !== '') {
+        if (!this.likely_low_answered && !this.likely_high_answered) {
+          return true;
+        }
+      }
       return this.likely_low_answered && this.likely_high_answered;
     }
   }

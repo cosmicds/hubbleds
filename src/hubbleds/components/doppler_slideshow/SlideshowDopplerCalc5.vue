@@ -727,7 +727,7 @@
                 <div
                     class="font-weight-medium mt-3"
                 >
-                  Click <b>DONE</b> to close this pop-up window. The velocity will be filled in in the table for this
+                  Click <b>DONE</b> to close this pop-up window. The velocity will be entered in the table for this
                   galaxy.
                 </div>
               </v-card>
@@ -876,6 +876,10 @@
             color="accent"
             elevation="2"
             @click="() => {
+              // If we've already passed this step before, just advance to next step because we've already validated in the past
+              if (max_step_completed_5 > 4) {
+                set_step(step + 1);
+              }
               if (validateLightSpeed(['speed_light'])) {
                 set_student_c(parseAnswer(['speed_light']));
                 storeStudentVel(parseAnswer(['speed_light']), [lambda_obs, lambda_rest]);
@@ -883,7 +887,7 @@
               }
           }"
         >
-          calculate
+          {{ (max_step_completed_5 <= 4) ? 'calculate' : 'next'}}
         </v-btn>
         <v-btn
             v-if="step === length-1"

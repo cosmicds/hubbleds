@@ -3,7 +3,6 @@ import reacton.ipyvuetify as rv
 from ipyvuetify import VuetifyTemplate
 from ...utils import IMAGE_BASE_URL
 
-
 @solara.component_vue("UncertaintySlideshow.vue")
 def UncertaintySlideshow(
     step=0,
@@ -11,7 +10,7 @@ def UncertaintySlideshow(
     dialog=False,
     image_location=f"{IMAGE_BASE_URL}/stage_five",
     event_on_slideshow_finished=None,
-    event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
+    event_fr_callback = lambda event: None,
     free_responses=[],
     titles = [
                 'What is the true age of the universe?',

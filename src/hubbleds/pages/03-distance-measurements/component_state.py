@@ -73,7 +73,6 @@ class ComponentState(BaseComponentState, BaseState):
             return Marker(v)
         return v
 
-
     @property
     def ang_siz2_gate(self):
         return bool(self.selected_example_galaxy)

@@ -81,6 +81,25 @@
         </template>
         {{ measuring ? 'Stop measuring' : 'Start measuring' }}
       </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            fab
+            dark
+            top 
+            right
+            absolute
+            style="margin-top: 96px"
+            color="#CCCCCC"
+            class="selection-fab black--text"
+            v-bind="attrs"
+            v-on="on"
+            @click="clear_tile_cache()">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+        Refresh images
+      </v-tooltip
     </div>
     <contrast-brightness-control 
       inline-style="padding: 0.5em 0;"

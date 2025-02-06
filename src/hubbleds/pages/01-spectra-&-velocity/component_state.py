@@ -102,7 +102,7 @@ class ComponentState(BaseComponentState, BaseState):
     zoom_tool_active: bool = False # is it currently on?
     doppler_calc_reached: bool = False
     obs_wave: float = 0
-    show_doppler_dialog: bool = False
+    show_doppler_dialog: bool = Field(False, exclude=True)
     doppler_state: DopplerCalculation = DopplerCalculation()
     show_dotplot_tutorial_dialog: bool = False
     dotplot_tutorial_state: DotPlotTutorial = DotPlotTutorial()
@@ -170,10 +170,6 @@ class ComponentState(BaseComponentState, BaseState):
     @property
     def dop_cal0_gate(self) -> bool:
         return self.zoom_tool_activated
-
-    @property
-    def che_mea1_gate(self) -> bool:
-        return self.doppler_state.velocity_calculated
 
     @property
     def dot_seq1_gate(self) -> bool:

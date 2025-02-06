@@ -75,6 +75,13 @@
         </v-btn>
         to reset the view and choose a different green dot.
       </p>
+      <p style="font-weight: 300">
+        If the galaxy image doesn't load correctly (and it remains very blurry), click 
+        <v-btn icon dark x-small disabled class="mx-1 black--text" elevation="2" style="background-color: #CCCCCC;">
+          <v-icon style="color:black!important;">mdi-refresh</v-icon>
+        </v-btn>
+        to reload.
+      </p>
     </div>
     <div v-if="state_view.total_galaxies ==5">
       <p>
