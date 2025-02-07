@@ -115,6 +115,7 @@ class ComponentState(BaseComponentState, BaseState):
     velocity_reflection_state: VelocityReflection = VelocityReflection()
     reflection_complete: bool = False
     show_dop_cal4_values: bool = False
+    highlight_bins: bool = True
 
     # computed fields are included in the model when serialized
     @computed_field
