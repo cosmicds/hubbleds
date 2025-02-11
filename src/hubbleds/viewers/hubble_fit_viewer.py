@@ -1,4 +1,4 @@
-from echo import delay_callback, add_callback
+from echo import delay_callback
 from glue_plotly.viewers.scatter import PlotlyScatterView
 from .hubble_scatter_viewer import HubbleScatterViewerState
 from cosmicds.viewers import cds_viewer
@@ -10,7 +10,7 @@ __all__ = [
 
 class HubbleFitViewerState(HubbleScatterViewerState):
     
-    def reset_limits(self, visible_only=True):
+    def reset_limits(self, visible_only=None):
         with delay_callback(self, 'x_min', 'x_max', 'y_min', 'y_max'):
             super().reset_limits(visible_only=visible_only)
             if self.x_max is not None:

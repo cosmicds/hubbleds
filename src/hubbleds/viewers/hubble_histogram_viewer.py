@@ -11,7 +11,7 @@ __all__ = [
 
 class HubbleHistogramViewerState(CDSHistogramViewerState):
 
-    def reset_limits(self, visible_only=True):
+    def reset_limits(self, visible_only=None):
         with delay_callback(self, 'x_min', 'x_max'):
             super().reset_limits(visible_only=visible_only)
             self.x_min = round(self.x_min, 0) - 2.5 if self.x_min is not None else 0
