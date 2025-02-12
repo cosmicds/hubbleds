@@ -9,7 +9,7 @@ __all__ = [
 
 class HubbleScatterViewerState(CDSScatterViewerState):
 
-    def reset_limits(self, visible_only=True):
+    def reset_limits(self, visible_only=None):
         with delay_callback(self, 'x_min', 'x_max', 'y_min', 'y_max'):
             super().reset_limits(visible_only=visible_only)
             self.x_min = min(self.x_min, 0) if self.x_min is not None else 0

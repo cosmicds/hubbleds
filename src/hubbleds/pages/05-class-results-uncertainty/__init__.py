@@ -133,6 +133,9 @@ def Page():
             "class_hist": class_hist_viewer
         }
 
+        student_slider_viewer.state.reset_limits_from_visible = False
+        class_slider_viewer.state.reset_limits_from_visible = False
+
         two_hist_viewers = (all_student_hist_viewer, class_hist_viewer)
         for att in ('x_min', 'x_max'):
             link((all_student_hist_viewer.state, att), (class_hist_viewer.state, att))
@@ -316,8 +319,7 @@ def Page():
         # viewer's limits
         if name == "class_hist":
             continue
-        visible_only = "slider" not in name
-        viewer.state.reset_limits(visible_only=visible_only)
+        viewer.state.reset_limits()
 
     def show_class_data(marker):
         if "Class Data" in GLOBAL_STATE.value.glue_data_collection:
