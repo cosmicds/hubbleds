@@ -22,6 +22,7 @@ from typing import Callable, Iterable, List, cast, Union, Optional
 from solara.toestand import Reactive
 import numpy as np
 
+from ..plotly_bar_highlighting import _PlotlyHighlighting, BinManager
 
 from cosmicds.logger import setup_logger
 logger = setup_logger("DOTPLOT")
@@ -71,6 +72,7 @@ def DotplotViewer(
     on_reset_bounds_changed: Callable = lambda x: None,
     hide_layers: List[Data | Subset] = [],  # type: ignore
     on_hide_layers_changed: Callable = lambda x: None,
+    highlight_bins: bool = True,
     ):
     
     """
@@ -151,6 +153,19 @@ def DotplotViewer(
             
             dotplot_view: HubbleDotPlotViewer = gjapp.new_data_viewer(
                 HubbleDotPlotView, show=False) # type: ignore
+            
+            options = {
+                'viewer_id': dotplot_view._unique_class,
+                'fillColor': 'rgba(0, 0, 0)',
+                'fillOpacity': 0.5,
+                'strokeColor': 'rgba(255, 0, 255, 1)',
+                'strokeOpacity': 1,
+                'strokeWidth': 1.5,
+                'opacity': 1, # overall opacity
+                'debug': False, # will show buttons if it can't find the bins
+                'show': False, # set to true to show helpful buttons
+            }
+            pl = _PlotlyHighlighting(**options)
 
             _add_data(dotplot_view, viewer_data)
             if isinstance(viewer_data, tuple):
@@ -256,7 +271,8 @@ def DotplotViewer(
             toolbar_widget.children = (dotplot_view.toolbar,)
 
             viewer_widget = solara.get_widget(viewer_container)
-            viewer_widget.children = (dotplot_view.figure_widget,)
+            
+            viewer_widget.children = (pl, dotplot_view.figure_widget,)
 
             # The auto sizing in the plotly widget only works if the height
             #  and width are undefined. First, unset the height and width,
@@ -334,8 +350,26 @@ def DotplotViewer(
                 else:
                     logger.info(f'{title}: Bounds already set')
             
+            background_bins = BinManager(dotplot_view,
+                                        bin_width=1,
+                                        selection_bin_width=1,
+                                        visible_bins=False,
+                                        show_bins_with_data_only=False,
+                                        )
+            
+            if highlight_bins:
+                background_bins.setup_bin_layer()
+            def turn_off_bins():
+                background_bins.turn_off_bins()
+            def turn_on_bins():
+                if highlight_bins:
+                    background_bins.redraw_bins()
+            
             def extend_the_tools():  
                 extend_tool(dotplot_view, 'hubble:wavezoom', deactivate_cb=_on_wavezoom, )
+                extend_tool(dotplot_view, 'plotly:home', activate_cb=turn_on_bins, activate_before_tool=False)
+                extend_tool(dotplot_view, 'hubble:wavezoom', activate_cb=turn_off_bins, activate_before_tool=True)
+                extend_tool(dotplot_view, 'hubble:wavezoom', deactivate_cb=turn_on_bins, deactivate_before_tool=False)
             extend_the_tools()
             tool = dotplot_view.toolbar.tools['plotly:home']
             if tool:
@@ -365,6 +399,8 @@ def DotplotViewer(
                     dotplot_view.state.x_min = new_val[0]
                     dotplot_view.state.x_max = new_val[1]
                 reset_selection()
+                if highlight_bins:
+                    background_bins.redraw_bins()
             x_bounds.subscribe(update_x_bounds)
             
             home_tool = dotplot_view.toolbar.tools['plotly:home']
