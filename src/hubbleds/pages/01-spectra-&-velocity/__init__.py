@@ -64,6 +64,14 @@ def is_wavelength_poorly_measured(measwave, restwave, z, tolerance = 0.5):
     fractional_difference = (((z_meas - z) / z)** 2)**0.5
     return fractional_difference > tolerance
 
+def nbin_func(xmin, xmax):
+    # full range is 246422.9213488496
+    frac_range = (xmax - xmin) / 246423
+    max_bins = 100
+    min_bins = 30
+    power = 1.5 # 
+    return 30 + int((frac_range ** power) * (max_bins - min_bins))
+
 @solara.component
 def Page():
     solara.Title("HubbleDS")
@@ -1047,6 +1055,7 @@ def Page():
                         x_label="Velocity (km/s)",
                         y_label="Count",
                         nbin=30,
+                        nbin_func=nbin_func,
                         x_bounds=dotplot_bounds.value,
                         on_x_bounds_changed=dotplot_bounds.set,
                         reset_bounds=list(

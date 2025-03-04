@@ -281,7 +281,7 @@ footer .v-card__text {
 
 /* Hides the wavelength marker tracking the trace */
 div.plotly .hoverlayer g.hovertext {
-    display: none;
+    /* display: none; */
 }
 
  
