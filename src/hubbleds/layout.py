@@ -13,11 +13,6 @@ logger = setup_logger("LAYOUT")
 @solara.component
 def Layout(children=[]):
 
-    MathJaxSupport()
-    PlotlySupport()
-    GoogleAnalyticsSupport(tag=getenv("GOOGLE_ANALYTICS_TAG"))
-    logger.info("Mounted external libraries.")
-
     student_id = Ref(GLOBAL_STATE.fields.student.id)
     loaded_states = solara.use_reactive(False)
 

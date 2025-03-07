@@ -280,11 +280,11 @@ def DotplotViewer(
                     spikesnap="cursor",
                     showspikes=True,
                     tickformat=",.0f",
-                    titlefont_size=16,
+                    title_font_size=16,
                 ),
                 yaxis=dict(
                     tickmode="auto",
-                    titlefont_size=16,
+                    title_font_size=16,
                 ),
                 hoverlabel=dict(
                     bgcolor="white",

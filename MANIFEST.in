@@ -3,7 +3,7 @@ include CHANGELOG.rst
 include setup.cfg
 include LICENSE.txt
 
-recursive-include src *.pyx *.c *.vue *.csv *.ipynb *.css *.js *.png
+recursive-include src *.pyx *.c *.vue *.csv *.ipynb *.css *.js *.png *.j2
 recursive-include docs *
 
 prune build
