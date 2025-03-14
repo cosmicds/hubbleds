@@ -132,7 +132,7 @@
     </v-divider>
     <v-alert
         v-if="state_view.failed_validation_4"
-        color="info darken-1"
+        color="#3D3D3D"
         dense
     >
       Not quite. Make sure you haven't reversed the rest and observed wavelength values.
