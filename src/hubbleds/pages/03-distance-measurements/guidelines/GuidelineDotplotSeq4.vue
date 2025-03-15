@@ -9,7 +9,7 @@
       class="mb-4"
     >
       <p>
-        Below is the distribution of angular size measurements for this galaxy. Notice the angular size measurements also tend to group around more than one value.
+        Below is the distribution of angular size measurements for this galaxy. Notice the angular size measurements also have a large spread.
       </p>
     </div>
   </scaffold-alert>

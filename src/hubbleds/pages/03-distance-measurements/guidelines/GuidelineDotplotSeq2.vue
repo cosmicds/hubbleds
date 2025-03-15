@@ -21,12 +21,11 @@
           'I am not sure',
           ]"
           :feedbacks="[
-          'Not quite. Consider whether the measurements cluster around a single common value.',
-          'Correct! The measurements cluster around more than one common value, so there is no consensus.',
-          'If the measurements cluster around a single common value, there is consensus. If they cluster around more than one value, there is not consensus.'
+          'Yes, there is a wide spread of measurements, but they cluster around a single common value, so you could say there is consensus.',
+          'It is true that the values tend to cluster around a single common value, but the spread is so large that you could say there is not consensus.',
+          'This one could go either way. It is true that the values tend to cluster around a single common value, so you could say there is consensus, but the spread is so large that you could also say there is not consensus.'
           ]" 
-        :correct-answers="[1]"
-        :neutral-answers="[0, 2]"
+        :neutral-answers="[0, 1, 2]"
         :score-tag="state_view.score_tag"
         @mc-emit="mc_callback($event)"
         :initialization="state_view.mc_score"

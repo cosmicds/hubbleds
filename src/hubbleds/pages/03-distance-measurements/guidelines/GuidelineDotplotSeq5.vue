@@ -1,43 +1,25 @@
 <template>
   <scaffold-alert
-    title-text="Measurement Comparison"
+    title-text="Remeasure Galaxy Angular Size"
     @back="back_callback()"
     @next="next_callback()"
     :can-advance="can_advance"
   >
+    <template #before-next>
+        Remeasure galaxy angular size
+    </template>
     <div
       class="mb-4"
     >
       <p>
-        You can now remeasure the example galaxy using what you've learned and see how your answer changes.
+        Remeasure the example galaxy using what you've learned and see how your answer changes.
       </p>
       <p>
-        Or move on to measure the sizes for your 5 galaxies. 
+        Adjust the brightness using <v-icon>mdi-brightness-6</v-icon> to make sure you catch the faintest parts of the galaxy!
       </p>
       <p>
-      <v-btn 
-        block color="accent"
-        class="black--text"
-        elevation="2"
-        @click="() => {
-          next_callback()
-        }"
-      >
-         <b>Remeasure example</b>
-      </v-btn>
-    </p><p>
-      <v-btn 
-        block color="accent"
-        class="black--text"
-        elevation="2"
-        @click="() => {
-          // state.show_ruler = true;
-          force_transition()
-        }"
-      >
-         <b>Move on to my galaxies</b>
-      </v-btn>
-    </p>
+        (Click the row for the galaxy in the table to select it if it is not already in view.)
+      </p>
       
     </div>
   </scaffold-alert>

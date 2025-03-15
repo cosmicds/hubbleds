@@ -443,13 +443,8 @@ class LocalAPI(BaseAPI):
         # with open(path, 'r') as f:
         #     res_json = json.load(f)
         res_json = read_csv(path).to_dict(orient='records')
-        
-        seq = SeedSequence(70)
-        gen = Generator(PCG64(seq))
-        indices = arange(len(res_json))
-        N = 75
-        random_subset = gen.choice(indices, size=N, replace=False)
-        # random_subset = range(len(res_json))
+
+        random_subset = range(len(res_json))
         measurements = []
 
         _filter_func = lambda x: res_json[x]['measurement_number'] == which

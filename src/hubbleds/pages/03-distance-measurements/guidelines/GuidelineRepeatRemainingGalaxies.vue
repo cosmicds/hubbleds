@@ -32,7 +32,7 @@
       v-if="state_view.angular_sizes_total < 5 && !state_view.bad_angsize"
     >
       <p>
-        Repeat the angular size measurements for each of the remaining galaxies in your table.
+        Keeping in mind what you learned about making good measurements, repeat the angular size measurements for each of the remaining galaxies in your table.
       </p>
     </div>
 

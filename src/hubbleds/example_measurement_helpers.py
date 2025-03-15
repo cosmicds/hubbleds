@@ -123,8 +123,8 @@ def load_and_create_seed_data(gjapp: JupyterApplication, local_state: Reactive[L
     gjapp.data_collection.append(second)
     
     np.random.seed(42)
-    # 50% of the first measurements will be used for the tutorial
-    tutorial_data = [e for e in example_seed_data if np.random.rand() <= 0.5]
+    # ~70% of the first measurements will be used for the tutorial
+    tutorial_data = [e for e in example_seed_data if np.random.rand() <= 0.7]
     # filter some of the correct values to reduce counts
     filter_func = lambda x: (x < 11_130 or x > 11_220) or np.random.rand() <= 0.75
     tutorial_data = [e for e in tutorial_data if filter_func(e['velocity_value'])]

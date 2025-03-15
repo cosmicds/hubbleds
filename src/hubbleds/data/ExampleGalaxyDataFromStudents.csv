@@ -1,155 +1,41 @@
-"student_id","galaxy_id","rest_wave_value","rest_wave_unit","obs_wave_value","obs_wave_unit","velocity_value","velocity_unit","ang_size_value","ang_size_unit","est_dist_value","est_dist_unit","last_modified","measurement_number","brightness","class_id"
-3760,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",29,"arcsecond",217,"Mpc","2023-05-09 17:11:23","first",1.4,184
-3761,1576,6565,"angstrom",6830,"angstrom",12110,"km / s",28,"arcsecond",225,"Mpc","2023-05-08 16:20:35","first",1,184
-3761,1576,6565,"angstrom",6640,"angstrom",3427,"km / s",34,"arcsecond",185,"Mpc","2023-05-08 18:03:30","second",1.39,184
-3763,1576,6565,"angstrom",6828,"angstrom",12018,"km / s",29,"arcsecond",217,"Mpc","2023-05-08 16:12:19","first",1,184
-3765,1576,6565,"angstrom",6730,"angstrom",7540,"km / s",1,"arcsecond",6300,"Mpc","2023-05-08 16:04:51","first",2.03,184
-3766,1576,6565,"angstrom",6815,"angstrom",11424,"km / s",31,"arcsecond",203,"Mpc","2023-05-08 16:04:22","first",1,184
-3772,1576,6565,"angstrom",6801,"angstrom",10784,"km / s",34,"arcsecond",185,"Mpc","2023-05-08 16:18:13","first",1.07,184
-3773,1576,6565,"angstrom",7990,"angstrom",65118,"km / s",35,"arcsecond",180,"Mpc","2023-05-08 16:02:35","first",3.27,184
-3774,1576,6565,"angstrom",6813,"angstrom",11333,"km / s",36,"arcsecond",175,"Mpc","2023-05-08 16:02:14","first",1,184
-3777,1576,6565,"angstrom",6820,"angstrom",11653,"km / s",28,"arcsecond",225,"Mpc","2023-05-09 17:35:21","first",1,184
-3893,1576,6565,"angstrom",6811,"angstrom",11241,"km / s",33,"arcsecond",191,"Mpc","2023-05-10 18:06:21","first",1,188
-3894,1576,6565,"angstrom",6821,"angstrom",11698,"km / s",31,"arcsecond",203,"Mpc","2023-05-10 18:13:48","first",2.52,188
-3896,1576,6565,"angstrom",6802,"angstrom",10830,"km / s",31,"arcsecond",203,"Mpc","2023-05-10 18:25:32","first",1.54,188
-3899,1576,6565,"angstrom",6811,"angstrom",11241,"km / s",34,"arcsecond",185,"Mpc","2023-05-10 17:56:36","first",1.32,188
-3900,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",33,"arcsecond",191,"Mpc","2023-05-10 18:20:16","first",2.29,188
-3902,1576,6565,"angstrom",6821,"angstrom",11698,"km / s",32,"arcsecond",197,"Mpc","2023-05-10 18:03:59","first",2.75,188
-3904,1576,6565,"angstrom",6807,"angstrom",11059,"km / s",34,"arcsecond",185,"Mpc","2023-05-10 17:56:08","first",1.54,188
-3973,1576,6565,"angstrom",6805,"angstrom",10967,"km / s",36,"arcsecond",175,"Mpc","2023-05-10 21:00:14","first",2.78,190
-3974,1576,6565,"angstrom",6843,"angstrom",12704,"km / s",80,"arcsecond",79,"Mpc","2023-05-10 20:47:29","first",1.25,190
-3975,1576,6565,"angstrom",6816,"angstrom",11470,"km / s",35,"arcsecond",180,"Mpc","2023-05-10 20:58:33","first",1,190
-3976,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",253,"arcsecond",25,"Mpc","2023-05-10 21:46:58","first",2.91,190
-3977,1576,6565,"angstrom",6167,"angstrom",-18187,"km / s",37,"arcsecond",170,"Mpc","2023-05-10 20:56:15","first",1.47,190
-3980,1576,6565,"angstrom",6823,"angstrom",11790,"km / s",31,"arcsecond",203,"Mpc","2023-05-10 21:08:08","first",1.8,190
-3981,1576,6565,"angstrom",6611,"angstrom",2102,"km / s",34,"arcsecond",185,"Mpc","2023-05-10 21:18:03","first",1.44,190
-3982,1576,6565,"angstrom",6811,"angstrom",11241,"km / s",33,"arcsecond",191,"Mpc","2023-05-10 21:06:21","first",2.38,190
-3984,1576,6565,"angstrom",6573,"angstrom",366,"km / s",22,"arcsecond",286,"Mpc","2023-05-10 21:35:16","first",1,190
-3985,1576,6565,"angstrom",6830,"angstrom",12110,"km / s",34,"arcsecond",185,"Mpc","2023-05-10 21:07:16","first",4,190
-3987,1576,6565,"angstrom",6826,"angstrom",11927,"km / s",32,"arcsecond",197,"Mpc","2023-05-10 20:55:21","first",1,190
-3989,1576,6565,"angstrom",6561,"angstrom",-183,"km / s",22,"arcsecond",286,"Mpc","2023-05-10 21:04:03","first",1,190
-3989,1576,6565,"angstrom",5061,"angstrom",-68728,"km / s",34,"arcsecond",185,"Mpc","2023-05-10 21:05:36","second",1,190
-3991,1576,6565,"angstrom",6826,"angstrom",11927,"km / s",25,"arcsecond",252,"Mpc","2023-05-10 20:50:48","first",1,190
-3992,1576,6565,"angstrom",6811,"angstrom",11241,"km / s",47,"arcsecond",134,"Mpc","2023-05-10 21:22:14","first",1.45,190
-3992,1576,6565,"angstrom",6827,"angstrom",11973,"km / s",39,"arcsecond",162,"Mpc","2023-05-10 21:24:48","second",1.84,190
-3993,1576,6565,"angstrom",6829,"angstrom",12064,"km / s",29,"arcsecond",217,"Mpc","2023-05-10 20:58:08","first",1,190
-4123,1576,6565,"angstrom",6829,"angstrom",12064,"km / s",33,"arcsecond",191,"Mpc","2023-07-19 13:33:44","first",1.46,195
-4124,1576,6565,"angstrom",6810,"angstrom",11196,"km / s",33,"arcsecond",191,"Mpc","2023-07-19 13:37:56","first",1.47,195
-4125,1576,6565,"angstrom",6832,"angstrom",12201,"km / s",33,"arcsecond",191,"Mpc","2023-07-19 13:43:04","first",1.17,195
-4126,1576,6565,"angstrom",6813,"angstrom",11333,"km / s",77880,"arcsecond",0,"Mpc","2023-07-19 13:47:01","first",1,195
-4127,1576,6565,"angstrom",6829,"angstrom",12064,"km / s",35,"arcsecond",180,"Mpc","2023-07-19 13:30:49","first",2.35,195
-4127,1576,6565,"angstrom",6800,"angstrom",10739,"km / s",33,"arcsecond",191,"Mpc","2023-07-19 13:33:21","second",2.04,195
-4128,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",32,"arcsecond",197,"Mpc","2023-07-19 13:46:22","first",1.68,195
-4129,1576,6565,"angstrom",6565,"angstrom",0,"km / s",39,"arcsecond",162,"Mpc","2023-07-19 13:31:18","first",2.03,195
-4130,1576,6565,"angstrom",6811,"angstrom",11241,"km / s",34,"arcsecond",185,"Mpc","2023-07-19 13:24:34","first",1.2,195
-4131,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",29,"arcsecond",217,"Mpc","2023-07-19 13:37:33","first",1.12,195
-4132,1576,6565,"angstrom",6818,"angstrom",11561,"km / s",29,"arcsecond",217,"Mpc","2023-07-19 13:24:45","first",2.25,195
-4133,1576,6565,"angstrom",6813,"angstrom",11333,"km / s",34,"arcsecond",185,"Mpc","2023-07-19 13:37:45","first",0,195
-4134,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",22,"arcsecond",286,"Mpc","2023-07-19 13:18:28","first",1.78,195
-4135,1576,6565,"angstrom",6808,"angstrom",11104,"km / s",32,"arcsecond",197,"Mpc","2023-07-19 13:23:13","first",4,195
-4136,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",35,"arcsecond",180,"Mpc","2023-07-19 13:40:20","first",2.05,195
-4137,1576,6565,"angstrom",6814,"angstrom",11379,"km / s",42,"arcsecond",150,"Mpc","2023-07-19 13:34:59","first",1,195
-4138,1576,6565,"angstrom",6830,"angstrom",12110,"km / s",35,"arcsecond",180,"Mpc","2023-07-19 13:33:49","first",1,195
-4139,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",33,"arcsecond",191,"Mpc","2023-07-19 13:25:38","first",1,195
-4140,1576,6565,"angstrom",6808,"angstrom",11104,"km / s",30,"arcsecond",210,"Mpc","2023-07-19 13:52:13","first",1.64,195
-4141,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",35,"arcsecond",180,"Mpc","2023-07-19 13:25:58","first",2.88,195
-4142,1576,6565,"angstrom",6828,"angstrom",12018,"km / s",173624,"arcsecond",0,"Mpc","2023-07-19 13:25:54","first",1.09,195
-4143,1576,6565,"angstrom",6833,"angstrom",12247,"km / s",30,"arcsecond",210,"Mpc","2023-07-19 13:25:59","first",1,195
-4144,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",32,"arcsecond",197,"Mpc","2023-07-19 13:20:04","first",1.26,195
-4145,1576,6565,"angstrom",6819,"angstrom",11607,"km / s",33,"arcsecond",191,"Mpc","2023-07-19 13:19:12","first",1,195
-4287,1576,6565,"angstrom",6804,"angstrom",10922,"km / s",30,"arcsecond",210,"Mpc","2023-11-16 19:51:11","first",1.49,202
-4289,1576,6565,"angstrom",6779,"angstrom",9779,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 19:49:40","first",1.01,202
-4291,1576,6565,"angstrom",6816,"angstrom",11470,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 19:51:52","first",1,202
-4292,1576,6565,"angstrom",6834,"angstrom",12292,"km / s",29,"arcsecond",217,"Mpc","2023-11-16 19:52:32","first",1,202
-4293,1576,6565,"angstrom",6852,"angstrom",13115,"km / s",25,"arcsecond",252,"Mpc","2023-11-16 19:20:38","first",1,202
-4294,1576,6565,"angstrom",6819,"angstrom",11607,"km / s",31,"arcsecond",203,"Mpc","2023-11-16 20:05:18","first",1.3,202
-4297,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 19:56:40","first",1.28,202
-4298,1576,6565,"angstrom",6803,"angstrom",10876,"km / s",32,"arcsecond",197,"Mpc","2023-11-16 19:47:06","first",1,202
-4300,1576,6565,"angstrom",6843,"angstrom",12704,"km / s",18,"arcsecond",350,"Mpc","2023-11-16 19:40:15","first",1,202
-4301,1576,6565,"angstrom",6587,"angstrom",1005,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 20:08:14","first",1,202
-4305,1576,6565,"angstrom",6807,"angstrom",11059,"km / s",71,"arcsecond",89,"Mpc","2023-11-16 19:40:35","first",1,202
-4306,1576,6565,"angstrom",6799,"angstrom",10693,"km / s",34,"arcsecond",185,"Mpc","2023-11-16 20:09:47","first",1,202
-4307,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",34,"arcsecond",185,"Mpc","2023-11-19 00:27:49","first",1.33,202
-4308,1576,6565,"angstrom",6852,"angstrom",13115,"km / s",56,"arcsecond",112,"Mpc","2023-11-16 19:07:49","first",1,202
-4315,1576,6565,"angstrom",6835,"angstrom",12338,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 23:14:53","first",1.74,203
-4316,1576,6565,"angstrom",6810,"angstrom",11196,"km / s",16,"arcsecond",394,"Mpc","2023-11-16 23:07:26","first",0,203
-4319,1576,6565,"angstrom",6814,"angstrom",11379,"km / s",31,"arcsecond",203,"Mpc","2023-11-16 22:56:55","first",1.62,203
-4320,1576,6565,"angstrom",6832,"angstrom",12201,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 22:59:13","first",1,203
-4321,1576,6565,"angstrom",6829,"angstrom",12064,"km / s",32,"arcsecond",197,"Mpc","2023-11-16 23:12:32","first",1,203
-4322,1576,6565,"angstrom",6823,"angstrom",11790,"km / s",30,"arcsecond",210,"Mpc","2023-11-16 22:53:04","first",1,203
-4323,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",34,"arcsecond",185,"Mpc","2023-11-16 23:22:45","first",1,203
-4323,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 23:24:56","second",2,203
-4325,1576,6565,"angstrom",6803,"angstrom",10876,"km / s",32,"arcsecond",197,"Mpc","2023-11-16 22:52:37","first",1.73,203
-4326,1576,6565,"angstrom",6835,"angstrom",12338,"km / s",32,"arcsecond",197,"Mpc","2023-11-16 23:35:38","first",2.06,203
-4327,1576,6565,"angstrom",6813,"angstrom",11333,"km / s",23,"arcsecond",274,"Mpc","2023-11-16 23:23:50","first",1,203
-4328,1576,6565,"angstrom",6821,"angstrom",11698,"km / s",36,"arcsecond",175,"Mpc","2023-11-16 23:16:11","first",3.65,203
-4329,1576,6565,"angstrom",6571,"angstrom",274,"km / s",33,"arcsecond",191,"Mpc","2023-11-16 23:40:02","first",1.35,203
-4329,1576,6565,"angstrom",6738,"angstrom",7906,"km / s",35,"arcsecond",180,"Mpc","2023-11-16 23:46:06","second",2.2,203
-4330,1576,6565,"angstrom",6837,"angstrom",12430,"km / s",31,"arcsecond",203,"Mpc","2023-11-16 22:57:45","first",1,203
-4331,1576,6565,"angstrom",6835,"angstrom",12338,"km / s",24,"arcsecond",262,"Mpc","2023-11-24 18:29:04","first",1,203
-4332,1576,6565,"angstrom",6837,"angstrom",12430,"km / s",32,"arcsecond",197,"Mpc","2023-11-16 23:22:10","first",1.25,203
-4334,1576,6565,"angstrom",6830,"angstrom",12110,"km / s",34,"arcsecond",185,"Mpc","2023-11-16 23:31:35","first",2.86,203
-4366,1576,6565,"angstrom",6830,"angstrom",12110,"km / s",36,"arcsecond",175,"Mpc","2023-11-29 19:21:44","first",1,205
-4368,1576,6565,"angstrom",6824,"angstrom",11835,"km / s",35,"arcsecond",180,"Mpc","2023-11-29 19:26:16","first",3.01,205
-4370,1576,6565,"angstrom",6839,"angstrom",12521,"km / s",29,"arcsecond",217,"Mpc","2023-11-29 19:00:40","first",1,205
-4372,1576,6565,"angstrom",6798,"angstrom",10647,"km / s",36,"arcsecond",175,"Mpc","2023-11-29 18:55:07","first",2.29,205
-4373,1576,6565,"angstrom",6812,"angstrom",11287,"km / s",21,"arcsecond",300,"Mpc","2023-11-29 19:11:12","first",1,205
-4374,1576,6565,"angstrom",6798,"angstrom",10647,"km / s",24,"arcsecond",262,"Mpc","2023-11-29 18:49:36","first",1,205
-4374,1576,6565,"angstrom",6661,"angstrom",4387,"km / s",33,"arcsecond",191,"Mpc","2023-11-29 18:51:15","second",1,205
-4376,1576,6565,"angstrom",6582,"angstrom",777,"km / s",170,"arcsecond",37,"Mpc","2023-11-29 19:19:35","first",1.28,205
-4376,1576,6565,"angstrom",6774,"angstrom",9551,"km / s",128,"arcsecond",49,"Mpc","2023-11-29 19:21:01","second",1.05,205
-4377,1576,6565,"angstrom",6567,"angstrom",91,"km / s",37,"arcsecond",170,"Mpc","2023-11-29 18:52:32","first",2.06,205
-4378,1576,6565,"angstrom",6566,"angstrom",46,"km / s",71,"arcsecond",89,"Mpc","2023-11-29 18:55:35","first",1,205
-4380,1576,6565,"angstrom",6833,"angstrom",12247,"km / s",79,"arcsecond",80,"Mpc","2023-11-29 19:06:37","first",1.52,205
-4381,1576,6565,"angstrom",6862,"angstrom",13572,"km / s",1609,"arcsecond",4,"Mpc","2023-11-29 18:29:17","first",4,205
-4382,1576,6565,"angstrom",6567,"angstrom",91,"km / s",34,"arcsecond",185,"Mpc","2023-11-29 19:29:17","first",1.74,205
-4383,1576,6565,"angstrom",6812,"angstrom",11287,"km / s",30,"arcsecond",210,"Mpc","2023-11-29 19:38:05","first",1,205
-4384,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",36,"arcsecond",175,"Mpc","2023-11-29 19:08:29","first",1.63,205
-4389,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",34,"arcsecond",185,"Mpc","2023-11-29 19:41:47","first",1.9,205
-4390,1576,6565,"angstrom",7526,"angstrom",43915,"km / s",53,"arcsecond",119,"Mpc","2023-11-29 20:51:07","first",1,206
-4392,1576,6565,"angstrom",6835,"angstrom",12338,"km / s",33,"arcsecond",191,"Mpc","2023-12-01 09:47:52","first",1.11,206
-4393,1576,6565,"angstrom",6823,"angstrom",11790,"km / s",33,"arcsecond",191,"Mpc","2023-11-29 21:13:33","first",1,206
-4395,1576,6565,"angstrom",8154,"angstrom",72612,"km / s",30,"arcsecond",210,"Mpc","2023-12-11 02:23:20","first",1.56,206
-4396,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",33,"arcsecond",191,"Mpc","2023-11-29 20:43:43","first",0.98,206
-4399,1576,6565,"angstrom",6798,"angstrom",10647,"km / s",35,"arcsecond",180,"Mpc","2023-11-29 20:54:18","first",1,206
-4401,1576,6565,"angstrom",6830,"angstrom",12110,"km / s",31,"arcsecond",203,"Mpc","2023-11-29 20:51:19","first",1.01,206
-4407,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",34,"arcsecond",185,"Mpc","2023-11-29 21:09:48","first",2.85,206
-4409,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",33,"arcsecond",191,"Mpc","2023-11-29 20:25:52","first",2.35,206
-4435,1576,6565,"angstrom",6816,"angstrom",11470,"km / s",16,"arcsecond",394,"Mpc","2023-12-05 08:45:49","first",1,209
-4436,1576,6565,"angstrom",6810,"angstrom",11196,"km / s",32,"arcsecond",197,"Mpc","2023-12-05 09:03:37","first",1,209
-4436,1576,6565,"angstrom",6828,"angstrom",12018,"km / s",34,"arcsecond",185,"Mpc","2023-12-05 09:07:22","second",2,209
-4437,1576,6565,"angstrom",6778,"angstrom",9733,"km / s",34,"arcsecond",185,"Mpc","2023-12-12 09:19:37","first",1.88,209
-4438,1576,6565,"angstrom",6802,"angstrom",10830,"km / s",33,"arcsecond",191,"Mpc","2023-12-12 09:17:25","first",1.5,209
-4439,1576,6565,"angstrom",6809,"angstrom",11150,"km / s",32,"arcsecond",197,"Mpc","2023-12-05 08:52:10","first",1,209
-4441,1576,6565,"angstrom",6826,"angstrom",11927,"km / s",31,"arcsecond",203,"Mpc","2023-12-05 09:09:56","first",1.91,209
-4442,1576,6565,"angstrom",6482,"angstrom",-3793,"km / s",80,"arcsecond",79,"Mpc","2023-12-05 09:15:20","first",1,209
-4879,1576,6565,"angstrom",7315,"angstrom",34375,"km/s",37,"arcsecond",170,"Mpc","2024-10-25 16:41:36","first",0,215
-4879,1576,6565,"angstrom",6189,"angstrom",-17096,"km / s",37,"arcsecond",170,"Mpc","2024-10-25 20:13:54","second",0,215
-4899,1576,6565,"angstrom",6899,"angstrom",15359,"km/s",42,"arcsecond",150,"Mpc","2024-07-29 17:45:57","first",0,215
-5000,1576,6565,"angstrom",6814,"angstrom",11473,"km / s",39,"arcsecond","","Mpc","2024-09-24 16:01:23","first",0,215
-5018,1576,6565,"angstrom",7079,"angstrom",23587,"km / s",41,"arcsecond",154,"Mpc","2024-10-04 21:33:02","first",0,215
-5018,1576,6565,"angstrom",6803,"angstrom",10971,"km / s",42,"arcsecond",148,"Mpc","2024-10-04 21:37:36","second",0,215
-5030,1576,6565,"angstrom",6990,"angstrom",19519,"km / s",37,"arcsecond",170,"Mpc","2024-10-08 18:45:09","first",0,215
-5030,1576,6565,"angstrom",6990,"angstrom",19519,"km / s",37,"arcsecond",170,"Mpc","2024-10-08 18:45:12","second",0,215
-4914,1576,6565,"angstrom",6809,"angstrom",11245,"km/s",33,"arcsecond",191,"Mpc","2024-07-31 17:55:27","first",0,216
-4915,1576,6565,"angstrom",8400,"angstrom",11336,"km/s",43,"arcsecond",147,"Mpc","2024-07-31 17:56:25","first",0,216
-4916,1576,6565,"angstrom",6836,"angstrom",12479,"km/s",35,"arcsecond",180,"Mpc","2024-07-31 17:58:42","first",0,216
-4917,1576,6565,"angstrom",6811,"angstrom",11336,"km/s",34,"arcsecond",191,"Mpc","2024-07-31 17:52:21","first",0,216
-4918,1576,6565,"angstrom",6831,"angstrom",12250,"km/s",1600,"arcsecond",4,"Mpc","2024-07-31 17:45:00","first",0,216
-4919,1576,6565,"angstrom",6809,"angstrom",11245,"km/s",29,"arcsecond",217,"Mpc","2024-07-31 18:22:48","first",0,216
-4920,1576,6565,"angstrom",6823,"angstrom",11885,"km/s",30,"arcsecond",210,"Mpc","2024-07-31 17:31:17","first",0,216
-4921,1576,6565,"angstrom",6808,"angstrom",11199,"km/s",30,"arcsecond",210,"Mpc","2024-07-31 18:20:11","first",0,216
-4922,1576,6565,"angstrom",6812,"angstrom",11382,"km/s",80,"arcsecond",79,"Mpc","2024-07-31 17:56:49","first",0,216
-4923,1576,6565,"angstrom",6808,"angstrom",11199,"km/s",30,"arcsecond",210,"Mpc","2024-07-31 17:41:04","first",0,216
-4924,1576,6565,"angstrom",6812,"angstrom",11382,"km/s",30,"arcsecond",210,"Mpc","2024-07-31 18:04:34","first",0,216
-4926,1576,6565,"angstrom",6828,"angstrom",12113,"km/s",33,"arcsecond",191,"Mpc","2024-07-31 18:12:59","first",0,216
-4927,1576,6565,"angstrom",6806,"angstrom",11108,"km/s",25,"arcsecond",252,"Mpc","2024-07-31 17:43:30","first",0,216
-4928,1576,6565,"angstrom",6806,"angstrom",11336,"km/s",32,"arcsecond",197,"Mpc","2024-07-31 18:13:10","first",0,216
-4930,1576,6565,"angstrom",6803,"angstrom",10971,"km/s",30,"arcsecond",210,"Mpc","2024-07-31 18:05:21","first",0,216
-4931,1576,6565,"angstrom",6809,"angstrom",11245,"km/s",85,"arcsecond",74,"Mpc","2024-07-31 17:31:05","first",0,216
-4932,1576,6565,"angstrom",6811,"angstrom",11336,"km/s",17,"arcsecond",371,"Mpc","2024-07-31 17:41:16","first",0,216
-4933,1576,6565,"angstrom",6808,"angstrom",11199,"km/s",32,"arcsecond",203,"Mpc","2024-07-31 18:00:30","first",0,216
-4934,1576,6565,"angstrom",6811,"angstrom",11336,"km/s",157,"arcsecond",40,"Mpc","2024-07-31 17:36:11","first",0,216
-4935,1576,6565,"angstrom",6803,"angstrom",46,"km/s",35,"arcsecond",180,"Mpc","2024-07-31 17:52:52","first",0,216
-4936,1576,6565,"angstrom",6811,"angstrom",10971,"km/s",18,"arcsecond",350,"Mpc","2024-07-31 17:42:43","first",0,216
-4937,1576,6565,"angstrom",6811,"angstrom",11336,"km/s",34,"arcsecond",185,"Mpc","2024-07-31 18:15:35","first",0,216
+student_id,galaxy_id,rest_wave_value,rest_wave_unit,obs_wave_value,obs_wave_unit,velocity_value,velocity_unit,ang_size_value,ang_size_unit,est_dist_value,est_dist_unit,last_modified,measurement_number,brightness,class_id
+3977,1576,6565,angstrom,6167,angstrom,-18187,km / s,37,arcsecond,170,Mpc,5/10/23 20:56,first,1.47,190
+4129,1576,6565,angstrom,6565,angstrom,0,km / s,39,arcsecond,162,Mpc,7/19/23 13:31,first,2.03,195
+4935,1576,6565,angstrom,6803,angstrom,46,km/s,35,arcsecond,180,Mpc,7/31/24 17:52,first,0,216
+3984,1576,6565,angstrom,6573,angstrom,366,km / s,22,arcsecond,286,Mpc,5/10/23 21:35,first,1,190
+4289,1576,6565,angstrom,6779,angstrom,9779,km / s,33,arcsecond,191,Mpc,11/16/23 19:49,first,1.01,202
+4399,1576,6565,angstrom,6798,angstrom,10647,km / s,35,arcsecond,180,Mpc,11/29/23 20:54,first,1,206
+4298,1576,6565,angstrom,6803,angstrom,10876,km / s,32,arcsecond,197,Mpc,11/16/23 19:47,first,1,202
+4930,1576,6565,angstrom,6803,angstrom,10971,km/s,30,arcsecond,210,Mpc,7/31/24 18:05,first,0,216
+4135,1576,6565,angstrom,6808,angstrom,11104,km / s,32,arcsecond,197,Mpc,7/19/23 13:23,first,4,195
+3900,1576,6565,angstrom,6809,angstrom,11150,km / s,33,arcsecond,191,Mpc,5/10/23 18:20,first,2.29,188
+4134,1576,6565,angstrom,6809,angstrom,11150,km / s,22,arcsecond,286,Mpc,7/19/23 13:18,first,1.78,195
+4384,1576,6565,angstrom,6809,angstrom,11150,km / s,36,arcsecond,175,Mpc,11/29/23 19:08,first,1.63,205
+4409,1576,6565,angstrom,6809,angstrom,11150,km / s,33,arcsecond,191,Mpc,11/29/23 20:25,first,2.35,206
+4316,1576,6565,angstrom,6810,angstrom,11196,km / s,16,arcsecond,394,Mpc,11/16/23 23:07,first,0,203
+4923,1576,6565,angstrom,6808,angstrom,11199,km/s,30,arcsecond,210,Mpc,7/31/24 17:41,first,0,216
+3982,1576,6565,angstrom,6811,angstrom,11241,km / s,33,arcsecond,191,Mpc,5/10/23 21:06,first,2.38,190
+4919,1576,6565,angstrom,6809,angstrom,11245,km/s,29,arcsecond,217,Mpc,7/31/24 18:22,first,0,216
+3774,1576,6565,angstrom,6813,angstrom,11333,km / s,36,arcsecond,175,Mpc,5/8/23 16:02,first,1,184
+4915,1576,6565,angstrom,8400,angstrom,11336,km/s,43,arcsecond,147,Mpc,7/31/24 17:56,first,0,216
+4934,1576,6565,angstrom,6811,angstrom,11336,km/s,157,arcsecond,40,Mpc,7/31/24 17:36,first,0,216
+4922,1576,6565,angstrom,6812,angstrom,11382,km/s,80,arcsecond,79,Mpc,7/31/24 17:56,first,0,216
+4291,1576,6565,angstrom,6816,angstrom,11470,km / s,33,arcsecond,191,Mpc,11/16/23 19:51,first,1,202
+4294,1576,6565,angstrom,6819,angstrom,11607,km / s,31,arcsecond,203,Mpc,11/16/23 20:05,first,1.3,202
+4328,1576,6565,angstrom,6821,angstrom,11698,km / s,36,arcsecond,175,Mpc,11/16/23 23:16,first,3.65,203
+3980,1576,6565,angstrom,6823,angstrom,11790,km / s,31,arcsecond,203,Mpc,5/10/23 21:08,first,1.8,190
+3763,1576,6565,angstrom,6828,angstrom,12018,km / s,29,arcsecond,217,Mpc,5/8/23 16:12,first,1,184
+3993,1576,6565,angstrom,6829,angstrom,12064,km / s,29,arcsecond,217,Mpc,5/10/23 20:58,first,1,190
+4127,1576,6565,angstrom,6829,angstrom,12064,km / s,35,arcsecond,180,Mpc,7/19/23 13:30,first,2.35,195
+4138,1576,6565,angstrom,6830,angstrom,12110,km / s,35,arcsecond,180,Mpc,7/19/23 13:33,first,1,195
+4401,1576,6565,angstrom,6830,angstrom,12110,km / s,31,arcsecond,203,Mpc,11/29/23 20:51,first,1.01,206
+4926,1576,6565,angstrom,6828,angstrom,12113,km/s,33,arcsecond,191,Mpc,7/31/24 18:12,first,0,216
+4125,1576,6565,angstrom,6832,angstrom,12201,km / s,33,arcsecond,191,Mpc,7/19/23 13:43,first,1.17,195
+4380,1576,6565,angstrom,6833,angstrom,12247,km / s,79,arcsecond,80,Mpc,11/29/23 19:06,first,1.52,205
+4326,1576,6565,angstrom,6835,angstrom,12338,km / s,32,arcsecond,197,Mpc,11/16/23 23:35,first,2.06,203
+4332,1576,6565,angstrom,6837,angstrom,12430,km / s,32,arcsecond,197,Mpc,11/16/23 23:22,first,1.25,203
+4300,1576,6565,angstrom,6843,angstrom,12704,km / s,18,arcsecond,350,Mpc,11/16/23 19:40,first,1,202
+4899,1576,6565,angstrom,6899,angstrom,15359,km/s,42,arcsecond,150,Mpc,7/29/24 17:45,first,0,215
+5030,1576,6565,angstrom,6990,angstrom,19519,km / s,37,arcsecond,170,Mpc,10/8/24 18:45,first,0,215
+4879,1576,6565,angstrom,7315,angstrom,34375,km/s,37,arcsecond,170,Mpc,10/25/24 16:41,first,0,215
+4395,1576,6565,angstrom,8154,angstrom,72612,km / s,30,arcsecond,210,Mpc,12/11/23 2:23,first,1.56,206

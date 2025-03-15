@@ -17,7 +17,7 @@
       class="mb-4"
     >
       <p>
-        It looks like there may be some disagreement about the distance to the galaxy. It might help to look at the angular size measurements that were used to obtain the distances. 
+        Given the wide spread in the distance measurements, it might help to look at the angular size measurements that were used to obtain the distances. 
       </p>
     </div>
   </scaffold-alert>

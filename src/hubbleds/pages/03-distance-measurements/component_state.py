@@ -35,8 +35,8 @@ class Marker(enum.Enum, BaseMarker):
     ang_siz5a  = enum.auto()
     # ang_siz6  = enum.auto() We skipped this in the voila version
     dot_seq5  = enum.auto()
-    dot_seq5a = enum.auto() # Skipping 2nd meas. sequence 5a-7
-    dot_seq5b = enum.auto() 
+    dot_seq5a = enum.auto()
+    dot_seq5b = enum.auto()
     dot_seq5c = enum.auto()
     # dot_seq6  = enum.auto()	# MC ang_meas_consensus_2
     # dot_seq7 = enum.auto()

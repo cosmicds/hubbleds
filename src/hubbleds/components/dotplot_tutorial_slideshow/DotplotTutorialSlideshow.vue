@@ -158,12 +158,12 @@
           <v-item
             v-for="n in length"
             :key="`btn-${n}`"
-            v-slot="{ active, toggle }"
+            v-slot="{ active }"
           >
             <v-btn
               :input-value="active"
               icon
-              @click="toggle"
+              @click="set_step(n-1);"
             >
               <v-icon>mdi-record</v-icon>
             </v-btn>

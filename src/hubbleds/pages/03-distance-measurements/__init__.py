@@ -523,18 +523,15 @@ def Page():
             #     show=COMPONENT_STATE.value.is_current_step(Marker.ang_siz6),
             # )
 
-            # NOTE: We are skipping the 2nd measurement for now
-            # So we want to skip forward to rep_rem1.
+            # the 2nd measurement
             ScaffoldAlert(
                 GUIDELINE_ROOT / "GuidelineDotplotSeq5.vue",
                 # event_next_callback=lambda _: transition_next(COMPONENT_STATE),
                 event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
-                event_next_callback=lambda _: transition_to(COMPONENT_STATE, Marker.dot_seq5b), #
+                event_next_callback=lambda _: transition_next(COMPONENT_STATE), 
                 can_advance=COMPONENT_STATE.value.can_transition(next=True),
                 show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq5),
-                event_force_transition=lambda _: transition_to(COMPONENT_STATE, Marker.rep_rem1),
             )
-            # the 2nd measurement
             ScaffoldAlert(
                 GUIDELINE_ROOT / "GuidelineDotplotSeq5b.vue",
                 event_next_callback=lambda _: transition_next(COMPONENT_STATE),
@@ -546,7 +543,7 @@ def Page():
         with rv.Col():
             def show_ruler_range(marker):
                 COMPONENT_STATE.value.show_ruler = marker.is_between(Marker.ang_siz3, Marker.est_dis4) or \
-                marker.is_between(Marker.dot_seq5b, Marker.last())
+                marker.is_between(Marker.dot_seq5, Marker.last())
             
             current_step = Ref(COMPONENT_STATE.fields.current_step)
             current_step.subscribe(show_ruler_range)
@@ -709,23 +706,6 @@ def Page():
                     "meas_theta": COMPONENT_STATE.value.meas_theta,
                 },
             )
-            # the 2nd measurement
-            ScaffoldAlert(
-                # TODO This will need to be wired up once table is implemented
-                GUIDELINE_ROOT / "GuidelineDotplotSeq5a.vue",
-                event_next_callback=lambda _: transition_next(COMPONENT_STATE),
-                event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
-                can_advance=COMPONENT_STATE.value.can_transition(next=True),
-                show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq5a),
-            )
-            # the 2nd measurement
-            ScaffoldAlert(
-                GUIDELINE_ROOT / "GuidelineDotplotSeq5c.vue",
-                event_next_callback=lambda _: transition_next(COMPONENT_STATE),
-                event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
-                can_advance=COMPONENT_STATE.value.can_transition(next=True),
-                show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq5c),
-            )
             ScaffoldAlert(
                 GUIDELINE_ROOT / "GuidelineRepeatRemainingGalaxies.vue",
                 event_next_callback=lambda _: transition_next(COMPONENT_STATE),
@@ -820,16 +800,9 @@ def Page():
                             x.dict() for x in LOCAL_STATE.value.example_measurements if x.measurement_number == 'first'
                         ]
                 
-                with solara.Card('REMOVE', style={'background-color': 'var(--warning-dark)'} ):
-                    solara.Text(f"selected example galaxy {selected_example_galaxy_index.value}")
-                    solara.Text(f"selected example galaxy {COMPONENT_STATE.value.selected_example_galaxy}")
-                    DataTable(title="Example Measurements",
-                            headers=common_headers + [{ "text": "Measurement Number", "value": "measurement_number" }], 
-                            items=[x.model_dump() for x in LOCAL_STATE.value.example_measurements])
-                
                 DataTable(
                     title="Example Galaxy",
-                    headers=common_headers + [{ "text": "Measurement Number", "value": "measurement_number" }], 
+                    headers=common_headers, 
                     items=example_galaxy_data.value,
                     show_select=True,
                     selected_indices=selected_example_galaxy_index.value,
@@ -913,6 +886,21 @@ def Page():
                 event_mc_callback=lambda event: mc_callback(event, LOCAL_STATE, COMPONENT_STATE),
                 state_view={'mc_score': get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, 'ang_meas_dist_relation'), 'score_tag': 'ang_meas_dist_relation'}
             )
+            # the 2nd measurement
+            ScaffoldAlert(
+                GUIDELINE_ROOT / "GuidelineDotplotSeq5a.vue",
+                event_next_callback=lambda _: transition_next(COMPONENT_STATE),
+                event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
+                can_advance=COMPONENT_STATE.value.can_transition(next=True),
+                show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq5a),
+            )
+            ScaffoldAlert(
+                GUIDELINE_ROOT / "GuidelineDotplotSeq5c.vue",
+                event_next_callback=lambda _: transition_next(COMPONENT_STATE),
+                event_back_callback=lambda _: transition_previous(COMPONENT_STATE),
+                can_advance=COMPONENT_STATE.value.can_transition(next=True),
+                show=COMPONENT_STATE.value.is_current_step(Marker.dot_seq5c),
+            )
             # Not doing the 2nd measurement #dot_seq6 is comparison of 1st and 2nd measurement
             # ScaffoldAlert(
             #     GUIDELINE_ROOT / "GuidelineDotplotSeq6.vue",
@@ -966,7 +954,7 @@ def Page():
                     show_dotplot_lines.set(False)
                 
                 
-                if COMPONENT_STATE.value.current_step_between(Marker.dot_seq1, Marker.ang_siz5a):
+                if COMPONENT_STATE.value.current_step_between(Marker.dot_seq1, Marker.dot_seq5c):
                     # solara.Text(f"measurements setup: {measurements_setup.value}")
                     # solara.Text(f"subsets setup: {subsets_setup.value}")
                     if measurements_setup.value and subsets_setup.value and EXAMPLE_GALAXY_MEASUREMENTS in gjapp.data_collection:
