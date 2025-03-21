@@ -66,6 +66,7 @@ class ComponentState(BaseComponentState, BaseState):
     show_dotplot_lines: bool = True
     angular_size_line: Optional[float | int] = None
     distance_line: Optional[float | int] = None
+    wwt_ready: bool = Field(False, exclude=True)
     
     @computed_field
     @property
@@ -79,6 +80,10 @@ class ComponentState(BaseComponentState, BaseState):
         if isinstance(v, int):
             return Marker(v)
         return v
+    
+    @property
+    def cho_row1_gate(self) -> bool:
+        return self.wwt_ready    
 
     @property
     def ang_siz2_gate(self):

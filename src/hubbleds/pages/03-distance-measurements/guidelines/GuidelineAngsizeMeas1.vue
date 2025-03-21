@@ -15,6 +15,9 @@
         (Open/close menu with <v-btn icon tile dark x-small disabled class="mx-1" elevation="2" style="background-color: #172c4d; border-radius: 5px;"><v-icon style="color:white!important;">mdi-menu</v-icon></v-btn> above)
       </div>
     </template>
+    <template #before-next>
+      Viewer loading
+    </template>
     <div
       class="mb-4"
     >

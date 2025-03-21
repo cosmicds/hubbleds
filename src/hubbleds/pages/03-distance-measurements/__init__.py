@@ -105,7 +105,7 @@ def DistanceToolComponent(galaxy,
                           guard_range
                           ):
 
-    wwt_ready = solara.use_reactive(False)
+    wwt_ready = Ref(COMPONENT_STATE.fields.wwt_ready)
     tool = DistanceTool.element()
 
     def set_selected_galaxy():
