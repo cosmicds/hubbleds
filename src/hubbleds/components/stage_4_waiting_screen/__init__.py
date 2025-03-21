@@ -15,9 +15,9 @@ def Stage4WaitingScreen(
 
     show_wwt = solara.use_reactive(False)
 
-    with rv.Card():
+    with rv.Card(class_="outline-warning"):
         with rv.Toolbar(color="warning", dense=True, dark=True):
-            rv.ToolbarTitle(class_="text-h6 text-uppercase font-weight-regular",
+            rv.ToolbarTitle(class_="text-h6 toolbar-title font-weight-regular",
                                  children=["Take a quick break"])
             rv.Spacer()
 
@@ -33,7 +33,7 @@ def Stage4WaitingScreen(
                         """
                     )
 
-                with solara.Div(style={"position": "relative", "height": "400px"}):
+                with solara.Div(style={"position": "relative", "height": "100%", "border": "2px solid var(--primary)", "margin-bottom": "5px"}):
                     wwt_container = rv.Html(tag="div")
 
                     if not show_wwt.value:
@@ -41,11 +41,14 @@ def Stage4WaitingScreen(
                             rv.ProgressCircular(
                                 size=100, color="primary", indeterminate=True
                             )
+            with rv.Row(align="center", class_="no-padding"):
+                with rv.Col(cols=10, class_="no-padding"):
+                    Counter(text="Number of classmates who have completed measurements", value=completed_count)
 
-                Counter(text="Number of classmates who have completed measurements", value=completed_count)
-
-                with solara.Row():
+                with rv.Col(cols=2, class_="no-padding"):
                     solara.Button(label="Advance",
+                                  color="accent",
+                                  class_="black--text", 
                                   on_click=on_advance_click,
                                   disabled=not can_advance)
         

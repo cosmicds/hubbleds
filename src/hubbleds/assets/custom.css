@@ -317,6 +317,10 @@ div.plotly .hoverlayer g.hovertext {
     color: black !important;
 }
 
+.outline-warning {
+    border: 1px solid var(--warning) !important;
+}
+
 .student-warning.v-alert {
     background-color: #B20C28 !important;
     color: #FFF !important;
