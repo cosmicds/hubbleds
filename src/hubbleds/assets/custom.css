@@ -312,6 +312,10 @@ header.cosmicds-appbar > div.v-toolbar__content > h3::after {
     color: #fff !important;
 }
 
+.toolbar .theme--light.v-btn.v-btn--disabled .v-icon {
+    color: hsla(0, 0%, 100%, .3) !important;
+}
+
 /* Hides the wavelength marker on the x-axis */
 /* div.plotly .hoverlayer g.axistext {
     display: none;

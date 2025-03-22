@@ -22,7 +22,7 @@ from hubbleds.components import UncertaintySlideshow, IdSlider
 from hubbleds.demo_utils import fill_data_points
 from hubbleds.tools import *  # noqa
 from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, StudentMeasurement, StudentSummary, get_free_response, get_multiple_choice, mc_callback, fr_callback
-from hubbleds.utils import create_single_summary, make_summary_data, models_to_glue_data
+from hubbleds.utils import create_single_summary, make_summary_data, models_to_glue_data, get_image_path
 from hubbleds.viewers.hubble_histogram_viewer import HubbleHistogramView
 from hubbleds.viewers.hubble_scatter_viewer import HubbleScatterView
 from .component_state import COMPONENT_STATE, Marker
@@ -602,7 +602,8 @@ def Page():
                             age_calc_short2=get_free_response(LOCAL_STATE, "shortcoming-2").get("response"),
                             age_calc_short_other=get_free_response(LOCAL_STATE, "other-shortcomings").get("response"),    
                             event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
-                            free_responses=[get_free_response(LOCAL_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE,'systematic-uncertainty')]   
+                            free_responses=[get_free_response(LOCAL_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE,'systematic-uncertainty')],
+                            image_location=get_image_path(router,"stage_five")      
                         )
             
     #--------------------- Row 3: ALL DATA HUBBLE VIEWER - during class sequence -----------------------
@@ -662,7 +663,8 @@ def Page():
                         age_calc_short2=get_free_response(LOCAL_STATE, "shortcoming-2").get("response"),
                         age_calc_short_other=get_free_response(LOCAL_STATE, "other-shortcomings").get("response"),  
                         event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
-                        free_responses=[get_free_response(LOCAL_STATE, 'shortcoming-4'), get_free_response(LOCAL_STATE, 'systematic-uncertainty')]
+                        free_responses=[get_free_response(LOCAL_STATE, 'shortcoming-4'), get_free_response(LOCAL_STATE, 'systematic-uncertainty')],
+                        image_location=get_image_path(router,"stage_five")   
                 )
 
     #--------------------- Row 4: OUR CLASS HISTOGRAM VIEWER -----------------------

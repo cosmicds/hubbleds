@@ -6,7 +6,7 @@ from hubbleds.components import Stage2Slideshow
 from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, get_multiple_choice, mc_callback 
 from .component_state import COMPONENT_STATE
 from hubbleds.remote import LOCAL_API
-from ...utils import IMAGE_BASE_URL, DISTANCE_CONSTANT
+from ...utils import get_image_path, DISTANCE_CONSTANT
 
 from cosmicds.logger import setup_logger
 
@@ -75,7 +75,7 @@ def Page():
         ],
         interact_steps=[7,9],
         distance_const=DISTANCE_CONSTANT,
-        image_location=f"{IMAGE_BASE_URL}/stage_two_intro",
+        image_location=get_image_path(router, "stage_two_intro"),
         event_set_step=step.set,
         event_set_max_step_completed=max_step_completed.set,
         event_mc_callback=lambda event: mc_callback(event=event, local_state=LOCAL_STATE),

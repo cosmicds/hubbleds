@@ -37,7 +37,7 @@ from ...data_management import (
 )
 import numpy as np
 from glue.core import Data
-from hubbleds.utils import models_to_glue_data, velocity_from_wavelengths
+from hubbleds.utils import models_to_glue_data, velocity_from_wavelengths, get_image_path
 
 logger = setup_logger("STAGE")
 
@@ -1180,7 +1180,8 @@ def Page():
                     SpectrumSlideshow(
                         event_dialog_opened_callback=lambda _: spectrum_tutorial_opened.set(
                             True
-                        )
+                        ),
+                        image_location=get_image_path(router, "stage_one_spectrum")
                     )
             elif show_galaxy_spectrum:
                 with solara.Column():
@@ -1253,5 +1254,6 @@ def Page():
                     SpectrumSlideshow(
                         event_dialog_opened_callback=lambda _: spectrum_tutorial_opened.set(
                             True
-                        )
+                        ),
+                        image_location=get_image_path(router, "stage_one_spectrum")
                     )

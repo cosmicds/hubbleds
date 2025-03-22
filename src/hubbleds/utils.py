@@ -56,6 +56,9 @@ PLOTLY_MARGINS = {"l": 60, "r": 20, "t": 20, "b": 60}
 
 IMAGE_BASE_URL = "https://cosmicds.github.io/cds-website/hubbleds_images"
 
+IMAGE_BASE_STATIC_PATH = "/static/public"
+def get_image_path(router, sub_path):
+    return f"{router.root_path}{IMAGE_BASE_STATIC_PATH}/{sub_path}"
 
 def angle_to_json(angle, _widget):
     return {"value": angle.value, "unit": angle.unit.name}
