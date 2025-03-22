@@ -836,7 +836,7 @@
         depressed
         @click="() => {
           slideshow_finished();
-          set_step(0)
+          set_step(0);
           //this.$refs.synth.stopSpeaking();
         }"
       >

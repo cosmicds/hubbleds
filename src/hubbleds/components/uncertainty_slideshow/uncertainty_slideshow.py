@@ -27,5 +27,9 @@ def UncertaintySlideshow(
     age_calc_short1 = "",
     age_calc_short2 = "",
     age_calc_short_other = "",
+    require_fr=True,
+    max_step_completed=0,
+    event_set_step=None,
+    event_set_max_step_completed=None,
 ):
     pass

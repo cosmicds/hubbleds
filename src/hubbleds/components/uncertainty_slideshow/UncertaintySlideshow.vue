@@ -364,7 +364,7 @@
           class="black--text"
           color="accent"
           depressed
-          @click="step--"
+          @click="set_step(step - 1);" 
         >
           Back
         </v-btn>
@@ -380,6 +380,7 @@
             v-slot="{ active, toggle }"
           >
             <v-btn
+              :disabled="n > max_step_completed + 2"
               :input-value="active"
               icon
               @click="toggle"
@@ -389,12 +390,13 @@
           </v-item>
         </v-item-group>
         <v-spacer></v-spacer>
-          <v-btn
+        <v-btn
+          :disabled="disableNext"
           v-if="step < length-1"
           color="accent"
           class="black--text"
           depressed
-          @click="() => { step++; }"
+          @click="set_step(step + 1);"
         >
           {{ step < length-1 ? 'next' : '' }}
         </v-btn>
@@ -405,7 +407,7 @@
           @click="() => {
             $emit('close');
             dialog = false;
-            step = 0;
+            set_step(0);
             on_slideshow_finished();
             // this.$refs.synth.stopSpeaking();
           }"
@@ -420,7 +422,7 @@
           @click="() => { 
             dialog = false; 
             on_slideshow_finished();
-            step = 0; 
+            set_step(0);
           }"
         >
           Done
@@ -430,4 +432,105 @@
   </v-dialog>
 </template>
 
+<script>
+module.exports = {
+  data() {
+    return {
+      disableNext: false,
+      freeResponses: [],
+      frListener: null,
+      listenerSetup: false,
+    };
+  },
 
+  mounted() {
+    const root = this.getRoot();
+    this.setupObserver();
+  },
+
+  methods: {
+    getRoot() {
+      return this.$refs.content.$el;
+    },
+    setupObserver() {
+      if (this.listenerSetup) {
+        return;
+      }
+      const root = this.getRoot();
+      this.frObserver = new MutationObserver((mutations) => {
+        let needUpdate = false;
+        mutations.forEach(mutation => {
+          if (needUpdate) {
+            return;
+          }
+          if (mutation.addedNodes.length > 0) {
+            needUpdate = [...mutation.addedNodes].some(this.needUpdateNode);
+          }
+          if (!needUpdate && mutation.removedNodes.length > 0) {
+            needUpdate = [...mutation.removedNodes].some(this.needUpdateNode);
+          }
+        });
+        if (needUpdate) {
+          this.updateFreeResponseList();
+          this.updateDisableNext();
+        }
+      });
+      this.frObserver.observe(root, { childList: true, subtree: true });
+      this.listenerSetup = true;
+    },
+    // These methods are kinda hacky!
+    // but they let us not ever have to deal with this stuff elsewhere
+    // and not have to rewrite this in each guideline that has free responses
+    updateFreeResponseList() {
+      const root = this.getRoot();
+      const frElements = root.querySelectorAll(".cds-free-response");
+      const frComponents = [...frElements].map(fr => fr.__vue__);
+      for (let i = 0; i < frComponents.length; i++) {
+        if (frComponents[i].$vnode.tag.indexOf("FreeResponse") < 0) {
+          frComponents[i] = frComponents[i].$parent;
+        }
+      }
+      this.freeResponses = frComponents;
+
+      if (this.freeResponses.length > 0 && this.frListener === null) {
+        this.frListener = (_event) => {
+          this.updateDisableNext();
+        };
+        root.addEventListener('input', this.frListener);
+      }
+    },
+
+    allFreeResponsesFilled() {
+      return this.freeResponses.every(fr => fr.$refs.textarea.valid);
+    },
+
+    updateDisableNext() {
+      this.disableNext = this.require_fr && !this.allFreeResponsesFilled();
+    },
+
+    needUpdateNode(node) {
+      return node.classList != undefined &&
+        (
+          node.classList.contains("cds-free-response")
+            ||
+          node.querySelectorAll(".cds-free-response").length > 0
+        );
+    }
+  },
+
+  watch: {
+    step(newStep, oldStep) {
+      const isInteractStep = this.freeResponses.length > 0;
+      this.set_step(newStep);
+      this.set_max_step_completed(Math.max(this.max_step_completed, newStep - 1));
+    },
+    dialog(value) {
+      if (value) {
+        this.$nextTick(() => {
+          this.setupObserver();
+        });
+      }
+    }
+  }
+}
+</script>

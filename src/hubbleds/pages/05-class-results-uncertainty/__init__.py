@@ -362,6 +362,13 @@ def Page():
 
     class_best_fit_clicked = Ref(COMPONENT_STATE.fields.class_best_fit_clicked)
 
+    uncertainty_step = Ref(
+        COMPONENT_STATE.fields.uncertainty_state.step
+    )
+    uncertainty_max_step_completed = Ref(
+        COMPONENT_STATE.fields.uncertainty_state.max_step_completed
+    )
+
     def _on_best_fit_line_shown(active):
         if not class_best_fit_clicked.value:
             class_best_fit_clicked.set(active)
@@ -605,11 +612,14 @@ def Page():
                         UncertaintySlideshow(
                             event_on_slideshow_finished=lambda _: Ref(COMPONENT_STATE.fields.uncertainty_slideshow_finished).set(True),
                             step=COMPONENT_STATE.value.uncertainty_state.step,
+                            max_step_completed=COMPONENT_STATE.value.uncertainty_state.max_step_completed,
                             age_calc_short1=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-1").get("response"),
                             age_calc_short2=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-2").get("response"),
                             age_calc_short_other=get_free_response(LOCAL_STATE, COMPONENT_STATE,"other-shortcomings").get("response"),    
                             event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, COMPONENT_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
-                            free_responses=[get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE, COMPONENT_STATE,'systematic-uncertainty')]   
+                            free_responses=[get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE, COMPONENT_STATE,'systematic-uncertainty')],
+                            event_set_step=uncertainty_step.set,
+                            event_set_max_step_completed=uncertainty_max_step_completed.set,
                         )
             
     #--------------------- Row 3: ALL DATA HUBBLE VIEWER - during class sequence -----------------------
@@ -670,11 +680,14 @@ def Page():
                     UncertaintySlideshow(
                         event_on_slideshow_finished=lambda _: Ref(COMPONENT_STATE.fields.uncertainty_slideshow_finished).set(True),
                         step=COMPONENT_STATE.value.uncertainty_state.step,
+                        max_step_completed=COMPONENT_STATE.value.uncertainty_state.max_step_completed,
                         age_calc_short1=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-1").get("response"),
                         age_calc_short2=get_free_response(LOCAL_STATE, COMPONENT_STATE,"shortcoming-2").get("response"),
                         age_calc_short_other=get_free_response(LOCAL_STATE, COMPONENT_STATE,"other-shortcomings").get("response"),  
                         event_fr_callback = lambda event: fr_callback(event, LOCAL_STATE, COMPONENT_STATE, lambda: LOCAL_API.put_story_state(GLOBAL_STATE, LOCAL_STATE)),
-                        free_responses=[get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE, COMPONENT_STATE,'systematic-uncertainty')]
+                        free_responses=[get_free_response(LOCAL_STATE, COMPONENT_STATE,'shortcoming-4'), get_free_response(LOCAL_STATE, COMPONENT_STATE,'systematic-uncertainty')],
+                        event_set_step=uncertainty_step.set,
+                        event_set_max_step_completed=uncertainty_max_step_completed.set,
                 )
 
     #--------------------- Row 4: OUR CLASS HISTOGRAM VIEWER -----------------------

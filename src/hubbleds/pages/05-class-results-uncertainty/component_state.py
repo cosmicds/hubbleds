@@ -51,6 +51,7 @@ class Marker(enum.Enum, BaseMarker):
 
 class UncertaintyState(BaseModel):
     step: int = 0
+    max_step_completed: int = 0
 
 class ComponentState(BaseComponentState, BaseState):
     current_step: Marker = Marker.first()
