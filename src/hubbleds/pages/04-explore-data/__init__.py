@@ -19,7 +19,7 @@ from hubbleds.state import LOCAL_STATE, GLOBAL_STATE, StudentMeasurement, get_mu
 from hubbleds.viewers.hubble_scatter_viewer import HubbleScatterView
 from .component_state import COMPONENT_STATE, Marker
 from hubbleds.remote import LOCAL_API
-from hubbleds.utils import AGE_CONSTANT, models_to_glue_data, PLOTLY_MARGINS
+from hubbleds.utils import AGE_CONSTANT, models_to_glue_data, PLOTLY_MARGINS, get_image_path
 
 from cosmicds.logger import setup_logger
 
@@ -541,7 +541,7 @@ def Page():
                             "mc_score": get_multiple_choice(LOCAL_STATE, COMPONENT_STATE, "race-age"),
                             "score_tag": "race-age"
                         },
-                        
+                        image_location=get_image_path(router,"stage_three"),
                         event_set_dialog=dialog.set,
                         event_set_step=step.set,
                         event_set_max_step_completed=max_step_completed.set,

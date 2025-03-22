@@ -50,7 +50,8 @@ from hubbleds.utils import (
     distance_from_angular_size,
     models_to_glue_data,
     _add_or_update_data, _add_link,
-    subset_by_label
+    subset_by_label,
+    get_image_path
     )
 
 from hubbleds.widgets.distance_tool.distance_tool import DistanceTool
@@ -666,7 +667,8 @@ def Page():
                     AngsizeDosDontsSlideshow(
                         event_on_dialog_opened=lambda *args: dosdonts_tutorial_opened.set(
                             True
-                        )
+                        ),
+                        image_location = get_image_path(router, "stage_two_dos_donts")
                     )
 
     with solara.ColumnsResponsive(12, large=[4,8]):

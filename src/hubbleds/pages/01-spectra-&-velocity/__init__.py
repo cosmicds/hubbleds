@@ -44,7 +44,8 @@ from hubbleds.utils import (
     v2w, w2v, sync_reactives,
     _add_or_update_data,
     _add_link,
-    subset_by_label
+    subset_by_label,
+    get_image_path,
 )
 from hubbleds.example_measurement_helpers import (
     create_example_subsets,
@@ -1381,13 +1382,16 @@ def Page():
                             SpectrumSlideshow(
                                 event_dialog_opened_callback=lambda _: spectrum_tutorial_opened.set(
                                     True
-                                )
+                                ),
+                                image_location=get_image_path(router, "stage_one_spectrum")
                             )
                 
                 if COMPONENT_STATE.value.current_step_at_or_after(Marker.ref_dat1): # space 2 buttons nicely
                     with rv.Row():
                         with rv.Col(cols=4, offset=2):
-                            SpectrumSlideshow()
+                            SpectrumSlideshow(
+                                image_location=get_image_path(router, "stage_one_spectrum")
+                            )
                         with rv.Col(cols=4):
                             show_reflection_dialog = Ref(
                                 COMPONENT_STATE.fields.show_reflection_dialog

@@ -1,8 +1,4 @@
 import solara
-import reacton.ipyvuetify as rv
-from ipyvuetify import VuetifyTemplate
-from ...utils import IMAGE_BASE_URL
-
 
 @solara.component_vue("SlideshowDopplerCalc5.vue")
 def DopplerSlideshow(
