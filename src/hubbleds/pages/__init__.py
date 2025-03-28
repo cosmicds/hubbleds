@@ -64,11 +64,12 @@ def Page():
 
     speech = Ref(GLOBAL_STATE.fields.speech)
     step = Ref(COMPONENT_STATE.fields.intro_slideshow_state.step)
-    max_step = Ref(COMPONENT_STATE.fields.intro_slideshow_state.max_step_completed)
+    max_step = Ref(COMPONENT_STATE.fields.max_step)
+
     IntroSlideshowVue(
-        step = step.value,
+        step = COMPONENT_STATE.value.intro_slideshow_state.step,
         event_set_step=step.set,
-        max_step=max_step.value,
+        max_step=COMPONENT_STATE.value.max_step,
         event_set_max_step=max_step.set,
         length = 8,
         titles = [
