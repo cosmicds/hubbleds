@@ -322,4 +322,5 @@ def subset_by_label(data, label):
         return value
 
 def push_to_route(router: Router, route: str):
-    router.push(f"{router.root_path}/{route}") 
+    print(route)
+    router.push(f"{router.root_path}/{route.lstrip('/')}") 
