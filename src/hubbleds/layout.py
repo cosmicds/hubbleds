@@ -1,5 +1,5 @@
 from os import getenv
-from cosmicds.layout import BaseLayout
+from cosmicds.layout import BaseLayout, BaseSetup
 from .state import GLOBAL_STATE, LOCAL_STATE
 import solara
 from solara.toestand import Ref
@@ -12,6 +12,12 @@ logger = setup_logger("LAYOUT")
 
 @solara.component
 def Layout(children=[]):
+    BaseSetup(
+        force_demo=True,
+        story_name=LOCAL_STATE.value.story_id, 
+        story_title=LOCAL_STATE.value.title
+    )
+
 
     student_id = Ref(GLOBAL_STATE.fields.student.id)
     loaded_states = solara.use_reactive(False)
@@ -72,11 +78,9 @@ def Layout(children=[]):
         _write_local_global_states, dependencies=[GLOBAL_STATE.value, LOCAL_STATE.value]
     )
 
-    with BaseLayout(
+    BaseLayout(
         local_state=LOCAL_STATE,
         children=children,
         story_name=LOCAL_STATE.value.story_id,
         story_title=LOCAL_STATE.value.title,
-        force_demo=True
-    ):
-        pass
+    )
