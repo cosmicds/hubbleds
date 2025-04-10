@@ -139,7 +139,7 @@ def rest_wavelength(galaxy: GalaxyData) -> float:
 
 
 def distance_for_velocity(velocity: float) -> float:
-    return 13.8 * velocity
+    return velocity / 70.85 # H0 = 70.85 km/s/Mpc for Age = 13.8 Gyr
 
 
 def angular_size_for_velocity(velocity: float) -> float:
