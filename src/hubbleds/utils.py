@@ -142,8 +142,8 @@ def distance_for_velocity(velocity: float) -> float:
     return velocity / 70.85 # H0 = 70.85 km/s/Mpc for Age = 13.8 Gyr
 
 
-def angular_size_for_velocity(velocity: float) -> float:
-    return DISTANCE_CONSTANT / distance_for_velocity(velocity)
+def angular_size_for_velocity(velocity: float) -> int:
+    return round(DISTANCE_CONSTANT / distance_for_velocity(velocity), 0)
 
 
 def w2v(lambda_meas, lamb_rest):
@@ -343,9 +343,11 @@ def _add_link(gjapp, from_dc_name, from_att, to_dc_name, to_att):
     else:
         print(f"Link already exists between {from_dc.label} and {to_dc.label} for {from_att} and {to_att}")
     
+
 def subset_by_label(data, label):
         value = next((s for s in data.subsets if s.label == label), None)
         return value
+
 
 def push_to_route(router: Router, location, route: str):
     if route != '/':
