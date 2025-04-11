@@ -80,26 +80,27 @@ def Page():
     router = solara.use_router()
     location = solara.use_context(solara.routing._location_context)
 
-    def _load_component_state():
-        LOCAL_API.get_stage_state(GLOBAL_STATE, LOCAL_STATE, COMPONENT_STATE)
-        logger.info("Finished loading component state")
-        loaded_component_state.set(True)
-    
-    solara.use_memo(_load_component_state, dependencies=[])
-    
-    def _write_component_state():
-        if not loaded_component_state.value:
+    def linear_slope(x, y):
+        # returns the slope, m,  of y(x) = m*x
+        return sum(x * y) / sum(x * x)
+
+    def _on_component_state_loaded(value: bool):
+        if not value:
             return
 
-        # Listen for changes in the states and write them to the database
-        res = LOCAL_API.put_stage_state(GLOBAL_STATE, LOCAL_STATE, COMPONENT_STATE)
-        if res:
-            logger.info("Wrote stage 6 component state to database.")
-        else:
-            logger.info("Did not write stage 6 component state to database.")
+        class_age = Ref(COMPONENT_STATE.fields.class_age)
 
-    solara.lab.use_task(_write_component_state, dependencies=[COMPONENT_STATE.value])
-    
+        data = gjapp.data_collection['Class Data']
+        vel = data['velocity_value']
+        dist = data['est_dist_value']
+        # only accept rows where both velocity and distance exist
+        indices = where((vel != 0) & (vel is not None) & (dist != 0) & (dist is not None))
+        if (indices[0].size > 0):
+            slope = linear_slope(dist[indices], vel[indices])
+            class_age.set(round(AGE_CONSTANT / slope, 8))
+
+    loaded_component_state.subscribe(_on_component_state_loaded)
+
     # === Setup Glue ===
     
     def _glue_setup() -> Tuple[JupyterApplication, HubbleFitView]:
@@ -108,7 +109,6 @@ def Page():
         gjapp = JupyterApplication(
             GLOBAL_STATE.value.glue_data_collection, GLOBAL_STATE.value.glue_session
         )
-        
         
         def add_link(from_dc_name, from_att, to_dc_name, to_att):
                 from_dc = gjapp.data_collection[from_dc_name]
@@ -154,11 +154,29 @@ def Page():
             viewer.figure.update_yaxes(title="Velocity (km/s)")
         viewer.state.reset_limits = new_reset
         
-        
         return gjapp, viewer
-    
 
     gjapp, viewer = solara.use_memo(_glue_setup)
+
+    def _load_component_state():
+        LOCAL_API.get_stage_state(GLOBAL_STATE, LOCAL_STATE, COMPONENT_STATE)
+        logger.info("Finished loading component state")
+        loaded_component_state.set(True)
+
+    solara.use_memo(_load_component_state, dependencies=[])
+
+    def _write_component_state():
+        if not loaded_component_state.value:
+            return
+
+        # Listen for changes in the states and write them to the database
+        res = LOCAL_API.put_stage_state(GLOBAL_STATE, LOCAL_STATE, COMPONENT_STATE)
+        if res:
+            logger.info("Wrote stage 6 component state to database.")
+        else:
+            logger.info("Did not write stage 6 component state to database.")
+
+    solara.lab.use_task(_write_component_state, dependencies=[COMPONENT_STATE.value])
 
     def _state_callback_setup():
         # We want to minimize duplicate state handling, but also keep the states
@@ -270,28 +288,6 @@ def Page():
     display_fit_legend(COMPONENT_STATE.value.current_step)
     
     solara.use_effect(lambda : show_fit_line(True), dependencies=[])
-
-    @staticmethod
-    def linear_slope(x, y):
-        # returns the slope, m,  of y(x) = m*x
-        return sum(x * y) / sum(x * x)
-
-    def _on_component_state_loaded(value: bool):
-        if not value:
-            return
-
-        class_age = Ref(COMPONENT_STATE.fields.class_age)
-
-        data = gjapp.data_collection['Class Data']
-        vel = data['velocity_value']
-        dist = data['est_dist_value']
-        # only accept rows where both velocity and distance exist
-        indices = where((vel != 0) & (vel is not None) & (dist != 0) & (dist is not None))
-        if (indices[0].size > 0):
-            slope = linear_slope(dist[indices], vel[indices])
-            class_age.set(round(AGE_CONSTANT / slope, 8))     
-
-    loaded_component_state.subscribe(_on_component_state_loaded) 
 
     if GLOBAL_STATE.value.show_team_interface:
         StateEditor(Marker, COMPONENT_STATE, LOCAL_STATE, LOCAL_API, show_all=not GLOBAL_STATE.value.educator)
