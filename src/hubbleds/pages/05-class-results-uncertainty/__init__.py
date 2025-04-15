@@ -715,7 +715,7 @@ def Page():
                     highlight_color=class_highlight_color
                 )
                 if GLOBAL_STATE.value.show_team_interface:
-                    rv.Chip(children=[rv.Text(children=[f"Student ID {selected_class_id.value}"])])
+                    rv.Chip(children=[rv.Text(children=[f"Class ID {selected_class_id.value}"])])
 
 
                 with rv.Col(cols=10, offset=1):
