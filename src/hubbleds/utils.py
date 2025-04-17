@@ -16,7 +16,7 @@ from solara.routing import Router
 from solara.toestand import Reactive
 from solara.server import settings
 
-from hubbleds.state import StudentMeasurement
+from hubbleds.state import GalaxyData, StudentMeasurement
 from glue.core import Data
 from numpy import asarray
 
@@ -67,6 +67,7 @@ IMAGE_BASE_URL = "https://cosmicds.github.io/cds-website/hubbleds_images"
 IMAGE_BASE_STATIC_PATH = "/static/public"
 def get_image_path(router, sub_path):
     return f"{router.root_path}{IMAGE_BASE_STATIC_PATH}/{sub_path}"
+
 
 def angle_to_json(angle, _widget):
     return {"value": angle.value, "unit": angle.unit.name}
@@ -128,11 +129,30 @@ def format_measured_angle(angle):
 def velocity_from_wavelengths(lamb_meas, lamb_rest):
     return round((3 * (10**5) * (lamb_meas / lamb_rest - 1)), 0)
 
+
+def observed_wavelength_from_redshift(z: float, rest_wavelength: float) -> float:
+    return rest_wavelength * (1 + z)
+
+
+def rest_wavelength(galaxy: GalaxyData) -> float:
+    return MG_REST_LAMBDA if galaxy.element == "Mg-I" else H_ALPHA_REST_LAMBDA
+
+
+def distance_for_velocity(velocity: float) -> float:
+    return velocity / 70.85 # H0 = 70.85 km/s/Mpc for Age = 13.8 Gyr
+
+
+def angular_size_for_velocity(velocity: float) -> int:
+    return round(DISTANCE_CONSTANT / distance_for_velocity(velocity), 0)
+
+
 def w2v(lambda_meas, lamb_rest):
     return SPEED_OF_LIGHT * (lambda_meas / lamb_rest - 1)
 
+
 def v2w(velocity, lamb_rest):
     return lamb_rest * (velocity / SPEED_OF_LIGHT + 1)
+
 
 def distance_from_angular_size(theta):
     return round(DISTANCE_CONSTANT / theta, 0)
@@ -323,9 +343,11 @@ def _add_link(gjapp, from_dc_name, from_att, to_dc_name, to_att):
     else:
         print(f"Link already exists between {from_dc.label} and {to_dc.label} for {from_att} and {to_att}")
     
+
 def subset_by_label(data, label):
         value = next((s for s in data.subsets if s.label == label), None)
         return value
+
 
 def push_to_route(router: Router, location, route: str):
     if route != '/':

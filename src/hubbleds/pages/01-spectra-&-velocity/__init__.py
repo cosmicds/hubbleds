@@ -59,9 +59,11 @@ from hubbleds.stage_one_and_three_setup import (
     _update_seed_data_with_examples,
 )
 
-from hubbleds.demo_helpers import (set_dummy_wavelength_and_velocity, 
-                                   set_dummy_all_measurements,
-                                   set_dummy_wavelength)
+from hubbleds.measurement_helpers import (
+    fill_add_all_measurements,
+    fill_and_add_wavelengths,
+    fill_and_add_velocities,
+)
 
 logger = setup_logger("STAGE")
 
@@ -211,13 +213,13 @@ def Page():
     selection_tool_bg_count = solara.use_reactive(0)
 
     def _fill_galaxies():
-        set_dummy_all_measurements(LOCAL_API, LOCAL_STATE, GLOBAL_STATE)
+        fill_add_all_measurements(LOCAL_API, LOCAL_STATE, GLOBAL_STATE)
 
     def _fill_lambdas():
-        set_dummy_wavelength(LOCAL_API, LOCAL_STATE, GLOBAL_STATE)
+        fill_and_add_wavelengths(LOCAL_API, LOCAL_STATE, GLOBAL_STATE)
 
     def _fill_stage1_go_stage2():
-        set_dummy_wavelength_and_velocity(LOCAL_API, LOCAL_STATE, GLOBAL_STATE)
+        fill_and_add_velocities(LOCAL_API, LOCAL_STATE, GLOBAL_STATE)
         push_to_route(router, location, f"02-distance-introduction")
 
     def _select_random_galaxies():
